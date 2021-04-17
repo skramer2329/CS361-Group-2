@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <title>TA Schedules</title>
     <style>
+        a:link {
+            text-decoration: none;
+        }
+        a:visited {
+            color: #0052CC;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
         html {
             color: #4d4d4d;
             font-weight: 300;
@@ -44,7 +53,7 @@
             margin-top: 100px;
             position: relative;
         }
-        .userpass {
+        .user-pass {
             margin: 0 0 1.2em;
             word-wrap: break-word;
         }
@@ -60,6 +69,9 @@
             color: internal light dark;
             margin: 0 0 1.2em;
         }
+        .forgot-pass {
+            color: #0052CC;
+        }
     </style>
 </head>
 <body>
@@ -67,7 +79,7 @@
         <div>
             <h1>Log in</h1>
             <form action="" method="post">
-                <div class="userpass">
+                <div class="user-pass">
                     <input class="form-field" type="text" placeholder="Enter email" name="uname" required>
 
                     <input class="form-field" type="password" placeholder="Enter password" name="psw" required>
@@ -77,7 +89,7 @@
             </form>
         </div>
 
-        <div style="background-color:#f1f1f1">
+        <div class="forgot-pass" style="background-color:#f1f1f1">
             <span class="psw"><a href="#">Forgot password?</a></span>
         </div>
     </div>
