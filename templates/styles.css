@@ -107,14 +107,21 @@ input:focus, textarea:focus, select:focus {
 .sidenav a {
     padding: 6px 8px 6px 16px;
     text-decoration: none;
+    text-align: left;
     font-size: 25px;
-    color: #818181;
+    color: #FFFFFF;
     display: block;
 }
 
-.sidenav a:hover {
-    color: #f1f1f1;
+.current:hover {
+    background-color: #A8A9AC;
 }
+
+
+.sidenav a:hover {
+    background-color: #818181;
+}
+
 
 .main {
     margin-left: 170px;
@@ -123,7 +130,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 .current {
-    background-color: #A8A9AC;
+    background-color: #818181;
     color: #111;
 }
 
