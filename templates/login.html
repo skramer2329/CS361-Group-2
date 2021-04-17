@@ -66,11 +66,24 @@
             height: 44px;
             padding: 0.5em;
             max-width: 400px;
-            color: internal light dark;
             margin: 0 0 1.2em;
         }
         .forgot-pass {
             color: #0052CC;
+        }
+
+        .form-field:focus, .form-field textarea:focus {
+            border: 1px solid #0099FF !important;
+            box-shadow: 0 0 3px #0052CC !important;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline-offset: 0px !important;
+            outline: none !important;
+        }
+
+        ::placeholder {
+            color: #A8A9AC
         }
     </style>
 </head>
@@ -89,7 +102,7 @@
             </form>
         </div>
 
-        <div class="forgot-pass" style="background-color:#f1f1f1">
+        <div class="forgot-pass">
             <span class="psw"><a href="#">Forgot password?</a></span>
         </div>
     </div>
