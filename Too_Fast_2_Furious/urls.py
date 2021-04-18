@@ -14,8 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+# error from views is likely being generated
+# because we haven't written our views yet! Ignore it for now
+from . import views
+
+app_name = 'ourapp'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.HomeView.as_view(), name='home'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('course/', views.CourseView.as_view(), name='course'),
+    path('account/', views.AccountView.as_view(), name='account'),
 ]
