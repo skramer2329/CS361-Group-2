@@ -5,3 +5,5 @@ class Account(models.Model):
 
 
 class Course(models.Model):
+
+
