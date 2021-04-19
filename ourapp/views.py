@@ -6,17 +6,17 @@ from .models import Account, Course
 
 # NOTE: arguments for views may change
 # still need to work on this view - Sabrina
-def HomeView():
+def HomeView(self):
     return HttpResponse("This is the home view")
 
 
-def LoginView():
+def LoginView(self):
     return HttpResponse("This is the login view")
 
 
-def CourseView():
+def CourseView(self):
     return HttpResponse("This is the course view")
 
 
-def AccountView():
+def AccountView(self):
     return HttpResponse("This is the account view")

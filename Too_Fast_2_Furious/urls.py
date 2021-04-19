@@ -17,14 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 # error from views is likely being generated
 # because we haven't written our views yet! Ignore it for now
-from . import views
+from ourapp import views
+from ourapp.views import HomeView, LoginView, CourseView, AccountView
 
 app_name = 'ourapp'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.HomeView.as_view(), name='home'),
-    path('login/', views.LoginView.as_view(), name='login'),
-    path('course/', views.CourseView.as_view(), name='course'),
-    path('account/', views.AccountView.as_view(), name='account'),
+    path('', views.HomeView, name='HomeView'),
+    path('login/', views.LoginView, name='LoginView'),
+    path('course/', views.CourseView, name='CourseView'),
+    path('account/', views.AccountView, name='AccountView')
 ]
