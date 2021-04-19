@@ -15,9 +15,9 @@ class Login(View):
         except:
             noSuchUser = True
         if noSuchUser:
-            return render(request, "home.html", {"message": "The username that you used does not exist. Please retry."})
+            return render(request, "login.html", {"message": "The username that you used does not exist. Please retry."})
         elif badPassword:
-            return render(request, "home.html", {"message": "The password that you entered is not correct.  Please retry."})
+            return render(request, "login.html", {"message": "The password that you entered is not correct.  Please retry."})
         else:
             request.session["name"] = m.name
             return redirect("/things/")
