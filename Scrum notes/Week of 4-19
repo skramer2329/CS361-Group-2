@@ -1,0 +1,37 @@
+SCRUM Questions:
+
+What progress was made today?
+
+What progress will be made tomorrow? 
+
+What inhibits you from completing task?
+
+############################################################################################################################
+
+Scrum week of 4/19
+
+Monday 4/19 - Notes by Bennett Schuster
+
+Bennett:
+  Today: Worked on acceptance tests for creating accounts, messed around with the models a bit more by making User an abstract class and making Instructor, Ta, and Supervisor
+  inherit from that.  Wrote some general code for the accounts page and creating accounts views
+  Tomorrow: Going to refine views for accounts - what we want  to show up
+  Inhibits: Not sure how the accounts are going to show up on the accounts page - what do we want displayed?  Also, how can we access ALL accounts?
+
+James: Not present
+
+Michael:
+  Today: created most of the views page for the login screen.  Login page right now doesn't have the Django variable for a message displayed.  Revised the acceptance criteria
+  for the login acceptance criteria.  Wrote one of the acceptance tests for logging in
+  Tomorrow: Finish login page and acceptance criteria for it
+  Inhibits: Not sure what variables will be on home page
+
+Sabrina:
+  Today: .url files, added different headers for the methods, added the imports for most filed, made migrations, sort of started on views for home page
+  Tomorrow: try creating a super user
+  Inhibits: couldn't create a super user because we're lacking something - not sure what it is, hard to write views for home when we don't know what's going to be on it yet
+
+Ethan:
+  Today: Acceptance tests for creating courses, 
+  Tomorrow: going to keep working on acceptance tests
+  Inhibits: Not sure if the instructor will be added immediately when creating course
