@@ -1,3 +1,13 @@
+SCRUM Questions:
+
+What progress was made today?
+
+What progress will be made tomorrow? 
+
+What inhibits you from completing task?
+
+############################################################################################################################
+
 Scrum week of 4/12
 
 Thursday 4/15 - Notes by James Y
@@ -9,3 +19,37 @@ Sabrina - django, github, html, css
 Bennett - python
 Ethan - github, html, css
 Michael - html, css, acceptance testing
+
+----------------------------------------------------------------------------------------------------------------------------
+
+Scrum week of 4/12 <4/16/21> 
+
+Bennett:
+  Today: made models for user and course, for user got first name and last name and username/password (user model)
+
+  Tomorrow: Start writing acceptance tests for create accounts. Work on views for create acc
+
+  Inhibits: didn’t know what else we wanted for user. Don’t know what type for phone number
+
+James: 
+  Today: worked on login page is going well 
+
+  Tomorrow: if not finished on login tonight, then will work on it tomorrow. Then will work on calendar views
+
+  Inhibits: how do we want to do homepage? What do we want to have on it? 
+
+Michael:
+  Today: Not started, will work on Sunday 
+
+  Sunday: work on acceptance tests and then views
+
+  Inhibits: Monday will know
+
+Sabrina:
+  Today: added basic folders
+
+  Tomorrow: Folders, URL’s, Apps.py, ideally tomorrow views
+
+  Inhibits: nothing at the moment
+
+Ethan: not present at meeting

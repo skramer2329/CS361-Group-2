@@ -4,6 +4,7 @@ from .models import Instructor, Supervisor, Ta, Section, Course
 # Create your models here.
 
 
+
 class User(abc):
     first_name = models.CharField()
     last_name = models.CharField()
@@ -38,4 +39,8 @@ class Course(models.Model):
 class Section(models.Model):
     course = models.ForeignKey(Course)
     number = models.IntegerField()
+
+
+
+
 
