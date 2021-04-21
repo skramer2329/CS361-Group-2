@@ -1,6 +1,8 @@
+
 from django.test import TestCase, Client
-from .models import Supervisor
-from .models import Instructor
+from .models import Supervisor, Instructor, Ta, Course, Section
+from django.urls import reverse
+
 
 # Create your tests here.
 
@@ -38,3 +40,4 @@ class TestAccountCreation(TestCase):
             "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211"}, follow=True)
         self.assertEqual(r.context['message'], "account already exists", "there was an attempt to make a new account"
                                                                          "with an already used unique identifier")
+
