@@ -10,7 +10,7 @@ class Login(View):
         noSuchUser = False
         badPassword = False
         try:
-            m = User.objects.get(name=request.POST['uname'])
+            m = User.objects.get(email=request.POST['uname'])
             badPassword = (m.password != request.POST['psw'])
         except:
             noSuchUser = True
@@ -19,6 +19,6 @@ class Login(View):
         elif badPassword:
             return render(request, "login.html", {"message": "The password that you entered is not correct.  Please retry."})
         else:
-            request.session["name"] = m.name
-            return redirect("/things/")
+            request.session["name"] = m.email
+            return redirect("/course/")
 
