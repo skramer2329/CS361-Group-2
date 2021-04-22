@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>TA Schedules - Login</title>
-    <link rel="stylesheet" href="styles.css">
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" media="screen">
+
 </head>
 <body>
     <div class = container>
         <div>
             <h1>Log in</h1>
-            <form action="/" method="post">
+            <form action="/" method="post"> {% csrf_token %}
                 <div class="user-pass">
                     <input class="form-field" type="text" placeholder="Enter email" name="uname" required>
 
@@ -18,11 +22,14 @@
                     <button type="submit">Log in</button>
                 </div>
             </form>
+            <div>
+                <p class="error-message">{{ message }}</p>
+            </div>
         </div>
 
-        <div class="forgot-pass">
+        <!--<div class="forgot-pass">
             <span class="psw"><a href="#">Forgot password?</a></span>
-        </div>
+        </div>-->
     </div>
 
 </body>
