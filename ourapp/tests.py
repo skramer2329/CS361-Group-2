@@ -51,7 +51,7 @@ class TestAccountCreation(TestCase):
         self.assertEqual(r.context['message'], "account already exists", "there was an attempt to make a new account"
                                                                          "with an already used unique identifier")
         
-cclass TestCourseCreation(TestCase):
+class TestCourseCreation(TestCase):
     def setUp(self):
         self.client = Client()
         self.supervisor = Supervisor(email="coursetest1@uwm.edu", password='password1', first_name="steve", last_name="miller",
