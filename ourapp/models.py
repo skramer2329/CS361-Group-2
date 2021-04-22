@@ -6,12 +6,12 @@ import abc
 
 
 class User(models.Model):
-    first_name = models.CharField(max_length=100, default="")
-    last_name = models.CharField(max_length=100, default="")
-    password = models.CharField(max_length=100, default="")
-    address = models.CharField(max_length=100, default="")
-    email = models.EmailField(default="")
-    phone_number = models.CharField(max_length=15, default="")
+    first_name = models.CharField(max_length=100, default=None)
+    last_name = models.CharField(max_length=100, default=None)
+    password = models.CharField(max_length=100, default=None)
+    address = models.CharField(max_length=100, default=None)
+    email = models.EmailField(default=None)
+    phone_number = models.CharField(max_length=15, default=None)
 
     class Meta:
         abstract=True
@@ -32,18 +32,18 @@ class Ta(User):
     pass
 
 class Course(models.Model):
-    #name = models.CharField(max_length=15)
-    #number = models.IntegerField()
-    #instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
+    name = models.CharField(max_length=15, default=None)
+    number = models.IntegerField(default=None)
+    instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE, default=None)
     #ta_list = models.ManyToOneRel(Ta)
     #time = models.DateTimeField()
-    pass
+
 
 
 class Section(models.Model):
-   # course = models.ForeignKey(Course)
-    #number = models.IntegerField()
-    pass
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
+    number = models.IntegerField(default=None)
+
 
 
 
