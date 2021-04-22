@@ -35,10 +35,9 @@ class Ta(User):
 class Course(models.Model):
     name = models.CharField(max_length=15, default=None)
     number = models.IntegerField(default=None)
-    instructor = models.ForeignKey(MyUser(role='instructor'), on_delete=models.CASCADE, default=None)
+    instructor = models.ForeignKey(MyUser(role='instructor'),on_delete=models.CASCADE,default=None)
     #ta_list = models.ManyToOneRel(MyUser)
     #time = models.DateTimeField()
-
 
 
 class Section(models.Model):
