@@ -30,7 +30,8 @@ class Ta(User, models.Model):
 
 class Course(models.Model):
     name = models.CharField()
-    number = models.IntegerField()
+    number = models.IntegerField(max_length=3)
+    description = models.CharField()
     instructor = models.ForeignKey(Instructor)
     ta_list = models.ManyToOneRel(Ta)
     time = models.DateTimeField()
