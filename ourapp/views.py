@@ -6,7 +6,7 @@ from .models import User, Instructor, Supervisor, Ta, Course, Section
 
 class Accounts(View):
     def get(self, request):
-        accounts = list(User.objects)
+        accounts = User.objects.all()
         return render(request, "account.html", {"accounts": accounts})
 
     def create_account(self, request):
@@ -26,16 +26,8 @@ class CreateAccounts(View):
         role=request.POST['role']
 
         user_exists = False
-        instructors = Instructor.objects.all()
-        tas = Ta.objects.all()
-        supervisors = Supervisor.objects.all()
-        accounts = []
-        for i in instructors:
-            accounts.append(i)
-        for i in tas:
-            accounts.append(i)
-        for i in supervisors:
-            accounts.append(i)
+
+        accounts = User.objects.all()
 
         for i in accounts:
             if i.email == email:

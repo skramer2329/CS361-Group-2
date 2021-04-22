@@ -5,7 +5,7 @@ from .models import Instructor, Supervisor, Ta, Section, Course
 
 
 
-class User(abc):
+class User(models.Model):
     first_name = models.CharField()
     last_name = models.CharField()
     password = models.CharField()
@@ -13,17 +13,20 @@ class User(abc):
     email = models.EmailField()
     phone_number = models.CharField(max_length=15)
 
+    class Meta:
+        abstract=True
 
-class Instructor(User, models.Model):
+
+class Instructor(User):
     courses = models.ManyToOneRel(Course)
     sections = models.ManyToOneRel(Section)
 
 
-class Supervisor(User, models.Model):
+class Supervisor(User):
     pass
 
 
-class Ta(User, models.Model):
+class Ta(User):
     courses = models.ManyToManyField(Course)
     sections = models.ManyToOneRel(Section)
 
