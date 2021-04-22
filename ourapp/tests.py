@@ -1,11 +1,21 @@
-
 from django.test import TestCase, Client
-from .models import Supervisor, Instructor, Ta, Course, Section
+from .models import Supervisor, Instructor, Ta, Course, Section, User
 from django.urls import reverse
 
 
 # Create your tests here.
 
+class TestLoginSuccess(TestCase):
+    monkey = None
+    userOne = None
+
+    def setUp(self):
+        self.monkey = Client()
+        temp = User(username="userOne",password="userOne")
+        temp.save()
+
+    def test_correct_user_password_logs_in_successfully(self):
+        resp = self.monkey.post("/", {"name":"userOne","password":"userOne"}, follow=True)
 
 class TestAccountCreation(TestCase):
     def setUp(self):
@@ -40,4 +50,3 @@ class TestAccountCreation(TestCase):
             "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211"}, follow=True)
         self.assertEqual(r.context['message'], "account already exists", "there was an attempt to make a new account"
                                                                          "with an already used unique identifier")
-
