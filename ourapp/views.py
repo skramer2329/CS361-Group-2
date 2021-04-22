@@ -51,11 +51,12 @@ class CreateAccounts(View):
             a.save()
             accounts.append(a)
 
-            return render(request, "account.html", {"accounts": accounts})
+            return render(request, "account.html", {"accounts": accounts, "message": "Account created successfully"})
 
 class Course(View):
     def get(self, request):
-        return render(request, "course.html", {})
+        courses = Course.objects.all()
+        return render(request, "course.html", {"courses": courses})
 
     def post(self, request):
         name = request.POST['name']

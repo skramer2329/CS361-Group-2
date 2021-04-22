@@ -34,20 +34,20 @@ class TestAccountCreation(TestCase):
         "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "supervisor"}, follow=True)
 
-        self.assertIn("test3@uwm.edu", r.context['accounts'], "new account not showing up in rendered response")
-        self.assertEqual(r.context["message"], "account created successfully")
+        self.assertIn(MyUser.objects.get(email='test3@uwm.edu'), r.context['accounts'], "new account not showing up in rendered response")
+        self.assertEqual(r.context["message"], "Account created successfully")
 
         # testing a password that was already used
         r = self.client.post("/account/", {"email": "test4@uwm.edu", "password": "pass2", "first_name": "bill",
             "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211"}, follow=True)
-        self.assertIn("test4@uwm.edu", r.context['accounts'], "new account not showing up in rendered response")
-        self.assertEqual(r.context["message"], "account created successfully")
+        self.assertIn(MyUser.objects.get(email="test4@uwm.edu"), r.context['accounts'], "new account not showing up in rendered response")
+        self.assertEqual(r.context["message"], "Account created successfully")
 
     def test_try_creating_existing_user(self):
         r = self.client.post("/account/", {"email": self.instructor.email, "password": "pass3", "first_name": "bill",
             "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211"}, follow=True)
-        self.assertEqual(r.context['message'], "account already exists", "there was an attempt to make a new account"
-                                                                         "with an already used unique identifier")
+        self.assertEqual(r.context['message'], "A user with this email has already been created.  Try again.",
+                         "there was an attempt to make a new account""with an already used unique identifier")
         
 class TestCourseCreation(TestCase):
     def setUp(self):
