@@ -134,6 +134,10 @@ input:focus, textarea:focus, select:focus {
     color: #111;
 }
 
+.error-message {
+
+}
+
 @media screen and (max-height: 450px) {
     .sidenav {
         padding-top: 15px;
