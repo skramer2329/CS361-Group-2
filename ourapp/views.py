@@ -3,14 +3,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 
 from django.views import View
-from .models import User, Instructor, Supervisor, Ta, Course, Section
+from .models import MyUser, Course, Section
 from django.http import HttpResponse
 # Create your views here.
 
 
 class Accounts(View):
     def get(self, request):
-        accounts = User.objects.all()
+        accounts = MyUser.objects.all()
         return render(request, "account.html", {"accounts": accounts})
 
     def create_account(self, request):
@@ -19,8 +19,11 @@ class Accounts(View):
 
 
 class CreateAccounts(View):
-    def creation(self, request):
-        # We will have to change this because we cannot instantiate User objects (User is abstract)
+    def get(self, request):
+        accounts = MyUser.objects.all()
+        return render(request, "account.html", {"accounts": accounts})
+
+    def post(self, request):
         email=request.POST['email']
         password=request.POST['password']
         first_name=request.POST['first_name']
@@ -29,29 +32,26 @@ class CreateAccounts(View):
         phone_number=request.POST['phone_number']
         role=request.POST['role']
 
-        user_exists = False
+        accounts = list(MyUser.objects.all())
+        user_exists = True
+        try:
+            MyUser.objects.get(email=email)
 
-        accounts = User.objects.all()
+        except:
+            user_exists = False
 
-        for i in accounts:
-            if i.email == email:
-                return render(request, "account.html", {"accounts": accounts, "message": "email already exists"})
+        if user_exists:
+            return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
+                                                                                "already been created.  Try again."})
 
-        if role == 'Instructor':
-            a = Instructor.objects.create(email=email, password=password, first_name=first_name, last_name=last_name,
-                                          address=address, phone_number=phone_number)
+        else:
+            a = MyUser.objects.create(email=email, password=password, first_name=first_name, last_name=last_name,
+            address=address, phone_number=phone_number, role=role)
 
-        elif role == 'Supervisor':
-            a = Supervisor.objects.create(email=email, password=password, first_name=first_name, last_name=last_name,
-                                          address=address, phone_number=phone_number)
+            a.save()
+            accounts.append(a)
 
-        else: #Ta
-            a = Ta.objects.create(email=email, password=password, first_name=first_name, last_name=last_name,
-                                          address=address, phone_number=phone_number)
-
-        a.save()
-
-        return render(request, "account.html", {"accounts": accounts})
+            return render(request, "account.html", {"accounts": accounts})
 
 def Course(request):
     return HttpResponse("this is the course view")
@@ -64,30 +64,17 @@ class Login(View):
     def post(self, request):
         noSuchUser = False
         badPassword = False
-        accounts = []
-        supervisors = Supervisor.objects.all()
-        instructors = Instructor.objects.all()
-        tas = Ta.objects.all()
-        for i in supervisors:
-            accounts.append(i)
-        for i in instructors:
-            accounts.append(i)
-        for i in tas:
-            accounts.append(i)
-        m = None
-        for i in accounts:
-            if i.email == request.POST['uname']:
-                m = i
-        if(m == None):
-            return render(request, "login.html", {"message": "The username that you used does not exist. Please retry."})
-            # m = User.objects.get(email=request.POST['uname'])
-        badPassword = (m.password != request.POST['psw'])
-        """except:
-            noSuchUser = True"""
-        #if noSuchUser:
-            #return render(request, "login.html", {"message": "The username that you used does not exist. Please retry."})
-        if badPassword:
-            return render(request, "login.html", {"message": "The password that you entered is not correct.  Please retry."})
+        try:
+            m = MyUser.objects.get(email=request.POST['uname'])
+            badPassword = (m.password != request.POST['psw'])
+        except:
+            noSuchUser = True
+        if noSuchUser:
+            return render(request, "login.html",
+                          {"message": "The username that you used does not exist. Please retry."})
+        elif badPassword:
+            return render(request, "login.html",
+                          {"message": "The password that you entered is not correct.  Please retry."})
         else:
             request.session["name"] = m.email
             return redirect("/course/")
