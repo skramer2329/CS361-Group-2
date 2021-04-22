@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 
 from django.views import View
-from .models import User, Instructor, Supervisor, Ta, Course, Section
+from .models import MyUser, Course, Section
 from django.http import HttpResponse
 # Create your views here.
 
@@ -31,7 +31,7 @@ class CreateAccounts(View):
 
         user_exists = False
 
-        accounts = User.objects.all()
+        accounts = MyUser.objects.all()
 
         for i in accounts:
             if i.email == email:
@@ -64,30 +64,17 @@ class Login(View):
     def post(self, request):
         noSuchUser = False
         badPassword = False
-        accounts = []
-        supervisors = Supervisor.objects.all()
-        instructors = Instructor.objects.all()
-        tas = Ta.objects.all()
-        for i in supervisors:
-            accounts.append(i)
-        for i in instructors:
-            accounts.append(i)
-        for i in tas:
-            accounts.append(i)
-        m = None
-        for i in accounts:
-            if i.email == request.POST['uname']:
-                m = i
-        if(m == None):
-            return render(request, "login.html", {"message": "The username that you used does not exist. Please retry."})
-            # m = User.objects.get(email=request.POST['uname'])
-        badPassword = (m.password != request.POST['psw'])
-        """except:
-            noSuchUser = True"""
-        #if noSuchUser:
-            #return render(request, "login.html", {"message": "The username that you used does not exist. Please retry."})
-        if badPassword:
-            return render(request, "login.html", {"message": "The password that you entered is not correct.  Please retry."})
+        try:
+            m = MyUser.objects.get(email=request.POST['uname'])
+            badPassword = (m.password != request.POST['psw'])
+        except:
+            noSuchUser = True
+        if noSuchUser:
+            return render(request, "login.html",
+                          {"message": "The username that you used does not exist. Please retry."})
+        elif badPassword:
+            return render(request, "login.html",
+                          {"message": "The password that you entered is not correct.  Please retry."})
         else:
             request.session["name"] = m.email
             return redirect("/course/")
