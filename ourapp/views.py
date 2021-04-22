@@ -53,6 +53,7 @@ class CreateAccounts(View):
 
             return render(request, "account.html", {"accounts": accounts})
 
+
 def Course(request):
     return HttpResponse("this is the course view")
 

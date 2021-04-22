@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import Supervisor, Instructor, Ta, Course, Section, User
+from .models import Course, Section, MyUser
 from django.urls import reverse
 
 
@@ -11,21 +11,19 @@ class TestLoginSuccess(TestCase):
 
     def setUp(self):
         self.monkey = Client()
-        temp = User(username="userOne",password="userOne")
+        temp = MyUser(email="userOne@uwm.edu",password="userOne")
         temp.save()
 
     def test_correct_user_password_logs_in_successfully(self):
-        resp = self.monkey.post("/", {"name":"userOne","password":"userOne"}, follow=True)
+        resp = self.monkey.post("/", {"uname":"userOne@uwm.edu","password":"userOne"}, follow=True)
 
 class TestAccountCreation(TestCase):
     def setUp(self):
         self.client = Client()
-        self.supervisor = Supervisor(email="test1@uwm.edu", password='pass1', first_name="bob", last_name="smith",
-                                     phone_number="(123)456-7890", address="123 Main St, Milwaukee, WI, 53211")
+        self.supervisor = MyUser(email="test1@uwm.edu", password='pass1', role='supervisor')
         self.supervisor.save()
 
-        self.instructor = Instructor(email="test2@uwm.edu", password='pass2', first_name="bob", last_name="smith",
-                                     phone_number="(123)456-7890", address="123 Main St, Milwaukee, WI, 53211")
+        self.instructor = MyUser(email="test2@uwm.edu", password='pass2', role='instructor')
         self.instructor.save()
         self.session = self.client.session
         self.session['email'] = self.supervisor.email
