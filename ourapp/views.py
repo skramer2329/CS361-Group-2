@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from django.views import View
 from .models import User, Instructor, Supervisor, Ta, Course, Section
-from django.http import HttpResponse
 # Create your views here.
 
 
@@ -51,12 +50,9 @@ class CreateAccounts(View):
 
         a.save()
 
+        accounts = list(User.objects)
         return render(request, "account.html", {"accounts": accounts})
-
-def Course(request):
-    return HttpResponse("this is the course view")
-
-
+      
 class Login(View):
     def get(self, request):
         return render(request, "login.html", {})
@@ -64,36 +60,20 @@ class Login(View):
     def post(self, request):
         noSuchUser = False
         badPassword = False
-        accounts = []
-        supervisors = Supervisor.objects.all()
-        instructors = Instructor.objects.all()
-        tas = Ta.objects.all()
-        for i in supervisors:
-            accounts.append(i)
-        for i in instructors:
-            accounts.append(i)
-        for i in tas:
-            accounts.append(i)
-        m = None
-        for i in accounts:
-            if i.email == request.POST['uname']:
-                m = i
-        if(m == None):
+        try:
+            m = User.objects.get(email=request.POST['uname'])
+            badPassword = (m.password != request.POST['psw'])
+        except:
+            noSuchUser = True
+        if noSuchUser:
             return render(request, "login.html", {"message": "The username that you used does not exist. Please retry."})
-            # m = User.objects.get(email=request.POST['uname'])
-        badPassword = (m.password != request.POST['psw'])
-        """except:
-            noSuchUser = True"""
-        #if noSuchUser:
-            #return render(request, "login.html", {"message": "The username that you used does not exist. Please retry."})
-        if badPassword:
+        elif badPassword:
             return render(request, "login.html", {"message": "The password that you entered is not correct.  Please retry."})
         else:
             request.session["name"] = m.email
             return redirect("/course/")
 
-    """
+
         accounts.append(a)
 
         return render(request, "account.html", {"accounts": accounts})
-    """
