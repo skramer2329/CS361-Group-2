@@ -145,6 +145,10 @@ input:focus, textarea:focus, select:focus {
     padding: .5em 1em;
 }
 
+.error-message:empty {
+    display:none;
+}
+
 @media screen and (max-height: 450px) {
     .sidenav {
         padding-top: 15px;
