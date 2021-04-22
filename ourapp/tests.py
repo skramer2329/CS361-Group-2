@@ -77,3 +77,24 @@ class TestCourseCreation(TestCase):
         r = self.client.post("/course/create",{"name":"Intro to Software Engineering",
                                                "number":self.course.number},follow=True)
         self.assertEqual(r.context['message'],"course number already exists")
+
+
+class TestSectionCreation(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.supervisor = MyUser(email="coursetest1@uwm.edu", password='password1', first_name=None, last_name=None,
+                                     phone_number=None, address=None, role='supervisor')
+        self.supervisor.save()
+
+        self.section = Section(name="testSection",number=102)
+        self.section.save()
+
+        self.session = self.client.session
+        self.session['email'] = self.supervisor.email
+        self.session.save()
+
+    #def test_create_new_section(self):
+
+
+
+        # def test_courseTaken(self):

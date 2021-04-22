@@ -13,6 +13,16 @@ class Accounts(View):
         accounts = MyUser.objects.all()
         return render(request, "account.html", {"accounts": accounts})
 
+    def create_account(self, request):
+        # if create account button is clicked, we want to change pages to account creation page
+        return redirect("/create/")
+
+
+class CreateAccounts(View):
+    def get(self, request):
+        accounts = MyUser.objects.all()
+        return render(request, "account.html", {"accounts": accounts})
+
     def post(self, request):
         email=request.POST['email']
         password=request.POST['password']
@@ -43,12 +53,9 @@ class Accounts(View):
 
             return render(request, "account.html", {"accounts": accounts})
 
-
-class Courses(View):
+class Course(View):
     def get(self, request):
-        accounts = MyUser.objects.all()
-        return render(request, "account.html", {"accounts": accounts})
-
+        return render(request, "course.html", {})
 
 class Login(View):
     def get(self, request):
