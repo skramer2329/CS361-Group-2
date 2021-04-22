@@ -35,3 +35,32 @@ Ethan:
   Today: Acceptance tests for creating courses, 
   Tomorrow: going to keep working on acceptance tests
   Inhibits: Not sure if the instructor will be added immediately when creating course
+
+##########################################################################################################################3#
+
+Wednesday 4/21 - Notes by Michael DeCleene
+
+Bennett:
+  Today:  Trying to create a superuser
+  Tomorrow:  work on superuser, looking to create functions tomorrow
+  Inhibits:  Database tables we defined aren't showing up.
+
+James:
+  Today: Added csrf tag and error message tag to login html, started setting up create accounts button
+  Tomorrow:  figure out css tomorrow and keep working on create class/account button
+  Inhibits: getting css to work not inline
+
+Michael:
+  Today:  login views
+  Tomorrow:   login acceptance test
+  Inhibits:  not having a user for the login page
+
+Sabrina:
+  Today:  helped me with the login page.
+  Tomorrow:  meet with instructor tomorrow
+  Inhibits:  not sure what to work on, looks like helping with database tables tomorrow.
+
+Ethan:
+  Today:  Worked on the tests for create course
+  Tomorrow:  work on more tests, and needs to do the views for the create course
+  Inhibits:  nothing really inhibiting, not entirely sure how to start the views.
