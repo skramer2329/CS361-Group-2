@@ -57,6 +57,31 @@ class Course(View):
     def get(self, request):
         return render(request, "course.html", {})
 
+    def post(self, request):
+        name = request.POST['name']
+        number = request.POST['name']
+
+        courses = list(Course.objects.all())
+        course_exists = True
+        try:
+            Course.objects.get(number=number)
+
+        except:
+            course_exists=False
+
+        if course_exists:
+            return render(request, "course.html", {"courses": courses, "message": "A course with this number has "
+                                                                                "already been created.  Try again."})
+
+        else:
+            a = Course.objects.create(name=name, number=number)
+
+            a.save()
+            courses.append(a)
+
+            return render(request, "account.html", {"courses": courses})
+
+
 class Login(View):
     def get(self, request):
         return render(request, "login.html", {})
