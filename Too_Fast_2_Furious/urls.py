@@ -15,16 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-# error from views is likely being generated
-# because we haven't written our views yet! Ignore it for now
-from . import views
+from ourapp import views
+from ourapp.views import Login
 
 app_name = 'ourapp'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.HomeView.as_view(), name='home'),
-    path('login/', views.LoginView.as_view(), name='login'),
-    path('course/', views.CourseView.as_view(), name='course'),
-    path('account/', views.AccountView.as_view(), name='account'),
+    path('', Login.as_view()),
+   # path('course/', views.Course.as_view(), name='course'),
+    path('account/', views.Accounts.as_view(), name='account'),
+    path('createaccount/', views.CreateAccounts.as_view(), name='create-account'),
 ]
