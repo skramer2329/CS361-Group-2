@@ -36,8 +36,6 @@ Ethan:
   Tomorrow: going to keep working on acceptance tests
   Inhibits: Not sure if the instructor will be added immediately when creating course
 
-##########################################################################################################################3#
-
 Wednesday 4/21 - Notes by Michael DeCleene
 
 Bennett:
@@ -64,3 +62,28 @@ Ethan:
   Today:  Worked on the tests for create course
   Tomorrow:  work on more tests, and needs to do the views for the create course
   Inhibits:  nothing really inhibiting, not entirely sure how to start the views.
+
+Tuesday 4/20 - Notes by Ethan Beck
+
+  Ethan:
+    Today: acceptance tests for creating course
+    Tomorrow: refining acceptance tests for creating course, start models for create course
+    Inhibits: none to note
+    
+  Bennett:
+    Today: changed Views for create account
+    Tomorrow: refining acceptance tests for creating account
+    Inhibits: waiting for html code for create account, need to get app running to make sure code is working correctly
+    
+  Sabrina: Not present
+    <Adding information on 4/21/21>
+    Today: No progress made
+    Tomorrow: Working on making Login work
+    Inhibits: Need to do some research on how to get login page to work.
+    
+  Michael:
+    Today: updated Views for Log in page; pushed to master
+    Tomorrow: working on acceptance tests for the log in page
+    Inhibits: none to note 
+    
+  James: Not present

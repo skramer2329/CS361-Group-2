@@ -1,43 +1,47 @@
 from django.db import models
 import abc
-from .models import Instructor, Supervisor, Ta, Section, Course
+#from .models import Instructor, Supervisor, Ta, Section, Course
 # Create your models here.
 
 
 
-class User(abc):
-    first_name = models.CharField()
-    last_name = models.CharField()
-    password = models.CharField()
-    address = models.CharField()
+class User(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
+    address = models.CharField(max_length=100)
     email = models.EmailField()
     phone_number = models.CharField(max_length=15)
 
-
-class Instructor(User, models.Model):
-    courses = models.ManyToOneRel(Course)
-    sections = models.ManyToOneRel(Section)
+    class Meta:
+        abstract=True
 
 
-class Supervisor(User, models.Model):
+class Instructor(User):
+#    courses = models.ManyToOneRel(Course)
+#    sections = models.ManyToOneRel(Section)
     pass
 
 
-class Ta(User, models.Model):
-    courses = models.ManyToManyField(Course)
-    sections = models.ManyToOneRel(Section)
+class Supervisor(User):
+    pass
 
+
+class Ta(User):
+#    courses = models.ManyToManyField(Course)
+#    sections = models.ManyToOneRel(Section)
+    pass
 
 class Course(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=15)
     number = models.IntegerField()
-    instructor = models.ForeignKey(Instructor)
-    ta_list = models.ManyToOneRel(Ta)
+    instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
+    #ta_list = models.ManyToOneRel(Ta)
     time = models.DateTimeField()
 
 
 class Section(models.Model):
-    course = models.ForeignKey(Course)
+   # course = models.ForeignKey(Course)
     number = models.IntegerField()
 
 
