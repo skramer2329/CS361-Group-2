@@ -1,21 +1,20 @@
 from django.db import models
 import abc
 #from .models import Instructor, Supervisor, Ta, Section, Course
+
 # Create your models here.
 
 
-
 class User(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
-    address = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=15)
+    first_name = models.CharField(max_length=100, default="")
+    last_name = models.CharField(max_length=100, default="")
+    password = models.CharField(max_length=100, default="")
+    address = models.CharField(max_length=100, default="")
+    email = models.EmailField(default="")
+    phone_number = models.CharField(max_length=15, default="")
 
     class Meta:
         abstract=True
-
 
 class Instructor(User):
 #    courses = models.ManyToOneRel(Course)
@@ -33,16 +32,18 @@ class Ta(User):
     pass
 
 class Course(models.Model):
-    name = models.CharField(max_length=15)
-    number = models.IntegerField()
-    instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
+    #name = models.CharField(max_length=15)
+    #number = models.IntegerField()
+    #instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
     #ta_list = models.ManyToOneRel(Ta)
-    time = models.DateTimeField()
+    #time = models.DateTimeField()
+    pass
 
 
 class Section(models.Model):
    # course = models.ForeignKey(Course)
-    number = models.IntegerField()
+    #number = models.IntegerField()
+    pass
 
 
 
