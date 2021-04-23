@@ -92,7 +92,7 @@ class Login(View):
         noSuchUser = False
         badPassword = False
         try:
-            m = MyUser.objects.get(email=request.POST['uname'])
+            m = MyUser.objects.get(email__iexact=request.POST['uname'])
             badPassword = (m.password != request.POST['psw'])
         except:
             noSuchUser = True
