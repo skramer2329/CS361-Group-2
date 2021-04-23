@@ -18,11 +18,17 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'ourapp/login.html')
 
+    def test_login_POST(self):
+        pass
+
     def test_course_GET(self):
         response = self.client.get(self.course_url)
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'ourapp/course.html')
+
+    def test_course_POST(self):
+        pass
 
     def test_account_GET(self):
         response = self.client.get(self.account_url)
@@ -30,8 +36,14 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'ourapp/account.html')
 
+    def test_account_create_account_redirect_correctly(self):
+        pass
+
     def test_create_account_GET(self):
         response = self.client.get(self.create_account_url)
 
         self.assertEqual(response.status_code, 200)
         # self.assertTemplateUsed(response, '')
+
+    def test_create_account_POST(self):
+        pass
