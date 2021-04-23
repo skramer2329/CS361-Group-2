@@ -10,13 +10,14 @@
 </head>
 <body>
     <div class="sidenav">
-        <a href="account.html">Account</a>
-        <a href="course.html" class="current">Courses</a>
-        <a href="contacts.html">Contacts</a>
+        <a href="../account/">Account</a>
+        <a href="" class="current">Courses</a>
+        <a href="contacts/">Contacts</a>
     </div>
 
     <div class="main">
         <h2>Courses</h2>
+        {{ request.session.name }}
     </div>
 
 </body>
