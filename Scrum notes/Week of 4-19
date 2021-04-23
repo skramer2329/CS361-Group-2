@@ -87,3 +87,29 @@ Tuesday 4/20 - Notes by Ethan Beck
     Inhibits: none to note 
     
   James: Not present
+  
+Thursday 4/22 - Notes by James Yeazel
+  
+  Michael
+    Today: Acceptance tests and bug fix for login page
+    Tomorrow: Finish last acceptance test
+    Inhibits: None
+    
+  Sabrina:
+    Today: Acceptance tests, basic tests for URLs
+    Tomorrow: Finish acceptance tests for sections, start writing unit tests
+    Inhibits: Figure out more about writing tests
+    
+  James:
+    Today: Got CSS working, worked on buttons for courses and accounts
+    Tomorrow: Finish the buttons
+    Inhibits: None
+  Bennet:
+    Today: Added account creation acceptance tests, did links on sidebar
+    Tomorrow: Work on unit tests
+    Inhibits: HTML must be finished
+    
+  Ethan:
+    Today: Started on create course views
+    Tomorrow: Work on create course views and add tests
+    Inhibits: Needs a better understanding of how to write views
