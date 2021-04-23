@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import Course, Section, MyUser
+from .models import MyCourse, Section, MyUser
 from django.urls import reverse
 
 
@@ -13,9 +13,23 @@ class TestLoginSuccess(TestCase):
         self.monkey = Client()
         temp = MyUser(email="userOne@uwm.edu",password="userOne")
         temp.save()
+        temp2 = MyUser(email="userTwo@uwm.edu",password="userTwo")
+        temp2.save()
 
     def test_correct_user_password_logs_in_successfully(self):
         resp = self.monkey.post("/", {"uname":"userOne@uwm.edu","password":"userOne"}, follow=True)
+
+    def test_no_such_user_exists(self):
+        resp = self.monkey.post("/", {"uname":"userThree@uwm.edu", "password":"userOne"}, follow=True)
+        self.assertEqual(resp.context["message"], "The username that you used does not exist. Please retry.", "no failed login when the user didn't exist in database.")
+
+    def test_user_exists_but_invalid_password(self):
+        resp = self.monkey.post("/", {"uname":"userTwo@uwm.edu", "password":"WrongPassword"}, follow=True)
+        self.assertEqual(resp.context["message"], "The password that you entered is not correct.  Please retry.", "no failed password with wrong password.")
+    def test_user_exists_but_valid_password_for_wrong_user_doesnt_log_in(self):
+        resp = self.monkey.post("/", {"uname":"userOne@uwm.edu", "password":"userTwo"}, follow=True)
+        self.assertEqual(resp.context["message"], "The password that you entered is not correct.  Please retry.", "Log in is successful when wrong user's password is input.  This shouldn't occur.")
+
 
 class TestAccountCreation(TestCase):
     def setUp(self):
@@ -101,7 +115,7 @@ class TestCourseCreation(TestCase):
                                      phone_number="(123)456-7890", address="123 Main St, Milwaukee, WI, 53211")
         self.supervisor.save()
 
-        self.course = Course(name="Intro to Chemistry",number=102)
+        self.course = MyCourse(name="Intro to Chemistry",number=102)
         self.course.save()
 
         self.session1 = self.client.session
