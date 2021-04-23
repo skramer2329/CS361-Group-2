@@ -32,7 +32,7 @@ class Ta(User):
     pass"""
 
 
-class Course(models.Model):
+class MyCourse(models.Model):
     name = models.CharField(max_length=15, default=None)
     number = models.IntegerField(default=None)
     instructor = models.ForeignKey(MyUser(role='instructor'),on_delete=models.CASCADE,default=None)
@@ -41,7 +41,7 @@ class Course(models.Model):
 
 
 class Section(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
+    course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
     number = models.IntegerField(default=None)
 
 

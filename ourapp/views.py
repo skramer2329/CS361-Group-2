@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 
 from django.views import View
-from .models import MyUser, Course, Section
+from .models import MyUser, MyCourse, Section
 from django.http import HttpResponse
 # Create your views here.
 
@@ -55,17 +55,18 @@ class CreateAccounts(View):
 
 class Course(View):
     def get(self, request):
-        courses = Course.objects.all()
+        courses = MyCourse.objects.all()
+        print(courses)
         return render(request, "course.html", {"courses": courses})
 
     def post(self, request):
         name = request.POST['name']
         number = request.POST['name']
 
-        courses = list(Course.objects.all())
+        courses = list(MyCourse.objects.all())
         course_exists = True
         try:
-            Course.objects.get(number=number)
+            MyCourse.objects.get(number=number)
 
         except:
             course_exists=False
@@ -75,7 +76,7 @@ class Course(View):
                                                                                 "already been created.  Try again."})
 
         else:
-            a = Course.objects.create(name=name, number=number)
+            a = MyCourse.objects.create(name=name, number=number)
 
             a.save()
             courses.append(a)

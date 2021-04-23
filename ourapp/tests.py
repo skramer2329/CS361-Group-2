@@ -29,7 +29,7 @@ class TestAccountCreation(TestCase):
         self.session['name'] = self.supervisor.email
         self.session.save()
 
-    def test_create_new_user(self):
+    def test_create_new_supervisor(self):
         r = self.client.post("/account/", {"email": "test3@uwm.edu", "password": "pass3", "first_name": "bill",
         "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "supervisor"}, follow=True)
@@ -39,15 +39,60 @@ class TestAccountCreation(TestCase):
 
         # testing a password that was already used
         r = self.client.post("/account/", {"email": "test4@uwm.edu", "password": "pass2", "first_name": "bill",
-            "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211"}, follow=True)
+            "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
+                                           "role": "supervisor"}, follow=True)
         self.assertIn(MyUser.objects.get(email="test4@uwm.edu"), r.context['accounts'], "new account not showing up in rendered response")
         self.assertEqual(r.context["message"], "Account created successfully")
 
-    def test_try_creating_existing_user(self):
+    def test_create_new_instructor(self):
+        r = self.client.post("/account/", {"email": "test5@uwm.edu", "password": "pass5", "first_name": "bill",
+        "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
+                                           "role": "instructor"}, follow=True)
+
+        self.assertIn(MyUser.objects.get(email='test5@uwm.edu'), r.context['accounts'], "new account not showing up in rendered response")
+        self.assertEqual(r.context["message"], "Account created successfully")
+
+        # testing a password that was already used
+        r = self.client.post("/account/", {"email": "test6@uwm.edu", "password": "pass2", "first_name": "bill",
+            "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
+                                           "role": "instructor"}, follow=True)
+        self.assertIn(MyUser.objects.get(email="test6@uwm.edu"), r.context['accounts'], "new account not showing up in rendered response")
+        self.assertEqual(r.context["message"], "Account created successfully")
+
+    def test_create_new_ta(self):
+        r = self.client.post("/account/", {"email": "test7@uwm.edu", "password": "pass7", "first_name": "bill",
+        "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
+                                           "role": "ta"}, follow=True)
+
+        self.assertIn(MyUser.objects.get(email='test7@uwm.edu'), r.context['accounts'], "new account not showing up in rendered response")
+        self.assertEqual(r.context["message"], "Account created successfully")
+
+        # testing a password that was already used
+        r = self.client.post("/account/", {"email": "test8@uwm.edu", "password": "pass2", "first_name": "bill",
+            "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
+                                           "role": "ta"}, follow=True)
+        self.assertIn(MyUser.objects.get(email="test8@uwm.edu"), r.context['accounts'], "new account not showing up in rendered response")
+        self.assertEqual(r.context["message"], "Account created successfully")
+
+    def test_try_creating_existing_supervisor(self):
         r = self.client.post("/account/", {"email": self.instructor.email, "password": "pass3", "first_name": "bill",
-            "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211"}, follow=True)
+            "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
+                                           "role": "supervisor"}, follow=True)
         self.assertEqual(r.context['message'], "A user with this email has already been created.  Try again.",
-                         "there was an attempt to make a new account""with an already used unique identifier")
+                         "there was an attempt to make a new account with an already used unique identifier")
+
+    def test_try_creating_existing_instructor(self):
+        r = self.client.post("/account/", {"email": self.instructor.email, "password": "pass3", "first_name": "bill",
+            "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211",
+                                           "role": "instructor"}, follow=True)
+        self.assertEqual(r.context['message'], "A user with this email has already been created.  Try again.",
+                         "there was an attempt to make a new account with an already used unique identifier")
+
+    def test_try_creating_existing_ta(self):
+        r = self.client.post("/account/", {"email": self.instructor.email, "password": "pass3", "first_name": "bill",
+            "last_name": "johnson", "phone_number": "(123)456-7890", "address": "123 Main St, Milwaukee, WI, 53211", "role": "ta"}, follow=True)
+        self.assertEqual(r.context['message'], "A user with this email has already been created.  Try again.",
+                         "there was an attempt to make a new account with an already used unique identifier")
         
 class TestCourseCreation(TestCase):
     def setUp(self):
