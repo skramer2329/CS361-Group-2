@@ -1,5 +1,4 @@
 from django.db import models
-import abc
 #from .models import Instructor, Supervisor, Ta, Section, Course
 
 # Create your models here.
@@ -14,9 +13,6 @@ class MyUser(models.Model):
     phone_number = models.CharField(max_length=15, default=None)
 
     role = models.CharField(max_length=10, default=None)
-
-    def __str__(self):
-        return self.first_name
 
 
 """class Instructor(User):

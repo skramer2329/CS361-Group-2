@@ -8,6 +8,59 @@ from django.http import HttpResponse
 # Create your views here.
 
 
+class Login(View):
+    def get(self, request):
+        return render(request, "login.html", {})
+
+    def post(self, request):
+        noSuchUser = False
+        badPassword = False
+        try:
+            m = MyUser.objects.get(email__iexact=request.POST['uname'])
+            badPassword = (m.password != request.POST['psw'])
+        except:
+            noSuchUser = True
+        if noSuchUser:
+            return render(request, "login.html",
+                          {"message": "The username that you used does not exist. Please retry."})
+        elif badPassword:
+            return render(request, "login.html",
+                          {"message": "The password that you entered is not correct.  Please retry."})
+        else:
+            request.session["name"] = m.email
+            return redirect("/course/", request)
+
+class Course(View):
+    def get(self, request):
+        courses = MyCourse.objects.all()
+        print(courses)
+        return render(request, "course.html", {"courses": courses})
+
+    def post(self, request):
+        name = request.POST['name']
+        number = request.POST['name']
+
+        courses = list(MyCourse.objects.all())
+        course_exists = True
+        try:
+            MyCourse.objects.get(number=number)
+
+        except:
+            course_exists=False
+
+        if course_exists:
+            return render(request, "course.html", {"courses": courses, "message": "A course with this number has "
+                                                                                "already been created.  Try again."})
+
+        else:
+            a = MyCourse.objects.create(name=name, number=number)
+
+            a.save()
+            courses.append(a)
+
+            return render(request, "account.html", {"courses": courses})
+
+
 class Accounts(View):
     def get(self, request):
         accounts = MyUser.objects.all()
@@ -53,58 +106,8 @@ class CreateAccounts(View):
 
             return render(request, "account.html", {"accounts": accounts, "message": "Account created successfully"})
 
-class Course(View):
-    def get(self, request):
-        courses = MyCourse.objects.all()
-        print(courses)
-        return render(request, "course.html", {"courses": courses})
-
-    def post(self, request):
-        name = request.POST['name']
-        number = request.POST['name']
-
-        courses = list(MyCourse.objects.all())
-        course_exists = True
-        try:
-            MyCourse.objects.get(number=number)
-
-        except:
-            course_exists=False
-
-        if course_exists:
-            return render(request, "course.html", {"courses": courses, "message": "A course with this number has "
-                                                                                "already been created.  Try again."})
-
-        else:
-            a = MyCourse.objects.create(name=name, number=number)
-
-            a.save()
-            courses.append(a)
-
-            return render(request, "account.html", {"courses": courses})
 
 
-class Login(View):
-    def get(self, request):
-        return render(request, "login.html", {})
-
-    def post(self, request):
-        noSuchUser = False
-        badPassword = False
-        try:
-            m = MyUser.objects.get(email__iexact=request.POST['uname'])
-            badPassword = (m.password != request.POST['psw'])
-        except:
-            noSuchUser = True
-        if noSuchUser:
-            return render(request, "login.html",
-                          {"message": "The username that you used does not exist. Please retry."})
-        elif badPassword:
-            return render(request, "login.html",
-                          {"message": "The password that you entered is not correct.  Please retry."})
-        else:
-            request.session["name"] = m.email
-            return redirect("/course/", request)
 
     """
         accounts.append(a)
