@@ -104,7 +104,7 @@ class Login(View):
                           {"message": "The password that you entered is not correct.  Please retry."})
         else:
             request.session["name"] = m.email
-            return redirect("/course/")
+            return redirect("/course/", request)
 
     """
         accounts.append(a)
