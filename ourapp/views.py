@@ -52,7 +52,37 @@ class CreateAccounts(View):
             accounts.append(a)
 
             return render(request, "account.html", {"accounts": accounts, "message": "Account created successfully"})
+        
+class CreateCourses(View):
+    def get(self,request):
+        courses = MyCourse.objects.all()
+        return render(request, "course.html",{"courses":courses})
 
+    def post(self,request):
+        name = request.POST('name')
+        number = request.POST('number')
+        instructor = request.POST('instructor')
+
+        courses = list(MyCourse.objects.all())
+        course_name_exists = True
+        course_number_exists = True
+        try:
+            MyCourse.objects.get(name=name)
+            MyCourse.objects.get(number=number)
+        except:
+            course_name_exists = False
+            course_number_exists = False
+
+        if course_name_exists:
+            return render(request, "course.html",{"courses":courses,"message":"A course with this name already exists. Try again."})
+        elif course_number_exists:
+            return render(request,"course.html",{"courses":courses,"message":"A course with this number already exists. Try again."})
+        else:
+            c = MyCourse.objects.create(name=name,number=number,instructor=instructor)
+            c.save()
+            courses.append(c)
+            return render(request,"course.html",{"courses":courses,"message":"Course created successfully."})
+        
 class Course(View):
     def get(self, request):
         courses = MyCourse.objects.all()
