@@ -139,21 +139,36 @@ class TestCourseCreation(TestCase):
 
 
 class TestSectionCreation(TestCase):
+    client = None
+    courseList = None
+
     def setUp(self):
         self.client = Client()
-        self.supervisor = MyUser(email="coursetest1@uwm.edu", password='password1', first_name=None, last_name=None,
-                                     phone_number=None, address=None, role='supervisor')
-        self.supervisor.save()
+        self.courseList = {"Math": [1], "Chemistry": [2], "Art": [3]}
 
-        self.section = Section(name="testSection",number=102)
-        self.section.save()
+        for i in self.courseList.keys():
+            temp = MyCourse(name=i, number=self.courseList[i])
+            temp.save()
+            for j in self.courseList[i]:
+                Section(course=temp, number=j)
 
-        self.session = self.client.session
-        self.session['email'] = self.supervisor.email
-        self.session.save()
+    def test_add_section_already_exists(self):
+        c = self.client.session
+        c["number"] = 1
+        c.save
+        resp = self.client.post("/section/create", {"number": 1}, follow=True)
+        self.assertEqual(resp.context['message'], "section number already exists")
 
-    #def test_create_new_section(self):
+    def test_add_section(self):
+        c = self.client.session
+        temp = MyCourse(name="Calculus", number=4)
+        c.save
+        resp = self.client.post("/section/create", {"course": temp, "number": 4}, follow=True)
+        self.assertEqual(4, resp.context["number"])
 
-
-
-        # def test_courseTaken(self):
+    def test_add_when_no_course(self):
+        c = self.client.session
+        temp = None
+        c.save
+        resp = self.client.post("/section/create", {"course": temp, "number": 5}, follow=True)
+        self.assertEqual(resp.context['message'], "no course exists for this section")
