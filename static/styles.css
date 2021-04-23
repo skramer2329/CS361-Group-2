@@ -144,7 +144,6 @@ input:focus, textarea:focus, select:focus {
     background-color: #111111;
     overflow-x: hidden;
     padding-top: 20px;
-    border-right: 0.5em solid #0099FF;
 }
 
 .sidenav a {
