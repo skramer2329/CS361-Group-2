@@ -13,9 +13,8 @@
         display: none;
     }
     </style>
-
-
 </head>
+
 <body>
     <div class="sidenav">
         <a href="/account/" class="current">Account</a>
@@ -34,17 +33,17 @@
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <form action="/account/" method="post">
+                    <form action="/account/" method="post"> {% csrf_token %}
                         <input class="form-field" type="text" placeholder="First Name" name="first_name" required>
                         <input class="form-field" type="text" placeholder="Last Name" name="last_name" required>
                         <input class="form-field" type="text" placeholder="Email" name="email" required>
                         <input class="form-field" type="text" placeholder="Password" name="password" required>
-                        <input class="form-field" type="text" placeholder="Adress" name="address" required>
+                        <input class="form-field" type="text" placeholder="Address" name="address" required>
                         <input class="form-field" type="text" placeholder="Phone Number" name="phone_number" required>
                         <select class="form-field" name="role">
                             <option value="supervisor">Supervisor</option>
                             <option value="instructor">Instructor</option>
-                            <option value="assistant">Teaching Assistant</option>
+                            <option value="ta">Teaching Assistant</option>
                         </select>
                         <button type="submit">Save</button>
                     </form>

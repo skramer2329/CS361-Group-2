@@ -24,6 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Login.as_view()),
     path('course/', Course.as_view()),
-    path('account/', views.Accounts.as_view(), name='account'),
+    path('account/', views.CreateAccounts.as_view(), name='account'),
     path('createaccount/', views.CreateAccounts.as_view(), name='create-account'),
 ]
