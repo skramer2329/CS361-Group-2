@@ -113,3 +113,14 @@ Thursday 4/22 - Notes by James Yeazel
     Today: Started on create course views
     Tomorrow: Work on create course views and add tests
     Inhibits: Needs a better understanding of how to write views
+    
+    
+   ////
+   Friday 4/23/21 
+   SCRUM Questions:
+
+Ethan: Today: wrote create courses views. Tomorrow: Add some more acceptance tests if needed. Inhibits: None
+Sabrina: Today: Learning more about testing. Ended up writing more acceptance tests. Inhibits: Need to figure out how to extract methods
+Bennett: Today: Trying to think of functions to make from views. Started writing unit tests. Tomorrow: Work on unittests. Inhibits: None
+James: not present
+Michael: not present
