@@ -15,6 +15,9 @@ class MyUser(models.Model):
 
     role = models.CharField(max_length=10, default=None)
 
+    def __str__(self):
+        return self.first_name
+
 
 """class Instructor(User):
     courses = models.ManyToOneRel(Course)
