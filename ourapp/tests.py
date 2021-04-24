@@ -11,10 +11,12 @@ class TestLoginSuccess(TestCase):
 
     def setUp(self):
         self.monkey = Client()
-        temp = MyUser(email="userOne@uwm.edu",password="userOne")
-        temp.save()
-        temp2 = MyUser(email="userTwo@uwm.edu",password="userTwo")
-        temp2.save()
+        self.temp = MyUser(email="userOne@uwm.edu",password="userOne", first_name='john', last_name='smith',
+                      address='123', phone_number='123', role='supervisor')
+        self.temp.save()
+        self.temp2 = MyUser(email="userTwo@uwm.edu",password="userTwo", first_name='john', last_name='smith',
+                      address='123', phone_number='123', role='supervisor')
+        self.temp2.save()
 
     def test_correct_user_password_logs_in_successfully(self):
         resp = self.monkey.post("/", {"uname":"userOne@uwm.edu","password":"userOne"}, follow=True)
@@ -26,6 +28,7 @@ class TestLoginSuccess(TestCase):
     def test_user_exists_but_invalid_password(self):
         resp = self.monkey.post("/", {"uname":"userTwo@uwm.edu", "password":"WrongPassword"}, follow=True)
         self.assertEqual(resp.context["message"], "The password that you entered is not correct.  Please retry.", "no failed password with wrong password.")
+
     def test_user_exists_but_valid_password_for_wrong_user_doesnt_log_in(self):
         resp = self.monkey.post("/", {"uname":"userOne@uwm.edu", "password":"userTwo"}, follow=True)
         self.assertEqual(resp.context["message"], "The password that you entered is not correct.  Please retry.", "Log in is successful when wrong user's password is input.  This shouldn't occur.")
@@ -34,10 +37,10 @@ class TestLoginSuccess(TestCase):
 class TestAccountCreation(TestCase):
     def setUp(self):
         self.client = Client()
-        self.supervisor = MyUser(email="test1@uwm.edu", password='pass1', role='supervisor')
+        self.supervisor = MyUser(email="test1@uwm.edu", password='pass1', role='supervisor', first_name='john')
         self.supervisor.save()
 
-        self.instructor = MyUser(email="test2@uwm.edu", password='pass2', role='instructor')
+        self.instructor = MyUser(email="test2@uwm.edu", password='pass2', role='instructor', first_name='mark')
         self.instructor.save()
         self.session = self.client.session
         self.session['name'] = self.supervisor.email
