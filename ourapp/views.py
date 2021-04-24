@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import MyUser, MyCourse, Section
 from django.http import HttpResponse
+from ourapp.helper_methods import login
 # Create your views here.
 
 
