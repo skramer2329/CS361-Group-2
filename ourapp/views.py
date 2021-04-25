@@ -5,8 +5,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import MyUser, MyCourse, Section
 from django.http import HttpResponse
-from ourapp.helper_methods import login
+from ourapp.helper_methods import login, get_user
+
 # Create your views here.
+
 
 
 class Accounts(View):
@@ -106,6 +108,10 @@ class Login(View):
         else:
             request.session["name"] = m.email
             return redirect("/course/", request)
+
+
+
+
 
     """
         accounts.append(a)

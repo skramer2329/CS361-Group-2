@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.http import request
 
 
-def get_User(request):
+def get_user(email):
     pass
 
 def is_ta(request):
@@ -22,6 +22,6 @@ def get_password(request):
 def get_email():
     pass
 
-def login():
+def login(email, password):
     pass
 

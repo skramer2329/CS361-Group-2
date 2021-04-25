@@ -16,7 +16,16 @@ class MyUser(models.Model):
     role = models.CharField(max_length=10, default=None)
 
     def __str__(self):
-        return self.first_name
+        pass
+
+    def is_ta(self):
+        pass
+
+    def is_instructor(self):
+        pass
+
+    def is_supervisor(self):
+        pass
 
 
 """class Instructor(User):
