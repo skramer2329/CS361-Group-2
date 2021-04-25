@@ -1,6 +1,5 @@
 from django.db import models
 import abc
-#from .models import Instructor, Supervisor, Ta, Section, Course
 
 # Create your models here.
 
@@ -15,8 +14,8 @@ class MyUser(models.Model):
 
     role = models.CharField(max_length=10, default=None)
 
-    def __str__(self):
-        pass
+    """def __str__(self):
+        pass"""
 
     def is_ta(self):
         pass
@@ -44,19 +43,20 @@ class Ta(User):
     pass"""
 
 
-class MyCourse(models.Model):
-    name = models.CharField(max_length=15, default=None)
-    number = models.IntegerField(default=None)
-    instructor = models.ForeignKey(MyUser(role='instructor'),on_delete=models.CASCADE,default=None)
-    #ta_list = models.ManyToOneRel(MyUser)
-    #time = models.DateTimeField()
-
-
+# Section refers to lab or course section
+# We just need to figure out how to put a person in the Section model
 class Section(models.Model):
-    course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
+    #course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None, blank=True)
     number = models.IntegerField(default=None)
+    #teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None, blank=True)
 
 
+class MyCourse(models.Model):
+    name = models.CharField(max_length=100, default=None)
+    number = models.IntegerField(default=None)
+    people = models.ManyToManyField(MyUser, blank=True)
+    sections = models.ManyToManyField(Section, default=None, blank=True)
+    # instructor = models.ForeignKey(MyUser, default=None, blank=True, on_delete=models.CASCADE)
 
 
 
