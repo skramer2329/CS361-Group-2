@@ -1,4 +1,4 @@
-from .models import MyUser, MyCourse, SectionOne, Joke
+from .models import MyUser, MyCourse, MySection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpRequest
 from django.http import request

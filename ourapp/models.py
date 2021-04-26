@@ -4,6 +4,12 @@ import abc
 # Create your models here.
 
 
+class Role(models.TextChoices):
+    INSTRUCTOR = 'instructor'
+    TA = 'ta'
+    SUPERVISOR = 'supervisor'
+
+
 class MyUser(models.Model):
     first_name = models.CharField(max_length=100, default=None)
     last_name = models.CharField(max_length=100, default=None)
@@ -12,7 +18,7 @@ class MyUser(models.Model):
     email = models.EmailField(default=None)
     phone_number = models.CharField(max_length=15, default=None)
 
-    role = models.CharField(max_length=10, default=None)
+    role = models.CharField(max_length=100, default=None, choices=Role.choices)
 
     """def __str__(self):
         pass"""
@@ -47,19 +53,13 @@ class MyCourse(models.Model):
     name = models.CharField(max_length=100, default=None)
     number = models.IntegerField(default=None)
     people = models.ManyToManyField(MyUser, default=None, blank=True)
-    #sections = models.ManyToManyField(Section, default=None, blank=True)
-    #instructor = models.ForeignKey(MyUser, blank=True, on_delete=models.CASCADE)
 
 
-class Joke(models.Model):
-    #var2 = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
-    var = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None)
-
-
-class SectionOne(models.Model):
-    #course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
-    #number = models.IntegerField(default=None)
-    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None)
+# Section refers to lab or course section
+class MySection(models.Model):
+    course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
+    number = models.IntegerField(default=None)
+    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None, null=True, blank=True)
 
 
 # Section refers to lab or course section

@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from ourapp.models import MyCourse, SectionOne, MyUser, Joke
+from ourapp.models import MyCourse, MySection, MyUser
 from django.urls import reverse
 
 
