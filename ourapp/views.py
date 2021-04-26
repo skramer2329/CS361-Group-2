@@ -64,7 +64,7 @@ class Course(View):
 
     def post(self, request):
         name = request.POST['name']
-        number = request.POST['name']
+        number = request.POST['number']
 
         courses = list(MyCourse.objects.all())
         course_exists = True
@@ -108,6 +108,46 @@ class Login(View):
         else:
             request.session["name"] = m.email
             return redirect("/course/", request)
+
+
+class SectionCreation(View):
+
+    def get(self, request):
+        sections = Section.objects.all()
+        print(sections)
+        return render(request, "section.html", {"sections": sections})
+
+    def post(self, request):
+        course_name = request.POST['course_name']
+        section_number = request.POST['section_number']
+
+        sections = list(Section.objects.all())
+        section_exists = True
+        course_exists = True
+        try:
+            MyCourse.objects.get(name=course_name)
+        except:
+            course_exists = False
+
+        try:
+            Section.objects.get(number=section_number)
+        except:
+            section_exists = False
+
+        if section_exists:
+            return render(request, "section.html", {"sections": sections, "message": "A section with this number "
+                                        "within this course has ""already been created.  Try again."})
+        elif course_exists:
+            return render(request, "section.html", {"sections": sections, "message": "This course does not exist so "
+                                                                                     "a section cannot be created."})
+        else:
+            a = Section.objects.create(number=section_number)
+            # need to add statement for adding the course
+
+            a.save()
+            sections.append(a)
+
+            return render(request, "section.html", {"sections": sections})
 
 
 

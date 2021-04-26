@@ -43,21 +43,22 @@ class Ta(User):
     pass"""
 
 
-# Section refers to lab or course section
-# We just need to figure out how to put a person in the Section model
-class Section(models.Model):
-    #course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None, blank=True)
-    number = models.IntegerField(default=None)
-    #teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None, blank=True)
-
 
 class MyCourse(models.Model):
     name = models.CharField(max_length=100, default=None)
     number = models.IntegerField(default=None)
-    people = models.ManyToManyField(MyUser, blank=True)
-    sections = models.ManyToManyField(Section, default=None, blank=True)
-    # instructor = models.ForeignKey(MyUser, default=None, blank=True, on_delete=models.CASCADE)
+    people = models.ManyToManyField(MyUser, default=None, blank=True)
+    #sections = models.ManyToManyField(Section, default=None, blank=True)
+    #instructor = models.ForeignKey(MyUser, blank=True, on_delete=models.CASCADE)
 
+
+
+# Section refers to lab or course section
+# We just need to figure out how to put a person in the Section model
+class Section(models.Model):
+    course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, null=True)
+    number = models.IntegerField(default=None)
+    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE,  null=True)
 
 
 
