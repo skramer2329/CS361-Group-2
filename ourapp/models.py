@@ -43,7 +43,6 @@ class Ta(User):
     pass"""
 
 
-
 class MyCourse(models.Model):
     name = models.CharField(max_length=100, default=None)
     number = models.IntegerField(default=None)
@@ -52,13 +51,23 @@ class MyCourse(models.Model):
     #instructor = models.ForeignKey(MyUser, blank=True, on_delete=models.CASCADE)
 
 
+class Joke(models.Model):
+    #var2 = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
+    var = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None)
+
+
+class SectionOne(models.Model):
+    #course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
+    #number = models.IntegerField(default=None)
+    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None)
+
 
 # Section refers to lab or course section
 # We just need to figure out how to put a person in the Section model
-class Section(models.Model):
-    course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, null=True)
+"""class Section(models.Model):
+    #course = models.ForeignKey(to=MyCourse, on_delete=models.CASCADE, default=None)
     number = models.IntegerField(default=None)
-    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE,  null=True)
+    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None)"""
 
 
 

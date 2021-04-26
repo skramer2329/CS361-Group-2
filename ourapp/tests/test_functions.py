@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from ourapp.models import MyCourse, Section, MyUser
+from ourapp.models import MyCourse, SectionOne, MyUser, Joke
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from ourapp.helper_methods import login

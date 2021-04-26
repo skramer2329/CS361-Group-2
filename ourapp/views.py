@@ -3,13 +3,20 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 
 from django.views import View
-from .models import MyUser, MyCourse, Section
+from .models import MyUser, MyCourse, SectionOne, Joke
 from django.http import HttpResponse
 from ourapp.helper_methods import login, get_user
 
 # Create your views here.
 
-
+class Joke2(View):
+    def get(self, request):
+        j = Joke.objects.all()
+        return render(request, "account.html", {})
+    def post(self, request):
+        j = Joke.objects.all()
+        name = request.POST['name']
+        return render(request, "account.html", {})
 
 class Accounts(View):
     def get(self, request):
@@ -113,7 +120,7 @@ class Login(View):
 class SectionCreation(View):
 
     def get(self, request):
-        sections = Section.objects.all()
+        sections = SectionOne.objects.all()
         print(sections)
         return render(request, "section.html", {"sections": sections})
 
@@ -121,7 +128,7 @@ class SectionCreation(View):
         course_name = request.POST['course_name']
         section_number = request.POST['section_number']
 
-        sections = list(Section.objects.all())
+        sections = list(SectionOne.objects.all())
         section_exists = True
         course_exists = True
         try:
@@ -130,7 +137,7 @@ class SectionCreation(View):
             course_exists = False
 
         try:
-            Section.objects.get(number=section_number)
+            SectionOne.objects.get(number=section_number)
         except:
             section_exists = False
 
@@ -141,7 +148,7 @@ class SectionCreation(View):
             return render(request, "section.html", {"sections": sections, "message": "This course does not exist so "
                                                                                      "a section cannot be created."})
         else:
-            a = Section.objects.create(number=section_number)
+            a = SectionOne.objects.create(number=section_number)
             # need to add statement for adding the course
 
             a.save()
