@@ -86,4 +86,48 @@ class TestMyUserModel(TestCase):
 class TestCourseModel(TestCase):
 
     def setUp(self):
-        pass
+        self.course1 = MyCourse(name="Introduction to Software Engineering", number=361)
+        self.course1.save()
+
+        self.course2 = MyCourse(name="Course", number=111)
+        self.course2.save()
+
+        self.user1 = MyUser.objects.create(email='user1@uwm.edu', password='password1', first_name='joe',
+                                           last_name='johnson',address='123 main st.', phone_number='123', role='ta')
+        self.user1.save()
+
+        self.course3 = MyCourse(name="Third Course", number=222)
+        self.course3.save()
+        self.course3.people.add(self.user1)
+        self.course3.save()
+
+    def test_course_str_long(self):
+        self.assertEqual(self.course1.__str__(), "Introduction to Software Engineering")
+
+    def test_course_str_short(self):
+        self.assertEqual(self.course2.__str__(), "Course")
+
+    def test_course_str_with_user(self):
+        self.assertEqual(self.course3.__str__(), "Third Course")
+
+
+class TestSectionModel(TestCase):
+    def setUp(self):
+        self.course1 = MyCourse(name="Introduction to Software Engineering", number=361)
+        self.course1.save()
+
+        self.user1 = MyUser.objects.create(email='user1@uwm.edu', password='password1', first_name='joe',
+                                           last_name='johnson', address='123 main st.', phone_number='123', role='ta')
+        self.user1.save()
+
+        self.section901 = MySection(number=901, course=self.course1, teacher=self.user1)
+        self.section901.save()
+
+        self.section902 = MySection(number=902, course=self.course1)
+        self.section902.save()
+
+    def test_section_str_with_teacher(self):
+        self.assertEqual(self.section901.__str__(), "361-901")
+
+    def test_section_str_without_teacher(self):
+        self.assertEqual(self.section902.__str__(), "361-902")

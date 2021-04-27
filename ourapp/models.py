@@ -20,8 +20,8 @@ class MyUser(models.Model):
 
     role = models.CharField(max_length=100, default=None, choices=Role.choices)
 
-    """def __str__(self):
-        pass"""
+    def __str__(self):
+        pass
 
     def is_ta(self):
         pass
@@ -54,12 +54,18 @@ class MyCourse(models.Model):
     number = models.IntegerField(default=None)
     people = models.ManyToManyField(MyUser, default=None, blank=True)
 
+    def __str__(self):
+        pass
+
 
 # Section refers to lab or course section
 class MySection(models.Model):
     course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
     number = models.IntegerField(default=None)
     teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None, null=True, blank=True)
+
+    def __str__(self):
+        pass
 
 
 # Section refers to lab or course section
