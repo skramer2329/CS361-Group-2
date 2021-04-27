@@ -113,14 +113,15 @@ class SectionCreation(View):
 
     def get(self, request):
         sections = MySection.objects.all()
-        print(sections)
-        return render(request, "section.html", {"sections": sections})
+        courses = MyCourse.objects.all()
+        return render(request, "section.html", {"courses":courses, "sections": sections})
 
     def post(self, request):
         course_name = request.POST['course_name']
         section_number = request.POST['section_number']
 
-        sections = list(MySection.objects.all())
+        sections = MySection.objects.all()
+        courses = MyCourse.objects.all()
         section_exists = True
         course_exists = True
         try:
@@ -134,10 +135,10 @@ class SectionCreation(View):
             section_exists = False
 
         if section_exists:
-            return render(request, "section.html", {"sections": sections, "message": "A section with this number "
+            return render(request, "section.html", {"sections": sections, "courses":courses, "message": "A section with this number "
                                         "within this course has ""already been created.  Try again."})
         elif course_exists:
-            return render(request, "section.html", {"sections": sections, "message": "This course does not exist so "
+            return render(request, "section.html", {"sections": sections, "courses":courses,"message": "This course does not exist so "
                                                                                      "a section cannot be created."})
         else:
             a = MySection.objects.create(number=section_number)
@@ -146,10 +147,7 @@ class SectionCreation(View):
             a.save()
             sections.append(a)
 
-            return render(request, "section.html", {"sections": sections})
-
-
-
+            return render(request, "section.html", {"courses":courses, "sections": sections})
 
 
     """

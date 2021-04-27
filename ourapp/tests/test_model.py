@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from ourapp.models import MyCourse, MySection, MyUser
 #models to test are: MyUser, MyCourse, and Section
 
+
 class TestMyUserModel(TestCase):
 
     def setUp(self):
