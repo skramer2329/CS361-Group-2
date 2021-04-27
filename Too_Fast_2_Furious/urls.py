@@ -22,8 +22,8 @@ app_name = 'ourapp'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', Login.as_view()),
-    path('course/', Course.as_view()),
+    path('', Login.as_view(), name='login'),
+    path('course/', Course.as_view(), name='course'),
     path('account/', views.CreateAccounts.as_view(), name='account'),
     path('createaccount/', views.CreateAccounts.as_view(), name='create-account'),
 ]

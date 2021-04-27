@@ -1,8 +1,13 @@
 from django.db import models
 import abc
-#from .models import Instructor, Supervisor, Ta, Section, Course
 
 # Create your models here.
+
+
+class Role(models.TextChoices):
+    INSTRUCTOR = 'instructor'
+    TA = 'ta'
+    SUPERVISOR = 'supervisor'
 
 
 class MyUser(models.Model):
@@ -13,7 +18,19 @@ class MyUser(models.Model):
     email = models.EmailField(default=None)
     phone_number = models.CharField(max_length=15, default=None)
 
-    role = models.CharField(max_length=10, default=None)
+    role = models.CharField(max_length=100, default=None, choices=Role.choices)
+
+    """def __str__(self):
+        pass"""
+
+    def is_ta(self):
+        pass
+
+    def is_instructor(self):
+        pass
+
+    def is_supervisor(self):
+        pass
 
 
 """class Instructor(User):
@@ -33,19 +50,24 @@ class Ta(User):
 
 
 class MyCourse(models.Model):
-    name = models.CharField(max_length=15, default=None)
+    name = models.CharField(max_length=100, default=None)
     number = models.IntegerField(default=None)
-    instructor = models.ForeignKey(MyUser(role='instructor'),on_delete=models.CASCADE,default=None)
-    #ta_list = models.ManyToOneRel(MyUser)
-    #time = models.DateTimeField()
+    people = models.ManyToManyField(MyUser, default=None, blank=True)
 
 
-class Section(models.Model):
+# Section refers to lab or course section
+class MySection(models.Model):
     course = models.ForeignKey(MyCourse, on_delete=models.CASCADE, default=None)
     number = models.IntegerField(default=None)
+    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None, null=True, blank=True)
 
 
-
+# Section refers to lab or course section
+# We just need to figure out how to put a person in the Section model
+"""class Section(models.Model):
+    #course = models.ForeignKey(to=MyCourse, on_delete=models.CASCADE, default=None)
+    number = models.IntegerField(default=None)
+    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None)"""
 
 
 
