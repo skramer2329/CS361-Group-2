@@ -58,7 +58,6 @@ class CreateAccounts(View):
 class Course(View):
     def get(self, request):
         courses = MyCourse.objects.all()
-        print(courses)
         return render(request, "course.html", {"courses": courses})
 
     def post(self, request):
@@ -83,7 +82,7 @@ class Course(View):
             a.save()
             courses.append(a)
 
-            return render(request, "account.html", {"courses": courses})
+            return render(request, "course.html", {"courses": courses})
 
 
 class Login(View):
