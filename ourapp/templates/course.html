@@ -34,7 +34,7 @@
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <form action="/account/" method="post"> {% csrf_token %}
+                    <form action="/course/" method="post"> {% csrf_token %}
                         <input class="form-field" type="text" placeholder="Course Name" name="name" required>
                         <input class="form-field" type="text" placeholder="Course Number" name="number" required>
                         <button type="submit">Save</button>
