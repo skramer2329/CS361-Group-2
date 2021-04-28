@@ -5,19 +5,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import MyUser, MyCourse, MySection
 from django.http import HttpResponse
-from ourapp.helper_methods import login, get_user
+
+from ourapp.helper_methods import login, get_user, create_course, create_section
+
+from ourapp.helper_methods import CreateAccountsFunction
+
 
 # Create your views here.
-
-
-class Accounts(View):
-    def get(self, request):
-        accounts = MyUser.objects.all()
-        return render(request, "account.html", {"accounts": accounts})
-
-    def create_account(self, request):
-        # if create account button is clicked, we want to change pages to account creation page
-        return redirect("/create/")
 
 
 class CreateAccounts(View):
@@ -35,6 +29,11 @@ class CreateAccounts(View):
         role=request.POST['role']
 
         accounts = list(MyUser.objects.all())
+
+        valid = CreateAccountsFunction(email, phone_number)
+        if valid != "Valid":
+            return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
+                                                                                     "already been created.  Try again."})
         user_exists = True
         try:
             MyUser.objects.get(email=email)
@@ -58,32 +57,18 @@ class CreateAccounts(View):
 class Course(View):
     def get(self, request):
         courses = MyCourse.objects.all()
-        print(courses)
         return render(request, "course.html", {"courses": courses})
 
     def post(self, request):
         name = request.POST['name']
         number = request.POST['number']
-
         courses = list(MyCourse.objects.all())
-        course_exists = True
-        try:
-            MyCourse.objects.get(number=number)
-
-        except:
-            course_exists=False
-
-        if course_exists:
-            return render(request, "course.html", {"courses": courses, "message": "A course with this number has "
-                                                                                "already been created.  Try again."})
-
+        message = create_course(request.POST['name'], number)
+        if type(message) is MyCourse:  # There was good input
+            courses.append(message)
+            return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
         else:
-            a = MyCourse.objects.create(name=name, number=number)
-
-            a.save()
-            courses.append(a)
-
-            return render(request, "account.html", {"courses": courses})
+            return render(request, "course.html", {"courses": courses, "message": message})
 
 
 class Login(View):
@@ -91,69 +76,30 @@ class Login(View):
         return render(request, "login.html", {})
 
     def post(self, request):
-        noSuchUser = False
-        badPassword = False
-        try:
-            m = MyUser.objects.get(email__iexact=request.POST['uname'])
-            badPassword = (m.password != request.POST['psw'])
-        except:
-            noSuchUser = True
-        if noSuchUser:
-            return render(request, "login.html",
-                          {"message": "The username that you used does not exist. Please retry."})
-        elif badPassword:
-            return render(request, "login.html",
-                          {"message": "The password that you entered is not correct.  Please retry."})
-        else:
-            request.session["name"] = m.email
+        x = request.POST['uname']
+        message = login(x, request.POST['psw'])
+        if message == "Valid":
+            u = get_user(x)
+            request.session['name'] = u.email
             return redirect("/course/", request)
+        else:
+            return render(request, "login.html", {"message": message})
 
 
 class SectionCreation(View):
 
     def get(self, request):
         sections = MySection.objects.all()
-        print(sections)
-        return render(request, "section.html", {"sections": sections})
+        courses = MyCourse.objects.all()
+        return render(request, "section.html", {"courses":courses, "sections": sections})
 
     def post(self, request):
-        course_name = request.POST['course_name']
-        section_number = request.POST['section_number']
 
-        sections = list(MySection.objects.all())
-        section_exists = True
-        course_exists = True
-        try:
-            MyCourse.objects.get(name=course_name)
-        except:
-            course_exists = False
-
-        try:
-            MySection.objects.get(number=section_number)
-        except:
-            section_exists = False
-
-        if section_exists:
-            return render(request, "section.html", {"sections": sections, "message": "A section with this number "
-                                        "within this course has ""already been created.  Try again."})
-        elif course_exists:
-            return render(request, "section.html", {"sections": sections, "message": "This course does not exist so "
-                                                                                     "a section cannot be created."})
+        # sections = MySection.objects.all()
+        courses = MyCourse.objects.all()
+        message = create_section(request.POST['course_selection'], request.POST['section_number'])
+        if type(message) is MySection:  # There was good input
+            # sections.append(message)
+            return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
         else:
-            a = MySection.objects.create(number=section_number)
-            # need to add statement for adding the course
-
-            a.save()
-            sections.append(a)
-
-            return render(request, "section.html", {"sections": sections})
-
-
-
-
-
-    """
-        accounts.append(a)
-
-        return render(request, "account.html", {"accounts": accounts})
-    """
+            return render(request, "course.html", {"courses": courses, "message": message})
