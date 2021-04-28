@@ -6,7 +6,12 @@ from ourapp.helper_methods import login
 from django.contrib.auth.models import User
 from django.conf import settings
 from importlib import import_module
-from ourapp.helper_methods import login, get_user, CreateAccountsFunction, valid_email_format, valid_phone_number
+
+from ourapp.helper_methods import login, get_user, validate_course_number, create_course, \
+    validate_section_number, create_section
+
+from ourapp.helper_methods import CreateAccountsFunction, valid_email_format, valid_phone_number
+
 
 
 class TestCanLogin(TestCase):
@@ -66,7 +71,6 @@ class TestLoginFunction(TestCase):
 
 class TestGetUser(TestCase):
     def setUp(self):
-        self.client = Client()
         self.user1 = MyUser.objects.create(email='user1@uwm.edu', password='password1', first_name='joe',
                                            last_name='johnson', address='123 main st.', phone_number='123', role='ta')
         self.user1.save()
@@ -82,16 +86,81 @@ class TestGetUser(TestCase):
         self.user3.save()
 
     def test_get_user_from_supervisor(self):
-        self.assertEqual(get_user('user2@uwm.edu'), self.user2)
+        self.assertEqual(get_user('user2@uwm.edu'), self.user2, msg="Incorrect user object was obtained from the email")
 
     def test_get_user_from_instructor(self):
-        self.assertEqual(get_user('user3@uwm.edu'), self.user3)
+        self.assertEqual(get_user('user3@uwm.edu'), self.user3, msg="Incorrect user object was obtained from the email")
 
     def test_get_user_from_ta(self):
-        self.assertEqual(get_user('user1@uwm.edu'), self.user1)
+        self.assertEqual(get_user('user1@uwm.edu'), self.user1, msg="Incorrect user object was obtained from the email")
 
     def test_get_user_doesnt_exist(self):
-        self.assertIsNone(get_user('user4@uwm.edu'))
+
+        self.assertIsNone(get_user('user4@uwm.edu'), msg="Nonexistent user should yield a None return type")
+
+
+class TestCourseInput(TestCase):
+
+    def test_course_validation_good(self):
+        self.assertTrue(validate_course_number(123))
+
+    def test_course_validation_too_long(self):
+        self.assertFalse(validate_course_number(1234))
+
+    def test_course_validation_too_short(self):
+        self.assertFalse(validate_course_number(12))
+
+
+class TestCourseCreation(TestCase):
+    def setUp(self):
+        self.course1 = MyCourse(name="System Programming", number=337)
+        self.course1.save()
+
+    def create_course_number_used(self):
+        self.assertEqual(create_course("New Course", 337),"A course with this number has already been created.  Try again.")
+
+    def create_course_number_unused(self):
+        a = MyCourse(name='Course1', number=123)
+        self.assertEqual(create_course('Course1', 123), a)
+
+    def create_course_number_big(self):
+        self.assertEqual(create_course("Course2", 37), "The course number is not 3 digits long.  Try again.")
+
+    def create_course_number_small(self):
+        self.assertEqual(create_course("Course2", 5678), "The course number is not 3 digits long.  Try again.")
+
+class TestSectionInput(TestCase):
+
+    def test_course_validation_good(self):
+        self.assertTrue(validate_section_number(901))
+
+    def test_course_validation_too_long(self):
+        self.assertFalse(validate_section_number(90))
+
+    def test_course_validation_too_short(self):
+        self.assertFalse(validate_section_number(8012))
+
+class TestSectionCreation(TestCase):
+    def setUp(self):
+        self.course1 = MyCourse(name="System Programming", number=337)
+        self.course1.save()
+
+        self.section1 = MySection(course=self.course1, number=901)
+        self.section1.save()
+
+    def create_section_number_used(self):
+        self.assertEqual(create_section(self.course1, 901), "A section with this number within this course has already been created.  Try again.")
+
+    def create_section_number_unused(self):
+        a = MySection(course=self.course1, number=801)
+        self.assertEqual(create_section(self.course1, 801), a)
+
+    def create_section_number_big(self):
+        self.assertEqual(create_section(self.course1, 8098), "The section number is not 3 digits long.  Try again.")
+
+    def create_section_number_small(self):
+        self.assertEqual(create_section(self.course1, 83), "The section number is not 3 digits long.  Try again.")
+
 
 class TestValidInputForAccountCreation(TestCase):
     email1 = None
@@ -151,3 +220,4 @@ class TestValidInputForAccountCreation(TestCase):
 
     def test_CreateAccountsFunction_at_missing_in_email_no_space_valid_phone_number_returns_email_no_at_message(self):
         self.assertEqual(CreateAccountsFunction(self.email4, self.phonenumber2) == "Valid", msg="should have been valid data.")
+
