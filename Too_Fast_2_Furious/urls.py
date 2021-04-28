@@ -23,7 +23,8 @@ app_name = 'ourapp'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Login.as_view(), name='login'),
-    path('course/', SectionCreation.as_view(), name='course'),
+    path('course/', Course.as_view(), name='course'),
     path('account/', views.CreateAccounts.as_view(), name='account'),
-    path('createaccount/', views.CreateAccounts.as_view(), name='create-account'),
+    path('section/', views.SectionCreation.as_view(), name='create-account'),
+    path('assignments/', views.CourseAssignments.as_view(), name='course-assignments')
 ]

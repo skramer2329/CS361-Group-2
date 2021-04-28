@@ -92,7 +92,7 @@ class SectionCreation(View):
     def get(self, request):
         sections = MySection.objects.all()
         courses = MyCourse.objects.all()
-        return render(request, "course.html", {"courses":courses, "sections": sections})
+        return render(request, "section.html", {"courses":courses, "sections": sections})
 
     def post(self, request):
 
@@ -101,6 +101,25 @@ class SectionCreation(View):
         message = create_section(request.POST['course_selection'], request.POST['section_number'])
         if type(message) is MySection:  # There was good input
             # sections.append(message)
-            return render(request, "course.html", {"courses": courses, "message": "Section successfully added"})
+            return render(request, "section.html", {"courses": courses, "message": "Section successfully added"})
         else:
-            return render(request, "course.html", {"courses": courses, "message": message})
+            return render(request, "section.html", {"courses": courses, "message": message})
+
+class CourseAssignments(View):
+    def get(self, request):
+        courses = MyCourse.objects.all()
+        accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+        return render(request, "assignments.html", {"courses": courses, "accounts": accounts})
+
+    def post(self, request):
+        courses = MyCourse.objects.all()
+        accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+        course_selection = request.POST['course_selection']
+        course_selection = MyCourse(course_selection)
+        person_selection = request.POST['person_selection']
+        person_selection = MyUser(person_selection)
+
+        course_selection.people.add(person_selection)
+        accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+        return render(request, "assignments.html",
+                    {"message": "Course assignments updated", "courses": courses, "accounts": accounts})

@@ -2,42 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TA Schedules - Courses</title>
+    <title>TA Schedules - Create Section</title>
 
     {% load static %}
 
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <div class="sidenav">
-        <a href="/account/">Account</a>
-        <a href="/course/" class="current">Courses</a>
-        <a href="/contacts/">Contacts</a>
-    </div>
-
-     <div class="main">
+    <div class="main">
         <section>
-            <button class="modButt" id="myBtn">Create new course</button>
+
+            <button class="modButt" id="myBtn">Create new Section</button>
             <h2>Courses</h2>
             {{ message }}
-
             <!-- The Modal -->
             <div id="myModal" class="modal">
 
                 <!-- Modal content -->
                 <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <form action="/course/" method="post"> {% csrf_token %}
-                        <input class="form-field" type="text" placeholder="Course Name" name="name" required>
-                        <input class="form-field" type="text" placeholder="Course Number" name="number" required>
+                    <span class="close">×</span>
+                    <form action="/section/" method="post"> {% csrf_token %}
+                        <select class="form-field" name="course_selection">
+                            {% for i in courses %}
+                            <option value={{ i.id }}>{{ i.number }}</option>
+                            {% endfor %}
+                        </select>
+                        <input class="form-field" type="text" placeholder="Section Number" name="section_number" required>
                         <button type="submit">Save</button>
                     </form>
                 </div>
             </div>
+
         </section>
     </div>
-    <center><h1><a href="/section">Create a Section</a></h1></center>
-    <center><h1><a href="/assignments">Assign to Courses</a></h1></center>
 
 <script>
 // Get the modal
@@ -66,6 +63,5 @@ window.onclick = function(event) {
   }
 }
 </script>
-
 </body>
 </html>
