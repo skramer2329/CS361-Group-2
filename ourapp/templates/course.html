@@ -24,43 +24,55 @@
     <div class="main">
         <section>
             <!-- Elements used for triggering modals to open -->
-            <button class="trigger">Create new course</button>
-            <button class="trigger">Modal 1</button>
+           <button class="modButt" id="myBtn">Create new section</button>
+            <h2>Courses</h2>
 
-            <!-- Elements used as modals -->
-            <div class="modal">
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
 
-                <!-- Content -->
+                <!-- Modal content -->
                 <div class="modal-content">
-                    <span class="btn-close">&times;</span>
-                    <form action="/account/" method="post"> {% csrf_token %}
-                        <input class="form-field" type="text" placeholder="Course Name" name="name" required>
-                        <input class="form-field" type="text" placeholder="Course Number" name="number" required>
+                    <span class="close">×</span>
+                    <form action="/course/" method="post"> {% csrf_token %}
+                        <select class="form-field" name="role">
+                            {% for i in  %}
+                            <option value="supervisor">Supervisor</option>
+                            <option value="instructor">Instructor</option>
+                            <option value="ta">Teaching Assistant</option>
+                        </select>
+                        <input class="form-field" type="text" placeholder="Section Number" name="section_number" required>
                         <button type="submit">Save</button>
                     </form>
                 </div>
-            </div>
-            <div class="modal">
-                <span class="btn-close">&times;</span>
-                <!-- Content -->
             </div>
         </section>
     </div>
 
 <script>
-// Get each modal and close button
-const triggers = document.getElementsByClassName("trigger");
-const triggerArray = Array.from(triggers).entries();
-const modals = document.getElementsByClassName("modal");
-const closeButtons = document.getElementsByClassName("btn-close");
+// Get the modal
+var modal = document.getElementById("myModal");
 
-// Then use `for...of`-loop with the index of each item in `triggerArray` for listening to a click event which toggles each modal to open and close
-for (let [index, trigger] of triggerArray) {
-  const toggleModal = () => {
-    modals[index].classList.toggle('show-modal');
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
   }
-  trigger.addEventListener("click", toggleModal);
-  closeButtons[index].addEventListener("click", toggleModal);
 }
 </script>
 
