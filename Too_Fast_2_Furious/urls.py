@@ -16,14 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from ourapp import views
-from ourapp.views import Login, Course
+from ourapp.views import Login, Course, SectionCreation
 
 app_name = 'ourapp'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Login.as_view(), name='login'),
-    path('course/', Course.as_view(), name='course'),
+    path('course/', SectionCreation.as_view(), name='course'),
     path('account/', views.CreateAccounts.as_view(), name='account'),
     path('createaccount/', views.CreateAccounts.as_view(), name='create-account'),
 ]

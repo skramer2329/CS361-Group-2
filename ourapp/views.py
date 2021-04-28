@@ -92,7 +92,7 @@ class SectionCreation(View):
     def get(self, request):
         sections = MySection.objects.all()
         courses = MyCourse.objects.all()
-        return render(request, "section.html", {"courses":courses, "sections": sections})
+        return render(request, "course.html", {"courses":courses, "sections": sections})
 
     def post(self, request):
 
@@ -101,6 +101,6 @@ class SectionCreation(View):
         message = create_section(request.POST['course_selection'], request.POST['section_number'])
         if type(message) is MySection:  # There was good input
             # sections.append(message)
-            return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
+            return render(request, "course.html", {"courses": courses, "message": "Section successfully added"})
         else:
             return render(request, "course.html", {"courses": courses, "message": message})
