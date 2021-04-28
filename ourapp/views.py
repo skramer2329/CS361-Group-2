@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import MyUser, MyCourse, MySection
 from django.http import HttpResponse
-from ourapp.helper_methods import login, get_user
+from ourapp.helper_methods import login, get_user, CreateAccountsFunction
 
 # Create your views here.
 
@@ -35,6 +35,11 @@ class CreateAccounts(View):
         role=request.POST['role']
 
         accounts = list(MyUser.objects.all())
+
+        valid = CreateAccountsFunction(email, phone_number)
+        if valid != "Valid":
+            return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
+                                                                                     "already been created.  Try again."})
         user_exists = True
         try:
             MyUser.objects.get(email=email)
@@ -83,7 +88,7 @@ class Course(View):
             a.save()
             courses.append(a)
 
-            return render(request, "account.html", {"courses": courses})
+            return render(request, "course.html", {"courses": courses})
 
 
 class Login(View):
