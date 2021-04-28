@@ -7,7 +7,7 @@
     padding-top: 100px; /* Location of the box */
     left: 50%;
     top: 0;
-    width: 400px; /* Full width */
+    width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-position: 50% 50%;
@@ -21,7 +21,7 @@
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 400px;
 }
 
 /* The Close Button */

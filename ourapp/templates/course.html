@@ -24,11 +24,26 @@
     <div class="main">
         <section>
             <!-- Elements used for triggering modals to open -->
-           <button class="modButt" id="myBtn">Create new section</button>
+            <button class="modButt" id="myBtn">Create new course</button>
             <h2>Courses</h2>
+            <button class="modButt" id="myButt" style="left: 1500px">Create new section</button>
 
             <!-- The Modal -->
             <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form action="/account/" method="post"> {% csrf_token %}
+                        <input class="form-field" type="text" placeholder="Course Name" name="name" required>
+                        <input class="form-field" type="text" placeholder="Course Number" name="number" required>
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- The Modal -->
+            <div id="myModal2" class="modal">
 
                 <!-- Modal content -->
                 <div class="modal-content">
@@ -48,31 +63,36 @@
     </div>
 
 <script>
-// Get the modal
-var modal = document.getElementById("myModal");
+// Get each modal and close button
+var butt = document.getElementsByClassName("modButt");
+var modals = document.getElementsByClassName("modal");
+var closeButts = document.getElementsByClassName("close");
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
+//Make the modals open when the button is clicked
+butt[0].onclick = function() {
+    modals[0].style.display = "block";
+}
+butt[1].onclick = function() {
+    modals[1].style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
+//Make the modals close when the close button is clicked
+closeButts[0].onclick = function() {
+    modals[0].style.display = "none";
+}
+closeButts[1].onclick = function() {
+    modals[1].style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+    if (event.target == modal[0]) {
+        modal[0].style.display = "none";
+    }
+    if (event.target == modal[1]) {
+        modal[1].style.display = "none";
+    }
 }
+
 </script>
 
 </body>
