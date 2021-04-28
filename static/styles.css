@@ -99,6 +99,10 @@ button {
     border: 0px;
 }
 
+button:focus {
+    background: #0088e3;
+}
+
 input {
     width: 100%
 }
