@@ -20,18 +20,18 @@ class MyUser(models.Model):
 
     role = models.CharField(max_length=100, default=None, choices=Role.choices)
 
-    """def __str__(self):
-        pass"""
+    def __str__(self):
+        return self.first_name + " " + self.last_name
 
 
     def is_ta(self):
-        pass
+        return self.role == 'ta'
 
     def is_instructor(self):
-        pass
+        return self.role == 'instructor'
 
     def is_supervisor(self):
-        pass
+        return self.role == 'supervisor'
 
 
 """class Instructor(User):
@@ -56,8 +56,8 @@ class MyCourse(models.Model):
     people = models.ManyToManyField(MyUser, default=None, blank=True)
 
 
-    """def __str__(self):
-        pass"""
+    def __str__(self):
+        return self.name
 
 
 
@@ -68,8 +68,8 @@ class MySection(models.Model):
     teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=None, null=True, blank=True)
 
 
-    """def __str__(self):
-        pass"""
+    def __str__(self):
+        return str(self.course.number) + "-" + str(self.number)
 
 
 
