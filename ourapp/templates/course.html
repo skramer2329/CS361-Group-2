@@ -35,10 +35,9 @@
                     <span class="close">×</span>
                     <form action="/course/" method="post"> {% csrf_token %}
                         <select class="form-field" name="role">
-                            {% for i in  %}
-                            <option value="supervisor">Supervisor</option>
-                            <option value="instructor">Instructor</option>
-                            <option value="ta">Teaching Assistant</option>
+                            {% for i in courses %}
+                            <option value="{{ i }}">{{ i.number }}</option>
+                            {% endfor %}
                         </select>
                         <input class="form-field" type="text" placeholder="Section Number" name="section_number" required>
                         <button type="submit">Save</button>
