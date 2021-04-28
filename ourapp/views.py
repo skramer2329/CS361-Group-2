@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import MyUser, MyCourse, MySection
 from django.http import HttpResponse
-from ourapp.helper_methods import login, get_user
+from ourapp.helper_methods import login, get_user, create_course, create_section
 
 # Create your views here.
 
@@ -61,28 +61,34 @@ class Course(View):
         return render(request, "course.html", {"courses": courses})
 
     def post(self, request):
-        name = request.POST['name']
-        number = request.POST['number']
+        email = request.POST['email']
+        password = request.POST['password']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        address = request.POST['address']
+        phone_number = request.POST['phone_number']
+        role = request.POST['role']
 
-        courses = list(MyCourse.objects.all())
-        course_exists = True
+        accounts = list(MyUser.objects.all())
+        user_exists = True
         try:
-            MyCourse.objects.get(number=number)
+            MyUser.objects.get(email=email)
 
         except:
-            course_exists=False
+            user_exists = False
 
-        if course_exists:
-            return render(request, "course.html", {"courses": courses, "message": "A course with this number has "
-                                                                                "already been created.  Try again."})
+        if user_exists:
+            return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
+                                                                                     "already been created.  Try again."})
 
         else:
-            a = MyCourse.objects.create(name=name, number=number)
+            a = MyUser.objects.create(email=email, password=password, first_name=first_name, last_name=last_name,
+                                      address=address, phone_number=phone_number, role=role)
 
             a.save()
-            courses.append(a)
+            accounts.append(a)
 
-            return render(request, "course.html", {"courses": courses})
+            return render(request, "account.html", {"accounts": accounts, "message": "Account created successfully"})
 
 
 class Login(View):
@@ -116,37 +122,16 @@ class SectionCreation(View):
         return render(request, "section.html", {"courses":courses, "sections": sections})
 
     def post(self, request):
-        course_name = request.POST['course_name']
-        section_number = request.POST['section_number']
 
-        sections = MySection.objects.all()
+        # sections = MySection.objects.all()
         courses = MyCourse.objects.all()
-        section_exists = True
-        course_exists = True
-        try:
-            MyCourse.objects.get(name=course_name)
-        except:
-            course_exists = False
-
-        try:
-            MySection.objects.get(number=section_number)
-        except:
-            section_exists = False
-
-        if section_exists:
-            return render(request, "section.html", {"sections": sections, "courses":courses, "message": "A section with this number "
-                                        "within this course has ""already been created.  Try again."})
-        elif course_exists:
-            return render(request, "section.html", {"sections": sections, "courses":courses,"message": "This course does not exist so "
-                                                                                     "a section cannot be created."})
+        message = create_section(request.POST['course_selection'], request.POST['section_number'])
+        if type(message) is MySection:  # There was good input
+            # sections.append(message)
+            return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
         else:
-            a = MySection.objects.create(number=section_number)
-            # need to add statement for adding the course
+            return render(request, "course.html", {"courses": courses, "message": message})
 
-            a.save()
-            sections.append(a)
-
-            return render(request, "section.html", {"courses":courses, "sections": sections})
 
 
     """

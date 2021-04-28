@@ -25,3 +25,14 @@ def get_email():
 def login(email, password):
     pass
 
+def validate_course_number(number):
+    pass
+
+def create_course(name, number):
+    pass
+
+def validate_section_number(number):
+    pass
+
+def create_section(course, number):
+    pass
