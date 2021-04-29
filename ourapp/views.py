@@ -89,6 +89,10 @@ class Login(View):
         if message == "Valid":
             u = get_user(x)
             request.session['name'] = u.email
+            if u.is_supervisor():
+                request.session['supervisor'] = True
+            else:
+                request.session['supervisor'] = False
             return redirect("/course/", request)
         else:
             return render(request, "login.html", {"message": message})
