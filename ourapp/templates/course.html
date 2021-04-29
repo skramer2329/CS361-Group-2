@@ -24,13 +24,13 @@
     <div class="main">
         <section>
             <!-- Elements used for triggering modals to open -->
-            {% if request.session.supervisor %}
+
             <button class="modButt" id="myBtn">Create new course</button>
-            {% endif %}
+
             <h2>Courses</h2>
-            {% if request.session.supervisor %}
-            <button class="modButt" id="myButt" style="left: 1500px">Create new section</button>
-            {% endif %}
+
+            <button class="modButt" id="myButt">Create new section</button>
+
 
             <!-- The Modal -->
             <div id="myModal" class="modal">

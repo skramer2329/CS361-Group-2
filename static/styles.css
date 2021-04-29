@@ -44,7 +44,7 @@
 .modButt {
     box-shadow: 0px 2px 5px 0px rgb(0 0 0 / 16%);
     position: absolute;
-    left: 300px;
+    left: 15vw;
     /*z-index: 6;*/
     top: 30px;
     height: 2.5em;
@@ -52,8 +52,7 @@
 }
 
 #myButt {
-    left: 0;
-    right: 50px;
+    left: 77vw;
 }
 
 a:link {
