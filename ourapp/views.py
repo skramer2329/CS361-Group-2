@@ -65,6 +65,7 @@ class Course(View):
         return render(request, "course.html", {"courses": courses, "accounts": accounts})
 
     def post(self, request):
+        accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
         request.session['submitted'] = True
         if request.method == 'POST' and 'course_button' in request.POST:
             number = request.POST['number']
@@ -73,10 +74,12 @@ class Course(View):
             if type(message) is MyCourse:  # There was good input
                 courses.append(message)
                 request.session['error'] = False
-                return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
+                return render(request, "course.html", {"courses": courses, "message": "Course successfully added",
+                                                       "accounts": accounts})
             else:
                 request.session['error'] = True
-                return render(request, "course.html", {"courses": courses, "message": message})
+                return render(request, "course.html", {"courses": courses, "message": message,
+                                                       "accounts": accounts})
 
         if request.method == 'POST' and 'section_button' in request.POST:
             courses = MyCourse.objects.all()
@@ -84,10 +87,11 @@ class Course(View):
             if type(message) is MySection:  # There was good input
                 # sections.append(message)
                 request.session['error'] = False
-                return render(request, "course.html", {"courses": courses, "message": "Section successfully added"})
+                return render(request, "course.html", {"courses": courses, "message": "Section successfully added",
+                                                       "accounts": accounts})
             else:
                 request.session['error'] = True
-                return render(request, "course.html", {"courses": courses, "message": message})
+                return render(request, "course.html", {"courses": courses, "message": message, "accounts": accounts})
 
         if request.method == 'POST' and 'ass_butt' in request.POST:
             courses = MyCourse.objects.all()
@@ -99,7 +103,7 @@ class Course(View):
 
             course_selection.people.add(person_selection)
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
-            return render(request, "assignments.html",
+            return render(request, "course.html",
                           {"message": "Course assignments updated", "courses": courses, "accounts": accounts})
 
 class Login(View):
