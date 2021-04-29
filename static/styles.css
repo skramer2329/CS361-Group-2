@@ -210,31 +210,35 @@ input:focus, textarea:focus, select:focus {
 }
 
 .alert {
-  padding: 20px;
-  background-color: #EB5A46;
-  color: white;
-  opacity: 1;
-  transition: opacity 0.6s;
-  margin-bottom: 15px;
+    padding: 20px;
+    background-color: #EB5A46;
+    color: white;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 15px;
+    top: 100vh;
+    border-radius: 4px;
+    border: 1px solid #EB5A46
 }
 
 .alert.success {
     background-color: #04AA6D;
+    border: 1px solid #04AA6D;
 }
 
 .closebtn {
-  margin-left: 15px;
-  color: white;
-  font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .closebtn:hover {
-  color: black;
+    color: black;
 }
 
 @media screen and (max-height: 450px) {
