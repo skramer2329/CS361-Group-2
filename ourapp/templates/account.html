@@ -52,7 +52,18 @@
                     </form>
                 </div>
             </div>
-        {% endif %}
+            {% endif %}
+            {% if request.session.error and request.session.submitted %}
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Error!</strong> {{ message }}
+                </div>
+            {% elif not request.session.error and request.session.submitted %}
+                <div class="alert success">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Success!</strong> {{ message }}
+                </div>
+            {% endif %}
         </section>
     </div>
 

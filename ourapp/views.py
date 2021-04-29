@@ -16,10 +16,12 @@ from ourapp.helper_methods import CreateAccountsFunction
 
 class CreateAccounts(View):
     def get(self, request):
+        request.session['submitted'] = False
         accounts = MyUser.objects.all()
         return render(request, "account.html", {"accounts": accounts})
 
     def post(self, request):
+        request.session['submitted'] = True
         email=request.POST['email']
         password=request.POST['password']
         first_name=request.POST['first_name']
@@ -58,9 +60,11 @@ class CreateAccounts(View):
 class Course(View):
     def get(self, request):
         courses = MyCourse.objects.all()
+        request.session['submitted'] = False
         return render(request, "course.html", {"courses": courses})
 
     def post(self, request):
+        request.session['submitted'] = True
         if request.method == 'POST' and 'course_button' in request.POST:
             number = request.POST['number']
             courses = list(MyCourse.objects.all())
