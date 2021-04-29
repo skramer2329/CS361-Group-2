@@ -109,52 +109,35 @@
 <script>
 // Get each modal and close button
 var butt = document.getElementsByClassName("modButt");
+var buttArray = Array.from(butt).entries();
 var modals = document.getElementsByClassName("modal");
 var closeButts = document.getElementsByClassName("close");
 var subButts = document.getElementsByClassName("subButt");
+var l = modals.length;
 
-//Make the modals open when the button is clicked
-butt[0].onclick = function() {
-    modals[0].style.display = "block";
-}
-butt[1].onclick = function() {
-    modals[1].style.display = "block";
-}
-butt[2].onclick = function() {
-    modals[2].style.display = "block";
-}
+for (let i = 0; i < l; ++i) {
+    //Make the modals open when the button is clicked
+    butt[i].onclick = function() {
+        modals[i].style.display = "block";
+    }
 
-//Make the modals close when the close button is clicked
-closeButts[0].onclick = function() {
-    modals[0].style.display = "none";
-}
-closeButts[1].onclick = function() {
-    modals[1].style.display = "none";
-}
-closeButts[2].onclick = function() {
-    modals[2].style.display = "none";
+    //Make the modals close when the close button is clicked
+    closeButts[i].onclick = function() {
+        modals[i].style.display = "none";
+    }
+
+    //Make the modals close when the submit button is clicked
+    subButts[i].onclick = function() {
+        modals[i].style.display = "none";
+    }
 }
 
-//Make the modals close when the close button is clicked
-subButts[0].onclick = function() {
-    modals[0].style.display = "none";
-}
-subButts[1].onclick = function() {
-    modals[1].style.display = "none";
-}
-subButts[2].onclick = function() {
-    modals[2].style.display = "none";
-}
-
+//Make the modals close when clicked off of
 window.onclick = function(event) {
-    if (event.target == modals[0]) {
-        modals[0].style.display = "none";
-    }
-    if (event.target == modals[1]) {
-        modals[1].style.display = "none";
-    }
-    if (event.target == modals[2]) {
-        modals[2].style.display = "none";
+    for (let i = 0; i < l; ++i) {
+        if (event.target == modals[i]) {
+            modals[i].style.display = "none";
+        }
     }
 }
 </script>
