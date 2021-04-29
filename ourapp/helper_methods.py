@@ -67,7 +67,7 @@ def create_section(course, number):
     section_exists = True
 
     try:
-        MySection.objects.get(number=number)
+        MySection.objects.get(course=course, number=number)
     except:
         section_exists = False
 
