@@ -60,16 +60,24 @@ class Course(View):
         return render(request, "course.html", {"courses": courses})
 
     def post(self, request):
-        name = request.POST['name']
-        number = request.POST['number']
-        courses = list(MyCourse.objects.all())
-        message = create_course(request.POST['name'], number)
-        if type(message) is MyCourse:  # There was good input
-            courses.append(message)
-            return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
-        else:
-            return render(request, "course.html", {"courses": courses, "message": message})
+        if request.method == 'POST' and 'course_button' in request.POST:
+            number = request.POST['number']
+            courses = list(MyCourse.objects.all())
+            message = create_course(request.POST['name'], number)
+            if type(message) is MyCourse:  # There was good input
+                courses.append(message)
+                return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
+            else:
+                return render(request, "course.html", {"courses": courses, "message": message})
 
+        if request.method == 'POST' and 'section_button' in request.POST:
+            courses = MyCourse.objects.all()
+            message = create_section(request.POST['course_selection'], request.POST['section_number'])
+            if type(message) is MySection:  # There was good input
+                # sections.append(message)
+                return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
+            else:
+                return render(request, "course.html", {"courses": courses, "message": message})
 
 class Login(View):
     def get(self, request):

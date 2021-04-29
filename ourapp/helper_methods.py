@@ -60,13 +60,14 @@ def validate_section_number(number):
 
 
 def create_section(course, number):
+    course = MyCourse(course)
     valid = validate_course_number(number)
     if not valid:
         return "The section number is not 3 digits long.  Try again."
     section_exists = True
 
     try:
-        MySection.objects.get(number=number)
+        MySection.objects.get(course=course, number=number)
     except:
         section_exists = False
 
