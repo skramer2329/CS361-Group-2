@@ -30,7 +30,7 @@ def login(email, password):
 
 
 def validate_course_number(number):
-    return len(str(number)) == 3
+    return len(str(number)) == 3 and number.isdigit()
 
 
 def create_course(name, number):
