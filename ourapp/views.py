@@ -32,8 +32,8 @@ class CreateAccounts(View):
 
         valid = CreateAccountsFunction(email, phone_number)
         if valid != "Valid":
-            return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
-                                                                                     "already been created.  Try again."})
+            request.session['error'] = True
+            return render(request, "account.html", {"accounts": accounts, "message": valid})
         user_exists = True
         try:
             MyUser.objects.get(email=email)
@@ -42,6 +42,7 @@ class CreateAccounts(View):
             user_exists = False
 
         if user_exists:
+            request.session['error'] = True
             return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
                                                                                 "already been created.  Try again."})
 
@@ -51,7 +52,7 @@ class CreateAccounts(View):
 
             a.save()
             accounts.append(a)
-
+            request.session['error'] = False
             return render(request, "account.html", {"accounts": accounts, "message": "Account created successfully"})
 
 class Course(View):
@@ -66,8 +67,10 @@ class Course(View):
             message = create_course(request.POST['name'], number)
             if type(message) is MyCourse:  # There was good input
                 courses.append(message)
+                request.session['error'] = False
                 return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
             else:
+                request.session['error'] = True
                 return render(request, "course.html", {"courses": courses, "message": message})
 
         if request.method == 'POST' and 'section_button' in request.POST:
@@ -75,8 +78,10 @@ class Course(View):
             message = create_section(request.POST['course_selection'], request.POST['section_number'])
             if type(message) is MySection:  # There was good input
                 # sections.append(message)
+                request.session['error'] = False
                 return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
             else:
+                request.session['error'] = True
                 return render(request, "course.html", {"courses": courses, "message": message})
 
 class Login(View):
