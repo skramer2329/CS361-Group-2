@@ -12,6 +12,7 @@
     .modal {
         display: none;
     }
+
     </style>
 </head>
 <body>
@@ -42,7 +43,7 @@
                     <form action="/course/" method="post"> {% csrf_token %}
                         <input class="form-field" type="text" placeholder="Course Name" name="name" required>
                         <input class="form-field" type="text" placeholder="Course Number" name="number" required>
-                        <button type="submit" name="course_button">Save</button>
+                        <button type="submit" name="course_button" class="subButt">Save</button>
                     </form>
                 </div>
             </div>
@@ -60,10 +61,21 @@
                             {% endfor %}
                         </select>
                         <input class="form-field" type="text" placeholder="Section Number" name="section_number" required>
-                        <button type="submit" name="section_button">Save</button>
+                        <button type="submit" name="section_button" class="subButt">Save</button>
                     </form>
                 </div>
             </div>
+            {% endif %}
+            {% if request.session.error and request.session.submitted %}
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Error!</strong> {{ message }}
+                </div>
+            {% elif not request.session.error and request.session.submitted %}
+                <div class="alert success">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Success!</strong> {{ message }}
+                </div>
             {% endif %}
         </section>
     </div>
@@ -73,6 +85,7 @@
 var butt = document.getElementsByClassName("modButt");
 var modals = document.getElementsByClassName("modal");
 var closeButts = document.getElementsByClassName("close");
+var subButts = document.getElementsByClassName("subButt");
 
 //Make the modals open when the button is clicked
 butt[0].onclick = function() {
@@ -90,6 +103,14 @@ closeButts[1].onclick = function() {
     modals[1].style.display = "none";
 }
 
+//Make the modals close when the close button is clicked
+subButts[0].onclick = function() {
+    modals[0].style.display = "none";
+}
+subButts[1].onclick = function() {
+    modals[1].style.display = "none";
+}
+
 window.onclick = function(event) {
     if (event.target == modals[0]) {
         modals[0].style.display = "none";
@@ -98,7 +119,6 @@ window.onclick = function(event) {
         modals[1].style.display = "none";
     }
 }
-
 </script>
 
 </body>
