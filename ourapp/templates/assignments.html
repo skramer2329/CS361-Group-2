@@ -21,7 +21,7 @@
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <form action="/assignments/" method="post"> {% csrf_token %}
+                    <form action="/course/" method="post"> {% csrf_token %}
                         <select class="form-field" name="course_selection">
                             {% for i in courses %}
                             <option value={{ i.id }}>{{ i.number }}</option>
@@ -32,7 +32,7 @@
                             <option value={{ i.id }}>{{ i.email }}</option>
                             {% endfor %}
                         </select>
-                        <button type="submit">Save</button>
+                        <button type="submit" name="assign_to_course>Save</button>
                     </form>
                 </div>
             </div>
