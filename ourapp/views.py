@@ -84,7 +84,7 @@ class Course(View):
             if type(message) is MySection:  # There was good input
                 # sections.append(message)
                 request.session['error'] = False
-                return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
+                return render(request, "course.html", {"courses": courses, "message": "Section successfully added"})
             else:
                 request.session['error'] = True
                 return render(request, "course.html", {"courses": courses, "message": message})
