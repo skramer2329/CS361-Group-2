@@ -6,7 +6,7 @@ from django.http import request
 
 def get_user(email):
     try:
-        u = MyUser.objects.get(email=email)
+        u = MyUser.objects.get(email__iexact=email)
         return u
     except:
         return None
