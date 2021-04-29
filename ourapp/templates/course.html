@@ -32,9 +32,12 @@
             {% if request.session.supervisor %}
             <button class="modButt" id="myButt">Create new section</button>
             {% endif %}
+            {% if request.session.supervisor %}
+            <button class="modButt" id="myButtToo">Assign to course</button>
+            {% endif %}
 
             {% if request.session.supervisor %}
-            <!-- The Modal -->
+            <!-- The First Modal -->
             <div id="myModal" class="modal">
 
                 <!-- Modal content -->
@@ -48,7 +51,7 @@
                 </div>
             </div>
 
-            <!-- The Modal -->
+            <!-- The Second Modal -->
             <div id="myModal2" class="modal">
 
                 <!-- Modal content -->
@@ -65,6 +68,29 @@
                     </form>
                 </div>
             </div>
+
+             <!-- The Third Modal -->
+            <div id="myModal3" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">×</span>
+                    <form action="/course/" method="post"> {% csrf_token %}
+                        <select class="form-field" name="course_selection">
+                            {% for i in courses %}
+                            <option value={{ i.id }}>{{ i.number }}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="form-field" name="person_selection">
+                            {% for i in accounts %}
+                            <option value={{ i.id }}>{{ i.email }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" name="ass_butt" class="subButt">Save</button>
+                    </form>
+                </div>
+            </div>
+
             {% endif %}
             {% if request.session.error and request.session.submitted %}
                 <div class="alert">
@@ -94,6 +120,9 @@ butt[0].onclick = function() {
 butt[1].onclick = function() {
     modals[1].style.display = "block";
 }
+butt[2].onclick = function() {
+    modals[2].style.display = "block";
+}
 
 //Make the modals close when the close button is clicked
 closeButts[0].onclick = function() {
@@ -101,6 +130,9 @@ closeButts[0].onclick = function() {
 }
 closeButts[1].onclick = function() {
     modals[1].style.display = "none";
+}
+closeButts[2].onclick = function() {
+    modals[2].style.display = "none";
 }
 
 //Make the modals close when the close button is clicked
@@ -110,6 +142,9 @@ subButts[0].onclick = function() {
 subButts[1].onclick = function() {
     modals[1].style.display = "none";
 }
+subButts[2].onclick = function() {
+    modals[2].style.display = "none";
+}
 
 window.onclick = function(event) {
     if (event.target == modals[0]) {
@@ -117,6 +152,9 @@ window.onclick = function(event) {
     }
     if (event.target == modals[1]) {
         modals[1].style.display = "none";
+    }
+    if (event.target == modals[2]) {
+        modals[2].style.display = "none";
     }
 }
 </script>

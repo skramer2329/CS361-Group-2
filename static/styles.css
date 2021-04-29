@@ -55,6 +55,10 @@
     left: 77vw;
 }
 
+#myButtToo {
+    top: 70px;
+}
+
 a:link {
     text-decoration: none;
 }
