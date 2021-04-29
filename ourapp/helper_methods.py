@@ -60,6 +60,7 @@ def validate_section_number(number):
 
 
 def create_section(course, number):
+    course = MyCourse(course)
     valid = validate_course_number(number)
     if not valid:
         return "The section number is not 3 digits long.  Try again."

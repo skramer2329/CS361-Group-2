@@ -60,7 +60,7 @@ class Course(View):
         return render(request, "course.html", {"courses": courses})
 
     def post(self, request):
-        name = request.POST['name']
+        if request.method == 'POST' and
         number = request.POST['number']
         courses = list(MyCourse.objects.all())
         message = create_course(request.POST['name'], number)
