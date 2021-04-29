@@ -24,14 +24,15 @@
     <div class="main">
         <section>
             <!-- Elements used for triggering modals to open -->
-
+            {% if request.session.supervisor %}
             <button class="modButt" id="myBtn">Create new course</button>
-
+            {% endif %}
             <h2>Courses</h2>
-
+            {% if request.session.supervisor %}
             <button class="modButt" id="myButt">Create new section</button>
+            {% endif %}
 
-
+            {% if request.session.supervisor %}
             <!-- The Modal -->
             <div id="myModal" class="modal">
 
@@ -63,6 +64,7 @@
                     </form>
                 </div>
             </div>
+            {% endif %}
         </section>
     </div>
 
