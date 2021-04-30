@@ -116,8 +116,10 @@ class Login(View):
         return render(request, "login.html", {})
 
     def post(self, request):
-        x = request.POST['uname']
-        message = login(x, request.POST['psw'])
+        x = MyUser.objects.get(email=request.POST['email'])
+        message = login(x, request.POST['password'])
+        #x = request.POST['uname']
+        #message = login(x, request.POST['psw'])
         if message == "Valid":
             u = get_user(x)
             request.session['name'] = u.email
