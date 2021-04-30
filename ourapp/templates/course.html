@@ -33,16 +33,6 @@
                 <button class="modButt" id="myButt">Create new section</button>
             {% endif %}
 
-            {% for i in courses %}
-                <div class="courseBlock">
-                    <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
-                    {% if request.session.supervisor %}
-                        <button class="modButt" id="myButtToo">Assign to course</button>
-                    {% endif %}
-                </div>
-
-            {% endfor %}
-
             {% if request.session.supervisor %}
             <!-- The First Modal -->
             <div id="myModal" class="modal">
@@ -76,27 +66,38 @@
                 </div>
             </div>
 
-             <!-- The Third Modal -->
-            <div id="myModal3" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">×</span>
-                    <form action="/course/" method="post"> {% csrf_token %}
-                        <select class="form-field" name="course_selection">
-                            {% for i in courses %}
-                            <option value={{ i.id }}>{{ i.number }}</option>
-                            {% endfor %}
-                        </select>
-                        <select class="form-field" name="person_selection">
-                            {% for i in accounts %}
-                            <option value={{ i.id }}>{{ i.email }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" name="ass_butt" class="subButt">Save</button>
-                    </form>
+            {% for i in courses %}
+                <div class="courseBlock">
+                    <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
+                    {% if request.session.supervisor %}
+                        <div class="assButt">
+                            <button class="modButt deMod">Assign to course</button>
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
+
+                {% if request.session.supervisor %}
+                    <!-- The Course Assign Modal -->
+                    <div id="myModal3" class="modal">
+
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">×</span>
+                            <form action="/course/" method="post"> {% csrf_token %}
+                                <select class="form-field hidden" name="course_selection">
+                                        <option value={{ i.id }}>{{ i.number }}</option>
+                                </select>
+                                <select class="form-field" name="person_selection">
+                                    {% for i in accounts %}
+                                        <option value={{ i.id }}>{{ i.email }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" name="ass_butt" class="subButt">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
 
             {% endif %}
             {% if request.session.error and request.session.submitted %}
