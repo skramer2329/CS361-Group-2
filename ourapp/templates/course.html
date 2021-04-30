@@ -50,9 +50,10 @@
                 <div class="courseBlock">
                     <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
                     {% if request.session.supervisor %}
-                        <button class="modButt secButt">Create new section</button>
+
                         <div class="assButt">
-                            <button class="modButt">Assign to course</button>
+                            <button class="modButt courseButt secButt">Create new section</button>
+                            <button class="modButt courseButt">Assign to course</button>
                         </div>
                     {% endif %}
                 </div>
