@@ -59,6 +59,10 @@ class CreateAccounts(View):
 
 class Course(View):
     def get(self, request):
+        try:
+            key = request.session['name']
+        except:
+            return redirect("/")
         courses = MyCourse.objects.all()
         request.session['submitted'] = False
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
@@ -108,6 +112,7 @@ class Course(View):
 
 class Login(View):
     def get(self, request):
+        request.session.flush()
         return render(request, "login.html", {})
 
     def post(self, request):
@@ -116,6 +121,7 @@ class Login(View):
         if message == "Valid":
             u = get_user(x)
             request.session['name'] = u.email
+            request.session.set_expiry(0)
             if u.is_supervisor():
                 request.session['supervisor'] = True
             else:
