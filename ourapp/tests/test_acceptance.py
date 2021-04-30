@@ -173,27 +173,35 @@ class TestSectionCreation(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.courseList = {"Math": [1], "Chemistry": [2], "Art": [3]}
+        self.mathCourse = MyCourse(name="Math", number=100)
+        self.mathSection= MySection(course=self.mathCourse, number=1)
+
+        self.mathCourse.save()
+        self.mathSection.save()
+
+        """self.courseList = {"Math": 1, "Chemistry": 2, "Art": 3}
 
         for i in self.courseList.keys():
             temp = MyCourse(name=i, number=self.courseList[i])
             temp.save()
             for j in self.courseList[i]:
-                MySection(course=temp, number=j)
+                MySection(course=temp, number=j)"""
 
+#number is not three digits
     def test_add_section_already_exists(self):
         c = self.client.session
         c["number"] = 1
         c.save
-        resp = self.client.post("/section/create", {"number": 1}, follow=True)
-        self.assertEqual(resp.context['message'], "section number already exists")
+        resp = self.client.post("/section/create", {"course":self.mathSection.course,
+                                                    "number":self.mathSection.number}, follow=True)
+        self.assertEqual("The section number is not 3 digits long.  Try again.", resp.context["message"])
 
     def test_add_section(self):
         c = self.client.session
         temp = MyCourse(name="Calculus", number=4)
         c.save
-        resp = self.client.post("/section/create", {"course": temp, "number": 4}, follow=True)
-        self.assertEqual(4, resp.context["number"])
+        resp = self.client.post("/section/create", {"course": temp, "number": 400}, follow=True)
+        self.assertEqual(400, resp.context["number"])
 
     def test_add_when_no_course(self):
         c = self.client.session
