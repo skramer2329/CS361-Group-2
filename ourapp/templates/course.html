@@ -26,15 +26,22 @@
         <section>
             <!-- Elements used for triggering modals to open -->
             {% if request.session.supervisor %}
-            <button class="modButt" id="myBtn">Create new course</button>
+                <button class="modButt" id="myBtn">Create new course</button>
             {% endif %}
             <h2>Courses</h2>
             {% if request.session.supervisor %}
-            <button class="modButt" id="myButt">Create new section</button>
+                <button class="modButt" id="myButt">Create new section</button>
             {% endif %}
-            {% if request.session.supervisor %}
-            <button class="modButt" id="myButtToo">Assign to course</button>
-            {% endif %}
+
+            {% for i in courses %}
+                <div class="courseBlock">
+                    <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
+                    {% if request.session.supervisor %}
+                        <button class="modButt" id="myButtToo">Assign to course</button>
+                    {% endif %}
+                </div>
+
+            {% endfor %}
 
             {% if request.session.supervisor %}
             <!-- The First Modal -->
