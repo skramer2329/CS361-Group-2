@@ -39,8 +39,6 @@
     cursor: pointer;
 }
 
-
-
 .modButt {
     box-shadow: 0px 2px 5px 0px rgb(0 0 0 / 16%);
     position: absolute;
@@ -49,10 +47,6 @@
     top: 30px;
     height: 2.5em;
     width: 300px;
-}
-
-#myButt {
-    left: 77vw;
 }
 
 a:link {
@@ -259,6 +253,10 @@ input:focus, textarea:focus, select:focus {
     position: relative;
     bottom: 75px;
     left: 55vw;
+}
+
+.secButt {
+    position: relative;
 }
 
 .hidden {

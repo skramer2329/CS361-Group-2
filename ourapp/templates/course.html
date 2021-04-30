@@ -29,9 +29,7 @@
                 <button class="modButt" id="myBtn">Create new course</button>
             {% endif %}
             <h2>Courses</h2>
-            {% if request.session.supervisor %}
-                <button class="modButt" id="myButt">Create new section</button>
-            {% endif %}
+
 
             {% if request.session.supervisor %}
             <!-- The First Modal -->
@@ -48,35 +46,35 @@
                 </div>
             </div>
 
-            <!-- The Second Modal -->
-            <div id="myModal2" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">×</span>
-                    <form action="/course/" method="post"> {% csrf_token %}
-                        <select class="form-field" name="course_selection">
-                            {% for i in courses %}
-                            <option value="{{ i.id }}">{{ i.number }}</option>
-                            {% endfor %}
-                        </select>
-                        <input class="form-field" type="text" placeholder="Section Number" name="section_number" required>
-                        <button type="submit" name="section_button" class="subButt">Save</button>
-                    </form>
-                </div>
-            </div>
-
             {% for i in courses %}
                 <div class="courseBlock">
                     <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
                     {% if request.session.supervisor %}
+                        <button class="modButt secButt">Create new section</button>
                         <div class="assButt">
-                            <button class="modButt deMod">Assign to course</button>
+                            <button class="modButt">Assign to course</button>
                         </div>
                     {% endif %}
                 </div>
 
                 {% if request.session.supervisor %}
+                    <!-- The Create Section Modal -->
+                    <div id="myModal2" class="modal">
+
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">×</span>
+                            <form action="/course/" method="post"> {% csrf_token %}
+                                <select class="form-field hidden" name="course_selection">
+                                        <option value="{{ i.id }}">{{ i.number }}</option>
+                                </select>
+                                <input class="form-field" type="text" placeholder="Section Number" name="section_number"
+                                       required>
+                                <button type="submit" name="section_button" class="subButt">Save</button>
+                            </form>
+                        </div>
+                    </div>
+
                     <!-- The Course Assign Modal -->
                     <div id="myModal3" class="modal">
 
@@ -85,7 +83,7 @@
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
                                 <select class="form-field hidden" name="course_selection">
-                                        <option value={{ i.id }}>{{ i.number }}</option>
+                                    <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
                                 <select class="form-field" name="person_selection">
                                     {% for i in accounts %}
