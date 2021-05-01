@@ -45,6 +45,7 @@
                     </form>
                 </div>
             </div>
+            {% endif %}
 
             {% for i in courses %}
                 <div class="courseBlock">
@@ -98,7 +99,6 @@
                 {% endif %}
             {% endfor %}
 
-            {% endif %}
             {% if request.session.error and request.session.submitted %}
                 <div class="alert">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
