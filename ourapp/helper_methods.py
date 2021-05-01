@@ -4,6 +4,14 @@ from django.http import HttpResponse, HttpRequest
 from django.http import request
 
 
+def validate_session(request):
+    try:
+        key = request.session['name']
+    except:
+        return False
+
+    return True
+
 def get_user(email):
     try:
         u = MyUser.objects.get(email__iexact=email)
