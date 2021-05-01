@@ -6,7 +6,7 @@ from django.views import View
 from .models import MyUser, MyCourse, MySection
 from django.http import HttpResponse
 
-from ourapp.helper_methods import login, get_user, create_course, create_section
+from ourapp.helper_methods import login, get_user, create_course, create_section, validate_session
 
 from ourapp.helper_methods import CreateAccountsFunction
 
@@ -15,7 +15,12 @@ from ourapp.helper_methods import CreateAccountsFunction
 
 
 class CreateAccounts(View):
+
     def get(self, request):
+        ValidSession = validate_session(request)
+        if not ValidSession:
+            return redirect("/")
+
         request.session['submitted'] = False
         accounts = MyUser.objects.all()
         return render(request, "account.html", {"accounts": accounts})
@@ -59,10 +64,11 @@ class CreateAccounts(View):
 
 class Course(View):
     def get(self, request):
-        try:
-            key = request.session['name']
-        except:
+
+        ValidSession = validate_session(request)
+        if not ValidSession:
             return redirect("/")
+
         courses = MyCourse.objects.all()
         request.session['submitted'] = False
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
@@ -134,6 +140,9 @@ class Login(View):
 class SectionCreation(View):
 
     def get(self, request):
+        ValidSession = validate_session(request)
+        if not ValidSession:
+            return redirect("/")
         sections = MySection.objects.all()
         courses = MyCourse.objects.all()
         return render(request, "section.html", {"courses":courses, "sections": sections})
