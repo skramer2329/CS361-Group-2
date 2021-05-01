@@ -39,8 +39,6 @@
     cursor: pointer;
 }
 
-
-
 .modButt {
     box-shadow: 0px 2px 5px 0px rgb(0 0 0 / 16%);
     position: absolute;
@@ -49,10 +47,6 @@
     top: 30px;
     height: 2.5em;
     width: 300px;
-}
-
-#myButt {
-    left: 77vw;
 }
 
 a:link {
@@ -210,31 +204,68 @@ input:focus, textarea:focus, select:focus {
 }
 
 .alert {
-  padding: 20px;
-  background-color: #EB5A46;
-  color: white;
-  opacity: 1;
-  transition: opacity 0.6s;
-  margin-bottom: 15px;
+    padding: 20px;
+    background-color: #EB5A46;
+    color: white;
+    opacity: 1;
+    transition: opacity 0.6s;
+    margin-bottom: 15px;
+    top: 100vh;
+    border-radius: 4px;
+    border: 1px solid #EB5A46
 }
 
 .alert.success {
     background-color: #04AA6D;
+    border: 1px solid #04AA6D;
 }
 
 .closebtn {
-  margin-left: 15px;
-  color: white;
-  font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .closebtn:hover {
-  color: black;
+    color: black;
+}
+
+.courseBlock {
+    background-color: #818181;
+    color: #3c3c3c;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #818181;
+    border-radius: 4px;
+}
+
+.courseName {
+    text-align: left;
+    font-size: 35px;
+}
+
+.assButt {
+    position: relative;
+    bottom: 85px;
+    left: 55vw;
+}
+
+.courseButt {
+    color: #FFFFFF;
+    height: 50px;
+}
+
+.secButt {
+    left: -40px;
+}
+
+.hidden {
+    display: none;
 }
 
 @media screen and (max-height: 450px) {
@@ -246,37 +277,3 @@ input:focus, textarea:focus, select:focus {
         font-size: 18px;
     }
 }
-
-/*
-<button class="modButt" id="myBtn">Create new course</button>
-            <h2>Courses</h2>
-            <button class="modButt" id="myButt" style="left: 1500px">Create new section</button>
-
-            <!-- The Modal -->
-            <div id="myModal" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <form action="/account/" method="post"> {% csrf_token %}
-                        <input class="form-field" type="text" placeholder="Course Name" name="name" required>
-                        <input class="form-field" type="text" placeholder="Course Number" name="number" required>
-                        <button type="submit">Save</button>
-                    </form>
-                </div>
-
-            <!-- The Modal -->
-            <div id="myModal" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <form action="/account/" method="post"> {% csrf_token %}
-                        <input class="form-field" type="text" placeholder="Section Name" name="name" required>
-                        <input class="form-field" type="text" placeholder="Section Number" name="number" required>
-                        <button type="submit">Save</button>
-                    </form>
-                </div>
-            </div>
-
- */

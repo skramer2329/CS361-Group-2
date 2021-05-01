@@ -26,15 +26,13 @@
         <section>
             <!-- Elements used for triggering modals to open -->
             {% if request.session.supervisor %}
-            <button class="modButt" id="myBtn">Create new course</button>
+                <button class="modButt" id="myBtn">Create new course</button>
             {% endif %}
             <h2>Courses</h2>
-            {% if request.session.supervisor %}
-            <button class="modButt" id="myButt">Create new section</button>
-            {% endif %}
+
 
             {% if request.session.supervisor %}
-            <!-- The Modal -->
+            <!-- The First Modal -->
             <div id="myModal" class="modal">
 
                 <!-- Modal content -->
@@ -48,23 +46,58 @@
                 </div>
             </div>
 
-            <!-- The Modal -->
-            <div id="myModal2" class="modal">
+            {% for i in courses %}
+                <div class="courseBlock">
+                    <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
+                    {% if request.session.supervisor %}
 
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">×</span>
-                    <form action="/course/" method="post"> {% csrf_token %}
-                        <select class="form-field" name="course_selection">
-                            {% for i in courses %}
-                            <option value="{{ i.id }}">{{ i.number }}</option>
-                            {% endfor %}
-                        </select>
-                        <input class="form-field" type="text" placeholder="Section Number" name="section_number" required>
-                        <button type="submit" name="section_button" class="subButt">Save</button>
-                    </form>
+                        <div class="assButt">
+                            <button class="modButt courseButt secButt">Create new section</button>
+                            <button class="modButt courseButt">Assign to course</button>
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
+
+                {% if request.session.supervisor %}
+                    <!-- The Create Section Modal -->
+                    <div id="myModal2" class="modal">
+
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">×</span>
+                            <form action="/course/" method="post"> {% csrf_token %}
+                                <select class="form-field hidden" name="course_selection">
+                                        <option value="{{ i.id }}">{{ i.number }}</option>
+                                </select>
+                                <input class="form-field" type="text" placeholder="Section Number" name="section_number"
+                                       required>
+                                <button type="submit" name="section_button" class="subButt">Save</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- The Course Assign Modal -->
+                    <div id="myModal3" class="modal">
+
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">×</span>
+                            <form action="/course/" method="post"> {% csrf_token %}
+                                <select class="form-field hidden" name="course_selection">
+                                    <option value={{ i.id }}>{{ i.number }}</option>
+                                </select>
+                                <select class="form-field" name="person_selection">
+                                    {% for i in accounts %}
+                                        <option value={{ i.id }}>{{ i.email }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" name="ass_butt" class="subButt">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
             {% endif %}
             {% if request.session.error and request.session.submitted %}
                 <div class="alert">
@@ -83,40 +116,35 @@
 <script>
 // Get each modal and close button
 var butt = document.getElementsByClassName("modButt");
+var buttArray = Array.from(butt).entries();
 var modals = document.getElementsByClassName("modal");
 var closeButts = document.getElementsByClassName("close");
 var subButts = document.getElementsByClassName("subButt");
+var l = modals.length;
 
-//Make the modals open when the button is clicked
-butt[0].onclick = function() {
-    modals[0].style.display = "block";
-}
-butt[1].onclick = function() {
-    modals[1].style.display = "block";
-}
-
-//Make the modals close when the close button is clicked
-closeButts[0].onclick = function() {
-    modals[0].style.display = "none";
-}
-closeButts[1].onclick = function() {
-    modals[1].style.display = "none";
-}
-
-//Make the modals close when the close button is clicked
-subButts[0].onclick = function() {
-    modals[0].style.display = "none";
-}
-subButts[1].onclick = function() {
-    modals[1].style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target == modals[0]) {
-        modals[0].style.display = "none";
+for (let i = 0; i < l; ++i) {
+    //Make the modals open when the button is clicked
+    butt[i].onclick = function() {
+        modals[i].style.display = "block";
     }
-    if (event.target == modals[1]) {
-        modals[1].style.display = "none";
+
+    //Make the modals close when the close button is clicked
+    closeButts[i].onclick = function() {
+        modals[i].style.display = "none";
+    }
+
+    //Make the modals close when the submit button is clicked
+    subButts[i].onclick = function() {
+        modals[i].style.display = "none";
+    }
+}
+
+//Make the modals close when clicked off of
+window.onclick = function(event) {
+    for (let i = 0; i < l; ++i) {
+        if (event.target == modals[i]) {
+            modals[i].style.display = "none";
+        }
     }
 }
 </script>
