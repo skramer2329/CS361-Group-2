@@ -94,3 +94,56 @@ Ethan:
   Today: nothing
   Tomorrow: presenting
   Inhibits: lack of experience
+
+
+Thursday 4/29 - Notes by James Yeazel
+
+Bennett:
+  Today: Presented Sprint 1
+  Tomorrow: Clean up views code, ensure everything is passed that needs to be, add ta skills to views
+  Inhibits: none
+  
+James:
+  Today: Presented Sprint 1, redid the javascript for modals
+  Tomorrow: Get courses loaded onto the course page
+  Inhibits: none
+
+Michael:
+  Today: Presented Sprint 1, worked on login authentification
+  Tomorrow: Figure out session cookies
+  Inhibits: Needs to get a better understanding of session cookies
+
+Sabrina:
+  Today: Presented Sprint 1, made yogurt
+  Tomorrow: Work on acceptance tests
+  Inhibits: Doesn't know what to work on
+  
+Ethan:
+  Today: Presented Sprint 1
+  Tomorrow: Help with acceptance tests
+  Inhibits: Doesn't know what to work on
+
+Friday 4/30/21 - The MOST Epic notes by Sabrina - %100
+ 
+ Bennett:
+   Today: Nothing 
+   Tomorrow: Get code to add TA skills test, work with models to get list of sections for each course
+   Inhibits: Nothing 
+ 
+ Sabrina:
+   Today: AccountCreation tests pass, LoginSuccess failing, but not crashing
+   Tomorrow: want to get Login to all pass
+   Inhibits: Section and Course are harder ones for me
+   
+ Michael:
+   Today: Finished the validation of sessions, so when someone closes and reopens, they can't renavigate.
+   Tomorrow: Write unit tests for sessions validation
+   Inhibits: Nothing. -party party-
+
+Ethan:
+   Not present
+   
+James:
+   Today: Added courses, can see courses on page, switched buttons down and are relevant to course it is attached to.
+   Tomorrow: Get sections added, but might do account page instead
+   Inhibits: Need some way to sort sections by courses or view sections that are assigned to each course. Need contacts page to have URLS hooked up
