@@ -122,3 +122,28 @@ Ethan:
   Today: Presented Sprint 1
   Tomorrow: Help with acceptance tests
   Inhibits: Doesn't know what to work on
+
+Friday 4/30/21 - The MOST Epic notes by Sabrina - %100
+ 
+ Bennett:
+   Today: Nothing 
+   Tomorrow: Get code to add TA skills test, work with models to get list of sections for each course
+   Inhibits: Nothing 
+ 
+ Sabrina:
+   Today: AccountCreation tests pass, LoginSuccess failing, but not crashing
+   Tomorrow: want to get Login to all pass
+   Inhibits: Section and Course are harder ones for me
+   
+ Michael:
+   Today: Finished the validation of sessions, so when someone closes and reopens, they can't renavigate.
+   Tomorrow: Write unit tests for sessions validation
+   Inhibits: Nothing. -party party-
+
+Ethan:
+   Not present
+   
+James:
+   Today: Added courses, can see courses on page, switched buttons down and are relevant to course it is attached to.
+   Tomorrow: Get sections added, but might do account page instead
+   Inhibits: Need some way to sort sections by courses or view sections that are assigned to each course. Need contacts page to have URLS hooked up
