@@ -180,16 +180,16 @@ class TestValidInputForAccountCreation(TestCase):
 
 
     def test_valid_email_format_no_at_in_email_address_returns_no_at_message(self):
-        self.assertEqual(valid_email_format(self.email1) == "Email does not contain @.", msg="Email not containing at symbol should fail validation.")
+        self.assertEqual(valid_email_format(self.email1), "Email does not contain @.", msg="Email not containing at symbol should fail validation.")
 
     def test_valid_email_format_space_in_email_address_returns_no_spaces_allowed_message(self):
-        self.assertEqual(valid_email_format(self.email2) == "Email should not contain a space.", msg="Email cannot contain a space.")
+        self.assertEqual(valid_email_format(self.email2), "Email should not contain a space.", msg="Email cannot contain a space.")
 
     def test_valid_email_format_space_in_email_and_no_at_returns_no_at_message(self):
-        self.assertEqual(valid_email_format(self.email3) == "Email does not contain @.", msg="Email containing both a space and not containing an @ symbol should warn about the @.")
+        self.assertEqual(valid_email_format(self.email3), "Email does not contain @.", msg="Email containing both a space and not containing an @ symbol should warn about the @.")
 
     def test_valid_email_format_valid_email_returns_valid(self):
-        self.assertEqual(valid_email_format(self.email4) == "Valid", msg="Valid email format returns valid message.")
+        self.assertEqual(valid_email_format(self.email4), "Valid", msg="Valid email format returns valid message.")
 
     def test_valid_phone_number_invalid_phone_number_returns_false(self):
         self.assertFalse(valid_phone_number(self.phonenumber1), msg="phone number containing letters should not be valid phone number")
@@ -198,26 +198,26 @@ class TestValidInputForAccountCreation(TestCase):
         self.assertTrue(valid_phone_number(self.phonenumber2), msg="valid phone number should pass test valid phone number.")
 
     def test_CreateAccountsFunction_at_missing_in_email_no_space_valid_phone_number_returns_email_no_at_message(self):
-        self.assertEqual(CreateAccountsFunction(self.email1, self.phonenumber2) == "Email format must contain '@' symbol.", msg="should return no at message.")
+        self.assertEqual(CreateAccountsFunction(self.email1, self.phonenumber2), "Email format must contain '@' symbol.", msg="should return no at message.")
 
     def test_CreateAccountsFunction_at_missing_in_email_space_valid_phone_number_returns_email_no_at_message(self):
-        self.assertEqual(CreateAccountsFunction(self.email3, self.phonenumber2) == "Email format must contain '@' symbol.", msg="should return no at message.")
+        self.assertEqual(CreateAccountsFunction(self.email3, self.phonenumber2), "Email format must contain '@' symbol.", msg="should return no at message.")
 
     def test_CreateAccountsFunction_at_missing_in_email_no_space_invalid_phone_number_returns_email_no_at_message(self):
-        self.assertEqual(CreateAccountsFunction(self.email1, self.phonenumber1) == "Email format must contain '@' symbol.", msg="should return no at message.")
+        self.assertEqual(CreateAccountsFunction(self.email1, self.phonenumber1), "Email format must contain '@' symbol.", msg="should return no at message.")
 
     def test_CreateAccountsFunction_at_missing_in_email_space_invalid_phone_number_returns_email_no_at_message(self):
-        self.assertEqual(CreateAccountsFunction(self.email3, self.phonenumber1) == "Email format must contain '@' symbol.", msg="should return no at message.")
+        self.assertEqual(CreateAccountsFunction(self.email3, self.phonenumber1), "Email format must contain '@' symbol.", msg="should return no at message.")
 
     def test_CreateAccountsFunction_at_space_valid_phone_number_returns_no_spaces_message(self):
-        self.assertEqual(CreateAccountsFunction(self.email2, self.phonenumber2) == "Email should not contain a space.", msg="should return no should not contain space message.")
+        self.assertEqual(CreateAccountsFunction(self.email2, self.phonenumber2), "Email should not contain a space.", msg="should return no should not contain space message.")
 
     def test_CreateAccountsFunction_at_space_invalid_valid_phone_number_returns_no_spaces_message(self):
-        self.assertEqual(CreateAccountsFunction(self.email2, self.phonenumber1) == "Email should not contain a space.", msg="should return no should not contain space message.")
+        self.assertEqual(CreateAccountsFunction(self.email2, self.phonenumber1), "Email should not contain a space.", msg="should return no should not contain space message.")
 
     def test_CreateAccountsFunction_at_no_space_invalid_phone_number_returns_invalid_phone_number_message(self):
-        self.assertEqual(CreateAccountsFunction(self.email4, self.phonenumber1) == "Phone number must be all digits.  Do not type hyphens.", msg="should return phone number criteria.")
+        self.assertEqual(CreateAccountsFunction(self.email4, self.phonenumber1), "Phone number must be all digits.  Do not type hyphens.", msg="should return phone number criteria.")
 
     def test_CreateAccountsFunction_at_missing_in_email_no_space_valid_phone_number_returns_email_no_at_message(self):
-        self.assertEqual(CreateAccountsFunction(self.email4, self.phonenumber2) == "Valid", msg="should have been valid data.")
+        self.assertEqual(CreateAccountsFunction(self.email4, self.phonenumber2), "Valid", msg="should have been valid data.")
 

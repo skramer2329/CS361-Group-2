@@ -15,9 +15,9 @@ class TestLoginSuccess(TestCase):
                                                 address="123 straight st", phone_number="1234567890", role="supervisor")
         self.supervisor.save()
 
-        self.emptyUserEmail = MyUser(first_name="supervisor", last_name="super", email="", password="supervisor",
-                                                address="123 straight st", phone_number="1234567890", role="supervisor")
-        self.emptyUserEmail.save()
+        #self.emptyUserEmail = MyUser(first_name="supervisor", last_name="super", email="", password="supervisor",
+        #                                        address="123 straight st", phone_number="1234567890", role="supervisor")
+        #self.emptyUserEmail.save()
         self.instructor = MyUser(first_name="instructor", last_name="instruct", email="instructor@uwm.edu",
                                                 password="instructor",
                                                 address="123 corner st", phone_number="7777777", role="instructor")
@@ -26,21 +26,26 @@ class TestLoginSuccess(TestCase):
 
     def test_correct_user_password_logs_in_successfully(self):
 
-        response = self.client.post("/", {"email": self.supervisor.email, "password": self.supervisor.password}, follow=True)
+        response = self.client.post("/", {"uname": "testsupervisor@uwm.edu", "psw": "supervisor"}, follow=True)
+        self.assertTemplateUsed(response, "course.html")
         #expected, actual
-        self.assertEqual("Valid", response.context["message"])
+        #should contain course in context
+        #successful redirect to correct template
+        #could check session - is there a username in the session
+        #reading from session - can just check the session
+
 
 
     def test_no_such_user_exists(self):
-        response = self.client.post("/", {"email": self.emptyUserEmail.email, "password": self.supervisor.password}, follow=True)
+        response = self.client.post("/", {"uname": "", "psw": ""}, follow=True)
         self.assertEqual("The username that you used does not exist. Please retry.", response.context["message"])
 
     def test_user_exists_but_invalid_password(self):
-        response = self.client.post("/", {"email": self.supervisor.email, "password": "WrongPassword"}, follow=True)
+        response = self.client.post("/", {"uname": self.supervisor.email, "psw": "WrongPassword"}, follow=True)
         self.assertEqual("The password that you entered is not correct.  Please retry.", response.context["message"])
 
     def test_user_exists_but_valid_password_for_wrong_user_doesnt_log_in(self):
-        response = self.client.post("/", {"email": self.supervisor.email, "password": self.instructor.password}, follow=True)
+        response = self.client.post("/", {"uname": self.supervisor.email, "psw": self.instructor.password}, follow=True)
         self.assertEqual("The password that you entered is not correct.  Please retry.", response.context["message"])
 
 
@@ -147,22 +152,22 @@ class TestCourseCreation(TestCase):
         self.course = MyCourse(name="Intro to Chemistry", number=102)
         self.course.save()
 
-        self.session1 = self.client.session
-        self.session1['email'] = self.supervisor.email
-        self.session1.save()
+        #self.session1 = self.client.session
+        #self.session1['email'] = self.supervisor.email
+        #self.session1.save()
 
     def test_createNewCourse(self):
-        r = self.client.post("/course/create", {"name": "System Programming", "number": 337}, follow=True)
-        #self.assertIn("System Programming", r.context["name"], "new course not shown in rendered response")
-        self.assertEqual("course created", r.context['message'])
+
+        r = self.client.post("/course/", {"Course name": "Math", "Section number": 100}, follow=True)
+        self.assertEqual("Course successfully added", r.context['message'])
 
     def test_courseTaken(self):
         # course name is already used
-        r = self.client.post("/course/create", {"name": self.course.name, "number": 103}, follow=True)
+        r = self.client.post("/course/", {"name": self.course.name, "number": 103}, follow=True)
         self.assertEqual(r.context['message'], "course name already exists")
 
         # course number is already used
-        r = self.client.post("/course/create", {"name": "Intro to Software Engineering",
+        r = self.client.post("/course/", {"name": "Intro to Software Engineering",
                                                 "number": self.course.number}, follow=True)
         self.assertEqual(r.context['message'], "course number already exists")
 
@@ -192,20 +197,20 @@ class TestSectionCreation(TestCase):
         c = self.client.session
         c["number"] = 1
         c.save
-        resp = self.client.post("/section/create", {"course":self.mathSection.course,
+        resp = self.client.post("/course/", {"course":self.mathSection.course,
                                                     "number":self.mathSection.number}, follow=True)
+        print(resp.context)
         self.assertEqual("The section number is not 3 digits long.  Try again.", resp.context["message"])
 
     def test_add_section(self):
-        c = self.client.session
-        temp = MyCourse(name="Calculus", number=4)
-        c.save
-        resp = self.client.post("/section/create", {"course": temp, "number": 400}, follow=True)
-        self.assertEqual(400, resp.context["number"])
+        resp = self.client.post("/course/", {"course": "Math", "number": 40}, follow=True)
+        print(resp.context)
+       # self.assertEqual("Course successfully added", resp.context["message"])
+
 
     def test_add_when_no_course(self):
         c = self.client.session
         temp = None
         c.save
-        resp = self.client.post("/section/create", {"course": temp, "number": 5}, follow=True)
+        resp = self.client.post("/course/", {"course": temp, "number": 5}, follow=True)
         self.assertEqual(resp.context['message'], "no course exists for this section")
