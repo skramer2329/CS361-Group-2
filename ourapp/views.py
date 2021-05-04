@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 
 from django.views import View
-from .models import MyUser, MyCourse, MySection
+from .models import MyUser, MyCourse, MySection, Skill
 from django.http import HttpResponse
 
 from ourapp.helper_methods import login, get_user, create_course, create_section, validate_session
@@ -12,7 +12,6 @@ from ourapp.helper_methods import CreateAccountsFunction
 
 
 # Create your views here.
-
 
 class CreateAccounts(View):
 
@@ -23,7 +22,10 @@ class CreateAccounts(View):
 
         request.session['submitted'] = False
         accounts = MyUser.objects.all()
-        return render(request, "account.html", {"accounts": accounts})
+        email = request.session['name']
+        user = get_user(email)
+        skills = user.skills.all()
+        return render(request, "account.html", {"accounts": accounts, "skills": skills})
 
     def post(self, request):
         request.session['submitted'] = True
@@ -72,11 +74,13 @@ class Course(View):
         courses = MyCourse.objects.all()
         request.session['submitted'] = False
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
-        return render(request, "course.html", {"courses": courses, "accounts": accounts})
+        sections = MySection.objects.all()
+        return render(request, "course.html", {"courses": courses, "accounts": accounts, "sections": sections})
 
     def post(self, request):
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
         request.session['submitted'] = True
+
         if request.method == 'POST' and 'course_button' in request.POST:
             number = request.POST['number']
             courses = list(MyCourse.objects.all())
