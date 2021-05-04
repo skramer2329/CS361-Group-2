@@ -1,0 +1,38 @@
+SCRUM Questions:
+
+What progress was made today?
+
+What progress will be made tomorrow? 
+
+What inhibits you from completing task?
+
+############################################################################################################################
+
+Scrum week of 5/3
+
+Monday 5/3 - Notes by Bennett Schuster
+
+Bennett:
+  Today: Worked on getting a skill list for users (meant for TAs), figured out how to display the sections under each specific course in HTML
+  Tomorrow: Get logic working on adding a new item to skill list, maybe test with an "add skill" button
+  Inhibits: Nothing
+
+James:
+  Today: Busy with other classes, didn't get much done
+  Tomorrow: Get account page setup
+  Inhibits: Time
+
+Michael:
+  Today: Worked with Sabrina on some testing
+  Tomorrow: Keep working on acceptance tests
+  Inhibits: Figuring out how to get info for specific button when running the tests
+
+Sabrina:
+  Today: Worked with Michael on acceptance tests, login and account creation test work right now.  Got the test functions working today
+  Tomorrow: Continue to work on the rest of acceptance tests and get them passing
+  Inhibits: Making changes to course views
+
+Ethan:
+  Today: Didn't do much this weekend, started looking at acceptance tests for course creation
+  Tomorrow: Look into course creation acceptance tests further
+  Inhibits: Nothing
