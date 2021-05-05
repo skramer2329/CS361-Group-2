@@ -38,7 +38,11 @@ def login(email, password):
 
 
 def validate_course_number(number):
-    return len(str(number)) == 3 and number.isdigit()
+    x = str(number)
+    if len(str(number)) == 3 and str(number).isdigit():
+        return True
+    else:
+        return False
 
 
 def create_course(name, number):
@@ -49,13 +53,13 @@ def create_course(name, number):
 
     course_exists = True
     try:
-        MyCourse.objects.get(number=number)
+        MyCourse.objects.get(number=number, name=name)
 
     except:
         course_exists = False
 
     if course_exists:
-        return "A course with this number has already been created.  Try again."
+        return "A course with this name and number has already been created.  Try again."
 
     else:
         a = MyCourse.objects.create(name=name, number=number)
@@ -64,7 +68,11 @@ def create_course(name, number):
 
 
 def validate_section_number(number):
-    pass
+    x = str(number)
+    if len(str(number)) == 3 and str(number).isdigit():
+        return True
+    else:
+        return False
 
 
 def create_section(course, number):

@@ -78,6 +78,7 @@ class Course(View):
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
         request.session['submitted'] = True
         if request.method == 'POST' and 'course_button' in request.POST:
+            print(request.POST)
             number = request.POST['number']
             courses = list(MyCourse.objects.all())
             message = create_course(request.POST['name'], number)
@@ -93,6 +94,7 @@ class Course(View):
 
         if request.method == 'POST' and 'section_button' in request.POST:
             courses = MyCourse.objects.all()
+            print(request.POST)
             message = create_section(request.POST['course_selection'], request.POST['section_number'])
             if type(message) is MySection:  # There was good input
                 # sections.append(message)
@@ -104,6 +106,7 @@ class Course(View):
                 return render(request, "course.html", {"courses": courses, "message": message, "accounts": accounts})
 
         if request.method == 'POST' and 'ass_butt' in request.POST:
+            print(request.POST)
             courses = MyCourse.objects.all()
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
             course_selection = request.POST['course_selection']

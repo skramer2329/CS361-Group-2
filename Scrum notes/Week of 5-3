@@ -1,0 +1,67 @@
+SCRUM Questions:
+
+What progress was made today?
+
+What progress will be made tomorrow? 
+
+What inhibits you from completing task?
+
+############################################################################################################################
+
+Scrum week of 5/3
+
+Monday 5/3 - Notes by Bennett Schuster
+
+Bennett:
+  Today: Worked on getting a skill list for users (meant for TAs), figured out how to display the sections under each specific course in HTML
+  Tomorrow: Get logic working on adding a new item to skill list, maybe test with an "add skill" button
+  Inhibits: Nothing
+
+James:
+  Today: Busy with other classes, didn't get much done
+  Tomorrow: Get account page setup
+  Inhibits: Time
+
+Michael:
+  Today: Worked with Sabrina on some testing
+  Tomorrow: Keep working on acceptance tests
+  Inhibits: Figuring out how to get info for specific button when running the tests
+
+Sabrina:
+  Today: Worked with Michael on acceptance tests, login and account creation test work right now.  Got the test functions working today
+  Tomorrow: Continue to work on the rest of acceptance tests and get them passing
+  Inhibits: Making changes to course views
+
+Ethan:
+  Today: Didn't do much this weekend, started looking at acceptance tests for course creation
+  Tomorrow: Look into course creation acceptance tests further
+  Inhibits: Nothing
+  
+  
+Tues, May the 4th be with you: Notes by Sabrina - SCRUM MASTER
+  
+  Sabrina - SCRUM MASTER:
+    Today: Worked with Michael on acceptance test stuff
+    Tomorrow: Will work on contacts view. 
+    Inhibits: Figure out how views work. (Michael is also inhibiting my work with his overly descriptive test functions)
+    
+  Bennett: Not present
+  
+  Yames:
+    Today: Worked on html to make sections appear under courses, need to work on CSS to make nicer
+    Tomorrow: Working on account page, want to switch create acc button to contacts page
+    Inhibits: views needs to be switched to contacts page from account page. Contacts page needs to be added to URLs. Need views for assign to sections.
+      anything within 200 is lecture and only instructor is assigned to those, then TA assigned to rest
+    
+  Michael:
+    Today: Made it so had variety of courses with same number, made create course acceptance tests work, assign to course acceptance tests
+    Tomorrow: Prob will be Thursday, when able to work again
+    Inhibits: Nothing atm
+  
+  Ethan:
+    Today: None
+    Tomorrow: Switch create account button to contacts page
+    Inhibits: Figure out how to do that! He needs contacts views to be make
+    
+
+
