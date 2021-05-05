@@ -97,6 +97,20 @@
                         </div>
                     </div>
                 {% endif %}
+                {% for j in section %}
+                    {% if j.course == i %}
+                        <div class="sectionBlock">
+                            <h1 class="sectionName">{{ j.number }}</h1>
+                            <!--{% if request.session.supervisor %}
+
+                                <div class="assButt">
+                                    <button class="modButt courseButt secButt">Create new section</button>
+                                    <button class="modButt courseButt">Assign to course</button>
+                                </div>
+                            {% endif %}-->
+                        </div>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
 
             {% if request.session.error and request.session.submitted %}
