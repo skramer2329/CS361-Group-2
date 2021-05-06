@@ -264,6 +264,10 @@ input:focus, textarea:focus, select:focus {
     left: -40px;
 }
 
+.editButt {
+    position: relative;
+}
+
 .hidden {
     display: none;
 }

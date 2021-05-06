@@ -41,11 +41,47 @@
                             <option value="instructor">Instructor</option>
                             <option value="ta">Teaching Assistant</option>
                         </select>
-                        <button type="submit">Save</button>
+                        <button type="submit" name="create_butt" class="subButt">Save</button>
                     </form>
                 </div>
             </div>
             {% endif %}
+
+            {% for i in accounts %}
+                <div>
+                    name = {{ i.first_name }}
+                    {% if request.session.supervisor %}
+                        <button class="modButt editButt" id="myBtn">Edit account</button>
+                    {% endif %}
+                </div>
+
+                {% if request.session.supervisor %}
+                <!-- The Modal -->
+                <div id="myModal2" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">×</span>
+                        <form action="/account/" method="post"> {% csrf_token %}
+                            <input class="form-field" type="text" value="{{ i.first_name }}" placeholder="First Name" name="first_name" required>
+                            <input class="form-field" type="text" value="{{ i.last_name }}" placeholder="Last Name" name="last_name" required>
+                            <input class="form-field" type="text" value="{{ i.email }}" placeholder="Email" name="email" required>
+                            <input class="form-field" type="text" value="{{ i.password }}" placeholder="Password" name="password" required>
+                            <input class="form-field" type="text" value="{{ i.address }}" placeholder="Address" name="address" required>
+                            <input class="form-field" type="text" value="{{ i.phone_number }}" placeholder="Phone Number" name="phone_number" required>
+                            <select class="form-field" name="role">
+                                <option value="supervisor">Supervisor</option>
+                                <option value="instructor">Instructor</option>
+                                <option value="ta">Teaching Assistant</option>
+                            </select>
+                            <button type="submit" name="create_butt" class="subButt">Save</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+
+            {% endfor %}
+
             {% if request.session.error and request.session.submitted %}
                 <div class="alert">
                     <span class="closebtn" style="block" onclick="this.parentElement.style.display='none';">&times;</span>
