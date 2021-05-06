@@ -13,6 +13,42 @@ from ourapp.helper_methods import CreateAccountsFunction
 
 # Create your views here.
 
+class SkillList(View):
+
+    def get(self, request):
+        email = request.session['name']
+        user = get_user(email)
+        skills = user.skills.all()
+        accounts = MyUser.objects.all()
+
+        return render(request, "account.html", {"accounts": accounts, "skills": skills})
+
+    def post(self, request):
+        email = request.session['name']
+        user = get_user(email)
+        skills = user.skills.all()
+        accounts = MyUser.objects.all()
+
+        skill_exists = True
+        input = request.POST['skill']
+        try:
+            skills.filter(skill=input)
+
+        except:
+            skill_exists = False
+
+        if skill_exists:
+            return render(request, "account.html", {"accounts": accounts, "skills": skills,
+                                                    "message": "You already have this skill!"})
+        else:
+            new_skill = Skill(skill=input)
+            new_skill.save()
+            user.skills.add(new_skill)
+            
+            skills = user.skills.all()
+            return render(request, "account.html", {"accounts": accounts, "skills": skills})
+
+
 class CreateAccounts(View):
 
     def get(self, request):
@@ -22,10 +58,8 @@ class CreateAccounts(View):
 
         request.session['submitted'] = False
         accounts = MyUser.objects.all()
-        email = request.session['name']
-        user = get_user(email)
-        skills = user.skills.all()
-        return render(request, "account.html", {"accounts": accounts, "skills": skills})
+
+        return render(request, "account.html", {"accounts": accounts})
 
     def post(self, request):
         request.session['submitted'] = True
