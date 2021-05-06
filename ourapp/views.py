@@ -70,9 +70,10 @@ class Course(View):
             return redirect("/")
 
         courses = MyCourse.objects.all()
+        sections = MySection.objects.all()
         request.session['submitted'] = False
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
-        return render(request, "course.html", {"courses": courses, "accounts": accounts})
+        return render(request, "course.html", {"courses": courses, "accounts": accounts, "sections": sections})
 
     def post(self, request):
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
@@ -169,7 +170,7 @@ class Contacts(View):
 
     def post(self, request):
         if request.method == 'POST' and 'edit_butt' in request.POST:
-            accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+            accounts = MyUser.objects.all()
 
             email = request.POST['email']
             password = request.POST['password']

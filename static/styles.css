@@ -237,7 +237,7 @@ input:focus, textarea:focus, select:focus {
 
 .courseBlock {
     background-color: #818181;
-    color: #3c3c3c;
+    color: #FFFFFF;
     padding: 15px;
     margin-bottom: 15px;
     border: 1px solid #818181;
@@ -262,6 +262,10 @@ input:focus, textarea:focus, select:focus {
 
 .secButt {
     left: -40px;
+}
+
+.editButt {
+    position: relative;
 }
 
 .hidden {
