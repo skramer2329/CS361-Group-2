@@ -17,8 +17,85 @@
 
     <div class="main">
         <section>
+            {% if request.session.supervisor %}
+                <button class="modButt" id="myBtn">Create new account</button>
+            {% endif %}
             <h2>Contacts</h2>
+
+            {% if request.session.supervisor %}
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">×</span>
+                    <form action="/account/" method="post"> {% csrf_token %}
+                        <input class="form-field" type="text" placeholder="First Name" name="first_name" required>
+                        <input class="form-field" type="text" placeholder="Last Name" name="last_name" required>
+                        <input class="form-field" type="text" placeholder="Email" name="email" required>
+                        <input class="form-field" type="text" placeholder="Password" name="password" required>
+                        <input class="form-field" type="text" placeholder="Address" name="address" required>
+                        <input class="form-field" type="text" placeholder="Phone Number" name="phone_number" required>
+                        <select class="form-field" name="role">
+                            <option value="supervisor">Supervisor</option>
+                            <option value="instructor">Instructor</option>
+                            <option value="ta">Teaching Assistant</option>
+                        </select>
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if request.session.error and request.session.submitted %}
+                <div class="alert">
+                    <span class="closebtn" style="block" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Error!</strong> {{ message }}
+                </div>
+            {% elif not request.session.error and request.session.submitted %}
+                <div class="alert success">
+                    <span class="closebtn" style="block" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Success!</strong> {{ message }}
+                </div>
+            {% endif %}
+
         </section>
     </div>
+
+<script>
+// Get each modal and close button
+var butt = document.getElementsByClassName("modButt");
+var buttArray = Array.from(butt).entries();
+var modals = document.getElementsByClassName("modal");
+var closeButts = document.getElementsByClassName("close");
+var subButts = document.getElementsByClassName("subButt");
+var l = modals.length;
+
+for (let i = 0; i < l; ++i) {
+    //Make the modals open when the button is clicked
+    butt[i].onclick = function() {
+        modals[i].style.display = "block";
+    }
+
+    //Make the modals close when the close button is clicked
+    closeButts[i].onclick = function() {
+        modals[i].style.display = "none";
+    }
+
+    //Make the modals close when the submit button is clicked
+    subButts[i].onclick = function() {
+        modals[i].style.display = "none";
+    }
+}
+
+//Make the modals close when clicked off of
+window.onclick = function(event) {
+    for (let i = 0; i < l; ++i) {
+        if (event.target == modals[i]) {
+            modals[i].style.display = "none";
+        }
+    }
+}
+</script>
+
 </body>
 </html>
