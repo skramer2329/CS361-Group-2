@@ -169,8 +169,7 @@ class Contacts(View):
         return render(request, "contacts.html", {"accounts": accounts})
 
     def post(self, request):
-        if request.method == 'POST' and 'edit_butt' in request.POST:
-            accounts = MyUser.objects.all()
+        if request.method == 'POST' and 'create_butt' in request.POST:
 
             email = request.POST['email']
             password = request.POST['password']
@@ -180,4 +179,30 @@ class Contacts(View):
             phone_number = request.POST['phone_number']
             role = request.POST['role']
 
-            return render(request, "contacts.html", {"accounts": accounts})
+            accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+
+            valid = CreateAccountsFunction(email, phone_number)
+            if valid != "Valid":
+                request.session['error'] = True
+                return render(request, "account.html", {"accounts": accounts, "message": valid})
+            user_exists = True
+            try:
+                MyUser.objects.get(email=email)
+
+            except:
+                user_exists = False
+
+            if user_exists:
+                request.session['error'] = True
+                return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
+                                                                                         "already been created.  Try again."})
+
+            else:
+                a = MyUser.objects.create(email=email, password=password, first_name=first_name, last_name=last_name,
+                                          address=address, phone_number=phone_number, role=role)
+
+                a.save()
+                accounts.append(a)
+                request.session['error'] = False
+                return render(request, "account.html",
+                              {"accounts": accounts, "message": "Account created successfully"})
