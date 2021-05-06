@@ -160,3 +160,23 @@ class SectionCreation(View):
             return render(request, "course.html", {"courses": courses, "message": "Course successfully added"})
         else:
             return render(request, "course.html", {"courses": courses, "message": message})
+
+class Contacts(View):
+
+    def get(self, request):
+        accounts = MyUser.objects.all()
+        return render(request, "contacts.html", {"accounts": accounts})
+
+    def post(self, request):
+        if request.method == 'POST' and 'edit_butt' in request.POST:
+            accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+
+            email = request.POST['email']
+            password = request.POST['password']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            address = request.POST['address']
+            phone_number = request.POST['phone_number']
+            role = request.POST['role']
+
+            return render(request, "contacts.html", {"accounts": accounts})
