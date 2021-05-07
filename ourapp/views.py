@@ -198,7 +198,7 @@ class Contacts(View):
             valid = CreateAccountsFunction(email, phone_number)
             if valid != "Valid":
                 request.session['error'] = True
-                return render(request, "account.html", {"accounts": accounts, "message": valid})
+                return render(request, "contacts.html", {"accounts": accounts, "message": valid})
             user_exists = True
             try:
                 MyUser.objects.get(email=email)
@@ -208,7 +208,7 @@ class Contacts(View):
 
             if user_exists:
                 request.session['error'] = True
-                return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
+                return render(request, "contacts.html", {"accounts": accounts, "message": "A user with this email has "
                                                                                          "already been created.  Try again."})
 
             else:
@@ -218,5 +218,5 @@ class Contacts(View):
                 a.save()
                 accounts.append(a)
                 request.session['error'] = False
-                return render(request, "account.html",
+                return render(request, "contacts.html",
                               {"accounts": accounts, "message": "Account created successfully"})
