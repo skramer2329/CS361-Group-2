@@ -6,7 +6,7 @@ from django.views import View
 from .models import MyUser, MyCourse, MySection
 from django.http import HttpResponse
 
-from ourapp.helper_methods import login, get_user, create_course, create_section, validate_session
+from ourapp.helper_methods import login, get_user, create_course, create_section, validate_session, ValidTeacherForSection
 
 from ourapp.helper_methods import CreateAccountsFunction
 
@@ -119,6 +119,20 @@ class Course(View):
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
             return render(request, "course.html",
                           {"message": "Course assignments updated", "courses": courses, "accounts": accounts})
+
+        if request.method == 'POST' and 'ass_section_butt' in request.POST:
+            accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+            courses = MyCourse.objects.all()
+            sections = MySection.objects.all()
+            person_selection = request.POST['person_selection']
+            person_selection = MyUser(person_selection)
+            section_selection = request.POST['section_selection']
+            section_selection = MySection(section_selection)
+
+            message = ValidTeacherForSection(person_selection, section_selection)
+            request.session['error'] = message[0]
+            return render(request, "course.html", {"message": message[1], "courses": courses, "accounts": accounts})
+
 
 class Login(View):
     def get(self, request):
