@@ -26,6 +26,36 @@
     <div class="main">
         <section>
             <h2>Account</h2>
+            <div class="container accountInfo">
+                {% for i in accounts %}
+                    {% if i.email == request.session.name %}
+                        <form action="/account/" method="post"> {% csrf_token %}
+                            <input class="form-field" type="text" value="{{ i.first_name }}" placeholder="First Name" name="first_name" readonly>
+                            <input class="form-field" type="text" value="{{ i.last_name }}" placeholder="Last Name" name="last_name" readonly>
+                            <input class="form-field" type="text" value="{{ i.email }}" placeholder="Email" name="email" readonly>
+                            <input class="form-field" type="password" value="{{ i.password }}" placeholder="Password" name="password" readonly>
+                            <input class="form-field" type="text" value="{{ i.address }}" placeholder="Address" name="address" required>
+                            <input class="form-field" type="text" value="{{ i.phone_number }}" placeholder="Phone Number" name="phone_number" required>
+                            <select class="form-field selector" name="role" >
+                                {% if i.role == "supervisor" %}
+                                    <option value="supervisor" selected>Supervisor</option>
+                                    <option value="instructor" disabled>Instructor</option>
+                                    <option value="ta" disabled>Teaching Assistant</option>
+                                {% elif i.role == "instructor" %}
+                                    <option value="supervisor" disabled>Supervisor</option>
+                                    <option value="instructor" selected>Instructor</option>
+                                    <option value="ta" disabled>Teaching Assistant</option>
+                                {% else %}
+                                    <option value="supervisor" disabled>Supervisor</option>
+                                    <option value="instructor" disabled>Instructor</option>
+                                    <option value="ta" selected>Teaching Assistant</option>
+                                {% endif %}
+                            </select>
+                            <button type="submit" name="create_butt" class="subButt">Save</button>
+                        </form>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </section>
     </div>
 </body>
