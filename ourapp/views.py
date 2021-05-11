@@ -154,6 +154,21 @@ class Course(View):
             return render(request, "course.html",
                           {"message": "Course assignments updated", "courses": courses, "accounts": accounts})
 
+        if request.method == 'POST' and 'delete_section_butt' in request.POST:
+            section_to_remove = request.POST['section_to_remove']
+            section_to_remove = MySection(section_to_remove)
+            section_to_remove.delete()
+
+        if request.method =='POST' and 'delete_course_butt' in request.POST:
+            sections = MySection.objects.all()
+            course_to_remove = request.POST['course_to_remove']
+            course_to_remove = MyCourse(course_to_remove)
+            for i in sections:
+                if i.course == course_to_remove:
+                    i.delete()
+
+            course_to_remove.delete()
+
 class Login(View):
     def get(self, request):
         request.session.flush()
