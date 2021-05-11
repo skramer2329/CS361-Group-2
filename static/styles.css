@@ -257,17 +257,21 @@ input:focus, textarea:focus, select:focus {
 .assButt {
     position: relative;
     bottom: 95px;
-    left: 25vw;
+    left: 4vw;
 }
 
 .courseButt {
     color: #FFFFFF;
     height: 50px;
+    position: relative;
 }
 
-.secButt {
-    position: relative;
-    left: -80px;
+.delButt {
+    background-color: #EB5A46;
+}
+
+.delButt:focus {
+    background: #EB5A46;
 }
 
 .editButt {
@@ -317,6 +321,14 @@ input:focus, textarea:focus, select:focus {
     font-size: 18px;
 }
 
+.secButt {
+    position: relative;
+}
+
+.sectButt {
+    position: relative;
+}
+
 @media screen and (max-height: 450px) {
     .sidenav {
         padding-top: 15px;
@@ -325,4 +337,8 @@ input:focus, textarea:focus, select:focus {
     .sidenav a {
         font-size: 18px;
     }
+}
+
+.accLabel {
+    text-align: left;
 }

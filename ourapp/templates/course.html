@@ -55,6 +55,7 @@
                         <div class="assButt">
                             <button class="modButt courseButt secButt">Create new section</button>
                             <button class="modButt courseButt">Assign to course</button>
+                            <button class="modButt courseButt delButt">Delete course</button>
                         </div>
                     {% endif %}
                 </div>
@@ -96,19 +97,35 @@
                             </form>
                         </div>
                     </div>
+
+                    <!-- The Course Assign Modal -->
+                    <div id="myModal4" class="modal">
+
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">×</span>
+                            <form action="/course/" method="post"> {% csrf_token %}
+                                <label for cDelete>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</label>
+                                <select class="form-field hidden" name="course_selection">
+                                    <option value={{ i.id }}>{{ i.number }}</option>
+                                </select>
+                                <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
+                            </form>
+                        </div>
+                    </div>
                 {% endif %}
                 {% for j in sections %}
                     {% if j.course == i %}
                         <div class="sectionBlock">
                             <h1 class="sectionName">Section: {{ j.number }}</h1>
                             <h1 class="sectionLead">Instructor: {{ j.teacher.first_name }} {{ j.teacher.last_name }}</h1>
-                            <!--{% if request.session.supervisor %}
+                            {% if request.session.supervisor %}
 
-                                <div class="assButt">
-                                    <button class="modButt courseButt secButt">Create new section</button>
-                                    <button class="modButt courseButt">Assign to course</button>
+                                <div class="secButt">
+                                    <button class="modButt sectButt">Assign to section</button>
+                                    <button class="modButt sectButt delButt">Delete section</button>
                                 </div>
-                            {% endif %}-->
+                            {% endif %}
                         </div>
                     {% endif %}
                 {% endfor %}

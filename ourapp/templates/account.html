@@ -30,19 +30,25 @@
                 {% for i in accounts %}
                     {% if i.email == request.session.name %}
                         <form action="/account/" method="post"> {% csrf_token %}
-                            <label for="fName">First Name: </label>
+                            <label class="accLabel" for="fName">First Name: </label>
                             <input class="form-field noBord" type="text" value="{{ i.first_name }}" placeholder="First Name" name="first_name" id="fName" readonly>
-                            <label for="fName">Last Name: </label>
+
+                            <label class="accLabel" for="lName">Last Name: </label>
                             <input class="form-field noBord" type="text" value="{{ i.last_name }}" placeholder="Last Name" name="last_name" id="lName" readonly>
-                            <label for="fName">Email: </label>
+
+                            <label class="accLabel" for="email">Email: </label>
                             <input class="form-field noBord" type="text" value="{{ i.email }}" placeholder="Email" name="email" id="email" readonly>
-                            <label for="fName">Password: </label>
+
+                            <label class="accLabel" for="pass">Password: </label>
                             <input class="form-field noBord" type="password" value="{{ i.password }}" placeholder="Password" name="password" id="pass" readonly>
-                            <label for="fName">Address: </label>
+
+                            <label class="accLabel" for="addy">Address: </label>
                             <input class="form-field" type="text" value="{{ i.address }}" placeholder="Address" name="address" id="addy" required>
-                            <label for="fName">Phone Number: </label>
+
+                            <label class="accLabel" for="pNum">Phone Number: </label>
                             <input class="form-field" type="text" value="{{ i.phone_number }}" placeholder="Phone Number" name="phone_number" id="pNum" required>
-                            <label for="fName">Role: </label>
+
+                            <label class="accLabel" for="fName">Role: </label>
                             <select class="form-field selector" name="role" >
                                 {% if i.role == "supervisor" %}
                                     <option value="supervisor" selected>Supervisor</option>
