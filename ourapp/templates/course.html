@@ -100,7 +100,8 @@
                 {% for j in sections %}
                     {% if j.course == i %}
                         <div class="sectionBlock">
-                            <h1 class="sectionName">{{ j.number }}</h1>
+                            <h1 class="sectionName">Section: {{ j.number }}</h1>
+                            <h1 class="sectionLead">Instructor: {{ j.teacher.first_name }} {{ j.teacher.last_name }}</h1>
                             <!--{% if request.session.supervisor %}
 
                                 <div class="assButt">
