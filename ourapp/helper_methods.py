@@ -38,7 +38,11 @@ def login(email, password):
 
 
 def validate_course_number(number):
-    return len(str(number)) == 3 and number.isdigit()
+    x = str(number)
+    if len(str(number)) == 3 and str(number).isdigit():
+        return True
+    else:
+        return False
 
 
 def create_course(name, number):
@@ -49,13 +53,13 @@ def create_course(name, number):
 
     course_exists = True
     try:
-        MyCourse.objects.get(number=number)
+        MyCourse.objects.get(number=number, name=name)
 
     except:
         course_exists = False
 
     if course_exists:
-        return "A course with this number has already been created.  Try again."
+        return "A course with this name and number has already been created.  Try again."
 
     else:
         a = MyCourse.objects.create(name=name, number=number)
@@ -64,7 +68,11 @@ def create_course(name, number):
 
 
 def validate_section_number(number):
-    pass
+    x = str(number)
+    if len(str(number)) == 3 and str(number).isdigit():
+        return True
+    else:
+        return False
 
 
 def create_section(course, number):
@@ -115,3 +123,26 @@ def valid_email_format(email):
 
 def valid_phone_number(phone_number):
     return phone_number.isdigit()
+
+def ValidTeacherForSection(person_selection, section_selection):
+    if type(person_selection) is not MyUser:
+        raise TypeError
+    elif type(section_selection) is not MySection:
+        raise TypeError
+    person = MyUser(person_selection).role
+    sectionnumber = str(section_selection.number)
+    message = ""
+    if (sectionnumber.startswith('8') or sectionnumber.startswith('9')) and not person == "ta":
+        message = "Only TAs can be assigned to lab sections."
+        return [True, message]
+    elif (not (sectionnumber.startswith('8') or sectionnumber.startswith('9'))) and not person == "instructor":
+        message = "Only Instructors can be assigned to lecture sections."
+        return [True, message]
+    else:
+        if(section_selection.teacher == None):
+            message = "Added Teacher to section."
+        else:
+            CurrentInstructor = section_selection.teacher.__str__()
+            message = "Teacher: " + CurrentInstructor + " was removed.\nTeacher: " + person.selection.__str__() + " was added."
+        section_selection.teacher = person_selection
+        return [False, message]

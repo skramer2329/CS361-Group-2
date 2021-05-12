@@ -25,4 +25,5 @@ urlpatterns = [
     path('', Login.as_view(), name='login'),
     path('course/', Course.as_view(), name='course'),
     path('account/', views.CreateAccounts.as_view(), name='account'),
+    path('contacts/', views.Contacts.as_view(), name='contacts')
 ]

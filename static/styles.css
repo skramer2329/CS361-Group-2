@@ -1,3 +1,6 @@
+.selector {
+    alignment: left;
+}
 
 /* The Modal (background) */
 .modal {
@@ -237,11 +240,13 @@ input:focus, textarea:focus, select:focus {
 
 .courseBlock {
     background-color: #818181;
-    color: #3c3c3c;
+    color: #FFFFFF;
     padding: 15px;
     margin-bottom: 15px;
     border: 1px solid #818181;
     border-radius: 4px;
+    height: 60px;
+    line-height: 35px;
 }
 
 .courseName {
@@ -251,21 +256,77 @@ input:focus, textarea:focus, select:focus {
 
 .assButt {
     position: relative;
-    bottom: 85px;
-    left: 55vw;
+    bottom: 95px;
+    left: 4vw;
 }
 
 .courseButt {
     color: #FFFFFF;
     height: 50px;
+    position: relative;
 }
 
-.secButt {
-    left: -40px;
+.delButt {
+    background-color: #EB5A46;
+}
+
+.delButt:focus {
+    background: #EB5A46;
+}
+
+.editButt {
+    position: relative;
 }
 
 .hidden {
     display: none;
+}
+
+.accountInfo {
+    box-shadow: 0px 0px 0px 1px rgb(0 0 0 / 0%);
+}
+
+.noBord {
+    border: none;
+}
+
+.noBord:focus, .form-field textarea:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.sectionBlock {
+    background-color: #818181;
+    position: relative;
+    margin-left: auto;
+    margin-right: 0;
+    color: #FFFFFF;
+    width: 75vw;
+    height: 50px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #818181;
+    border-radius: 4px;
+    line-height: 10px;
+}
+
+.sectionName {
+    text-align: left;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.sectionLead {
+    text-align: left;
+    font-size: 18px;
+}
+
+.secButt {
+    position: relative;
+}
+
+.sectButt {
+    position: relative;
 }
 
 @media screen and (max-height: 450px) {
@@ -276,4 +337,8 @@ input:focus, textarea:focus, select:focus {
     .sidenav a {
         font-size: 18px;
     }
+}
+
+.accLabel {
+    text-align: left;
 }
