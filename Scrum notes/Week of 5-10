@@ -1,0 +1,40 @@
+SCRUM Questions:
+
+What progress was made today?
+
+What progress will be made tomorrow? 
+
+What inhibits you from completing task?
+
+############################################################################################################################
+
+Scrum week of 5/10
+
+Monday 5/10 - Notes by Bennett Schuster
+
+Bennett:
+  Today: Wrote out some quick code for deleting courses and sections.  Made it where deleting courses deletes the sections within that course first.
+  Tomorrow: Test deleting code with buttons on the screen
+  Inhibits: Nothing
+
+James:
+  Today: Went through code and fixed up some things to make it more readable in HTML.  Fixed up CSS for courses and buttons.  Added delete buttons to sections and
+  assign to sections
+  Tomorrow: Will push CSS changes to see how it affects others' screens. Get buttons appearing where they should.  Add all the data to the contacts page.  General polishing.
+  Find redundancy and add comments
+  Inhibits: None
+
+Michael:
+  Today: Didn't do much over the weekend
+  Tomorrow: Need to make sure changes are working with current version in master.  Will help others with stuff
+  Inhibits: Nothing
+
+Sabrina:
+  Today: Nothing over the weekend because of other projects
+  Tomorrow: Will push code for the contacts page
+  Inhibits: None
+
+Ethan:
+  Today: Did nothing over the weekend
+  Tomorrow: Not sure what to do next
+  Inhibits: Nothing
