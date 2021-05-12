@@ -105,7 +105,7 @@
                         <div class="modal-content">
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
-                                <label for cDelete>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</label>
+                                <label for="cDelete">Are you sure you wish to delete {{ i.name }} {{ i.number }}?</label>
                                 <select class="form-field hidden" name="course_selection">
                                     <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
@@ -126,6 +126,42 @@
                                     <button class="modButt sectButt delButt">Delete section</button>
                                 </div>
                             {% endif %}
+
+                            <!-- The Course Assign Modal -->
+                            <div id="myModal3" class="modal">
+
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <span class="close">×</span>
+                                    <form action="/course/" method="post"> {% csrf_token %}
+                                        <select class="form-field" name="course_selection">
+                                            <option value={{ j.id }}>{{ j.number }}</option>
+                                        </select>
+                                        <select class="form-field" name="person_selection">
+                                            {% for i in accounts %}
+                                                <option value={{ i.id }}>{{ i.email }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" name="ass_butt" class="subButt">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- The Course Assign Modal -->
+                            <div id="myModal4" class="modal">
+
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                    <span class="close">×</span>
+                                    <form action="/course/" method="post"> {% csrf_token %}
+                                        <label for=sDelete">Are you sure you wish to delete {{ i.name }} {{ i.number }}?</label>
+                                        <select class="form-field hidden" name="course_selection">
+                                            <option value={{ i.id }}>{{ i.number }}</option>
+                                        </select>
+                                        <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     {% endif %}
                 {% endfor %}
