@@ -23,44 +23,33 @@ class CreateAccounts(View):
 
         request.session['submitted'] = False
         accounts = MyUser.objects.all()
+
         return render(request, "account.html", {"accounts": accounts})
 
     def post(self, request):
-        request.session['submitted'] = True
-        email=request.POST['email']
-        password=request.POST['password']
-        first_name=request.POST['first_name']
-        last_name=request.POST['last_name']
-        address=request.POST['address']
-        phone_number=request.POST['phone_number']
-        role=request.POST['role']
 
-        accounts = list(MyUser.objects.all())
+        if request.method == 'POST' and 'create_butt' in request.POST:
+            accounts = MyUser.objects.all()
+            user = request.POST['user']
+            user = MyUser(user)
+            email = request.POST['email']
+            password = request.POST['password']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            address = request.POST['address']
+            phone_number = request.POST['phone_number']
+            role = request.POST['role']
 
-        valid = CreateAccountsFunction(email, phone_number)
-        if valid != "Valid":
-            request.session['error'] = True
-            return render(request, "account.html", {"accounts": accounts, "message": valid})
-        user_exists = True
-        try:
-            MyUser.objects.get(email=email)
+            user.email = email
+            user.password = password
+            user.first_name = first_name
+            user.last_name = last_name
+            user.address = address
+            user.phone_number = phone_number
+            user.role = role
 
-        except:
-            user_exists = False
-
-        if user_exists:
-            request.session['error'] = True
-            return render(request, "account.html", {"accounts": accounts, "message": "A user with this email has "
-                                                                                "already been created.  Try again."})
-
-        else:
-            a = MyUser.objects.create(email=email, password=password, first_name=first_name, last_name=last_name,
-            address=address, phone_number=phone_number, role=role)
-
-            a.save()
-            accounts.append(a)
-            request.session['error'] = False
-            return render(request, "account.html", {"accounts": accounts, "message": "Account created successfully"})
+            user.save()
+            return render(request, "account.html", {"accounts": accounts})
 
 class Course(View):
     def get(self, request):
@@ -76,13 +65,11 @@ class Course(View):
         return render(request, "course.html", {"courses": courses, "accounts": accounts, "sections": sections})
 
     def post(self, request):
-        message = ''
         print(request.POST)
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
         courses = MyCourse.objects.all()
         sections = MySection.objects.all()
         request.session['submitted'] = True
-
         if request.method == 'POST' and 'course_button' in request.POST:
             print(request.POST)
             number = request.POST['number']
@@ -123,7 +110,8 @@ class Course(View):
 
             course_selection.people.add(person_selection)
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
-            message = "Course assignments updated"
+            return render(request, "course.html",
+                          {"message": "Course assignments updated", "courses": courses, "accounts": accounts, "sections": sections})
 
         if request.method == 'POST' and 'ass_section_butt' in request.POST:
             print(request.POST)
@@ -148,7 +136,9 @@ class Course(View):
             section_to_remove = request.POST['section_to_remove']
             section_to_remove = MySection(section_to_remove)
             section_to_remove.delete()
-            message = "Section successfully deleted"
+
+            return render(request, "course.html", {"message": "section successfully deleted", "courses": courses, "accounts": accounts,
+                                                   "sections": sections})
 
         if request.method == 'POST' and 'delCButt' in request.POST:
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
@@ -162,11 +152,9 @@ class Course(View):
             sections = MySection.objects.all()
             course_to_remove.delete()
             courses = MyCourse.objects.all()
-            message = "Course successfully deleted"
 
-        return render(request, "course.html",
-                  {"message": message, "courses": courses, "accounts": accounts,
-                   "sections": sections})
+            return render(request, "course.html", {"message": "Course successfully deleted", "courses": courses, "accounts": accounts,
+                                                   "sections": sections})
 
 
 
@@ -216,11 +204,10 @@ class Contacts(View):
 
     def get(self, request):
         accounts = MyUser.objects.all()
-        request.session['submitted'] = False
         return render(request, "contacts.html", {"accounts": accounts})
 
     def post(self, request):
-        request.session['submitted'] = True
+
         if request.method == 'POST' and 'edit_butt' in request.POST:
 
             accounts = MyUser.objects.all()
@@ -243,15 +230,9 @@ class Contacts(View):
             user.phone_number = phone_number
             user.role = role
 
-            valid = CreateAccountsFunction(email, phone_number)
-
-            if valid != "Valid":
-                request.session['error'] = True
-                return render(request, "contacts.html", {"accounts": accounts, "message": valid})
-
             user.save()
-            request.session['error'] = False
-            return render(request,  "contacts.html", {"accounts": accounts, "message": "Account edited successfully"})
+
+            return render(request,  "contacts.html", {"accounts": accounts})
 
         if request.method == 'POST' and 'create_butt' in request.POST:
 
