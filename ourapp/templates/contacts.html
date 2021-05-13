@@ -49,16 +49,15 @@
             {% endif %}
 
             {% for i in accounts %}
-                <div>
-                    <h1>name = {{ i.first_name }} {{ i.last_name }}</h1>
-                    <h1>email = {{ i.email }}</h1>
-                    <br>
+                <div class="contactInfo">
+                    <h1>{{ i.first_name }} {{ i.last_name }}</h1>
+                    <h1>email - {{ i.email }}</h1>
                     {% if request.session.supervisor %}
-                        <div>
-                            <h1>phone number = {{ i.phone_number }}</h1>
-                            <h1>address = {{ i.address }}</h1>
-                            <h1>password = {{ i.password }}</h1>
-                            <h1>role = {{ i.role }}</h1>
+                        <div class="hidContactInfo">
+                            <h1>phone number - {{ i.phone_number }}</h1>
+                            <h1>address - {{ i.address }}</h1>
+                            <h1>password - {{ i.password }}</h1>
+                            <h1>role - {{ i.role }}</h1>
                         </div>
                     {% endif %}
 
