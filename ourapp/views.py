@@ -137,6 +137,33 @@ class Course(View):
             request.session['error'] = message[0]
             return render(request, "course.html", {"message": message[1], "courses": courses, "accounts": accounts})
 
+        if request.method == 'POST' and 'delSButt' in request.POST:
+            accounts = MyUser.objects.all()
+            courses = MyCourse.objects.all()
+            sections = MySection.objects.all()
+            section_to_remove = request.POST['section_to_remove']
+            section_to_remove = MySection(section_to_remove)
+            section_to_remove.delete()
+
+            return render(request, "course.html", {"message": "section successfully deleted", "courses": courses, "accounts": accounts,
+                                                   "sections": sections})
+
+        if request.method == 'POST' and 'delCButt' in request.POST:
+            accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+            courses = MyCourse.objects.all()
+            sections = MySection.objects.all()
+            course_to_remove = request.POST['course_to_remove']
+            course_to_remove = MyCourse(course_to_remove)
+            for i in sections:
+                if i.course == course_to_remove:
+                    i.delete()
+            sections = MySection.objects.all()
+            course_to_remove.delete()
+            courses = MyCourse.objects.all()
+
+            return render(request, "course.html", {"message": "Course successfully deleted", "courses": courses, "accounts": accounts,
+                                                   "sections": sections})
+
 
 
 class Login(View):

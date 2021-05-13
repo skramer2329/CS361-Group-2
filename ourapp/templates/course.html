@@ -105,7 +105,7 @@
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
                                 <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</h1>
-                                <select class="form-field hidden" name="course_selection">
+                                <select class="form-field hidden" name="course_to_remove">
                                     <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
                                 <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
@@ -155,10 +155,10 @@
                                     <span class="close">×</span>
                                     <form action="/course/" method="post"> {% csrf_token %}
                                         <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</h1>
-                                        <select class="form-field hidden" name="course_selection">
+                                        <select class="form-field hidden" name="section_to_remove">
                                             <option value={{ j.id }}>{{ i.number }}</option>
                                         </select>
-                                        <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
+                                        <button type="submit" name="delSButt" class="subButt delButt">Yes</button>
                                     </form>
                                 </div>
                             </div>
