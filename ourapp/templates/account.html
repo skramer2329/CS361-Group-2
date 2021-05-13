@@ -21,6 +21,7 @@
         <a href="/account/" class="current">Account</a>
         <a href="/course/">Courses</a>
         <a href="/contacts/">Contacts</a>
+        <a href="/">Log out</a>
     </div>
 
     <div class="main">
@@ -30,25 +31,25 @@
                 {% for i in accounts %}
                     {% if i.email == request.session.name %}
                         <form action="/account/" method="post"> {% csrf_token %}
-                            <label class="accLabel" for="fName">First Name: </label>
-                            <input class="form-field noBord" type="text" value="{{ i.first_name }}" placeholder="First Name" name="first_name" id="fName" readonly>
+                            <h1 class="accLabel">First Name: </h1>
+                            <input class="form-field noBord" type="text" value="{{ i.first_name }}" placeholder="First Name" name="first_name" readonly>
 
-                            <label class="accLabel" for="lName">Last Name: </label>
-                            <input class="form-field noBord" type="text" value="{{ i.last_name }}" placeholder="Last Name" name="last_name" id="lName" readonly>
+                            <h1 class="accLabel">Last Name: </h1>
+                            <input class="form-field noBord" type="text" value="{{ i.last_name }}" placeholder="Last Name" name="last_name" readonly>
 
-                            <label class="accLabel" for="email">Email: </label>
-                            <input class="form-field noBord" type="text" value="{{ i.email }}" placeholder="Email" name="email" id="email" readonly>
+                            <h1 class="accLabel">Email: </h1>
+                            <input class="form-field noBord" type="text" value="{{ i.email }}" placeholder="Email" name="email" readonly>
 
-                            <label class="accLabel" for="pass">Password: </label>
-                            <input class="form-field noBord" type="password" value="{{ i.password }}" placeholder="Password" name="password" id="pass" readonly>
+                            <h1 class="accLabel">Password: </h1>
+                            <input class="form-field noBord" type="password" value="{{ i.password }}" placeholder="Password" name="password" readonly>
 
-                            <label class="accLabel" for="addy">Address: </label>
-                            <input class="form-field" type="text" value="{{ i.address }}" placeholder="Address" name="address" id="addy" required>
+                            <h1 class="accLabel">Address: </h1>
+                            <input class="form-field" type="text" value="{{ i.address }}" placeholder="Address" name="address" required>
 
-                            <label class="accLabel" for="pNum">Phone Number: </label>
-                            <input class="form-field" type="text" value="{{ i.phone_number }}" placeholder="Phone Number" name="phone_number" id="pNum" required>
+                            <h1 class="accLabel">Phone Number: </h1>
+                            <input class="form-field" type="text" value="{{ i.phone_number }}" placeholder="Phone Number" name="phone_number" required>
 
-                            <label class="accLabel" for="fName">Role: </label>
+                            <h1 class="accLabel">Role: </h1>
                             <select class="form-field selector" name="role" >
                                 {% if i.role == "supervisor" %}
                                     <option value="supervisor" selected>Supervisor</option>
@@ -72,6 +73,18 @@
                     {% endif %}
                 {% endfor %}
             </div>
+
+            {% if request.session.error and request.session.submitted %}
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Error!</strong> {{ message }}
+                </div>
+            {% elif not request.session.error and request.session.submitted %}
+                <div class="alert success">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>Success!</strong> {{ message }}
+                </div>
+            {% endif %}
         </section>
     </div>
 </body>
