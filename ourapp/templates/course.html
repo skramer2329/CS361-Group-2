@@ -51,7 +51,6 @@
                 <div class="courseBlock">
                     <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
                     {% if request.session.supervisor %}
-
                         <div class="assButt">
                             <button class="modButt courseButt secButt">Create new section</button>
                             <button class="modButt courseButt">Assign to course</button>
@@ -106,7 +105,7 @@
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
                                 <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</h1>
-                                <select class="form-field hidden" name="course_selection">
+                                <select class="form-field hidden" name="course_to_remove">
                                     <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
                                 <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
@@ -139,8 +138,8 @@
                                             <option value={{ j.id }}>{{ j.number }}</option>
                                         </select>
                                         <select class="form-field" name="person_selection">
-                                            {% for i in accounts %}
-                                                <option value={{ i.id }}>{{ i.email }}</option>
+                                            {% for k in i.people.all %}
+                                                <option value={{ k.id }}>{{ k.email }}</option>
                                             {% endfor %}
                                         </select>
                                         <button type="submit" name="ass_section_butt" class="subButt">Save</button>
@@ -155,11 +154,11 @@
                                 <div class="modal-content">
                                     <span class="close">×</span>
                                     <form action="/course/" method="post"> {% csrf_token %}
-                                        <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</h1>
-                                        <select class="form-field hidden" name="course_selection">
-                                            <option value={{ j.id }}>{{ i.number }}</option>
+                                        <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }} Section {{ j.number }}?</h1>
+                                        <select class="form-field hidden" name="section_to_remove">
+                                            <option value={{ j.id }}></option>
                                         </select>
-                                        <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
+                                        <button type="submit" name="delSButt" class="subButt delButt">Yes</button>
                                     </form>
                                 </div>
                             </div>
