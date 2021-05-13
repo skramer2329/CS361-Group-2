@@ -190,7 +190,31 @@ class Contacts(View):
     def post(self, request):
 
         if request.method == 'POST' and 'edit_butt' in request.POST:
-            pass
+
+            accounts = MyUser.objects.all()
+
+            user = request.POST['user']
+            user = MyUser(user)
+            email = request.POST['email']
+            password = request.POST['password']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            address = request.POST['address']
+            phone_number = request.POST['phone_number']
+            role = request.POST['role']
+
+            user.email = email
+            user.password = password
+            user.first_name = first_name
+            user.last_name = last_name
+            user.address = address
+            user.phone_number = phone_number
+            user.role = role
+
+            user.save()
+
+            return render(request,  "contacts.html", {"accounts": accounts,})
+
         if request.method == 'POST' and 'create_butt' in request.POST:
 
             email = request.POST['email']
@@ -202,7 +226,7 @@ class Contacts(View):
             role = request.POST['role']
 
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
-
+            accounts = list(accounts)
             valid = CreateAccountsFunction(email, phone_number)
             if valid != "Valid":
                 request.session['error'] = True
