@@ -207,6 +207,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 .alert {
+    position: fixed;
     padding: 20px;
     background-color: #EB5A46;
     color: white;
@@ -356,6 +357,7 @@ input:focus, textarea:focus, select:focus {
     text-align: left;
     border: 1px solid #818181;
     border-radius: 4px;
+    float: left;
 }
 
 .hidContactInfo {
