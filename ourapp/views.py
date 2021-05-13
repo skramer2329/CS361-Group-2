@@ -188,6 +188,9 @@ class Contacts(View):
         return render(request, "contacts.html", {"accounts": accounts})
 
     def post(self, request):
+
+        if request.method == 'POST' and 'edit_butt' in request.POST:
+            pass
         if request.method == 'POST' and 'create_butt' in request.POST:
 
             email = request.POST['email']
