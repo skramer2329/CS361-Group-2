@@ -420,9 +420,9 @@ class TestDeleteSection(TestCase):
     def test_delete_section_lab(self):
         resp = self.client.post("/course/", {"section_to_remove": self.labSection.id, "delSButt": ''}, follow=True)
         self.assertNotIn(self.labSection, resp.context['sections'])
-        self.assertEqual("section successfully deleted", resp.context['message'])
+        self.assertEqual("Section successfully deleted", resp.context['message'])
 
     def test_delete_section_lecture(self):
         resp = self.client.post("/course/", {"section_to_remove": self.lectureSection.id, "delSButt": ''}, follow=True)
         self.assertNotIn(self.lectureSection, resp.context['sections'])
-        self.assertEqual("section successfully deleted", resp.context['message'])
+        self.assertEqual("Section successfully deleted", resp.context['message'])
