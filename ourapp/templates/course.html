@@ -104,7 +104,7 @@
                         <div class="modal-content">
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
-                                <label for="cDelete">Are you sure you wish to delete {{ i.name }} {{ i.number }}?</label>
+                                <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</h1>
                                 <select class="form-field hidden" name="course_selection">
                                     <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
@@ -118,6 +118,7 @@
                         <div class="sectionBlock">
                             <h1 class="sectionName">Section: {{ j.number }}</h1>
                             <h1 class="sectionLead">Instructor: {{ j.teacher.first_name }} {{ j.teacher.last_name }}</h1>
+
                             {% if request.session.supervisor %}
 
                                 <div class="secButt">
@@ -133,7 +134,7 @@
                                 <div class="modal-content">
                                     <span class="close">×</span>
                                     <form action="/course/" method="post"> {% csrf_token %}
-                                        <select class="form-field" name="course_selection">
+                                        <select class="form-field hidden" name="section_selection">
                                             <option value={{ j.id }}>{{ j.number }}</option>
                                         </select>
                                         <select class="form-field" name="person_selection">
@@ -141,7 +142,7 @@
                                                 <option value={{ i.id }}>{{ i.email }}</option>
                                             {% endfor %}
                                         </select>
-                                        <button type="submit" name="ass_butt" class="subButt">Save</button>
+                                        <button type="submit" name="ass_section_butt" class="subButt">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -153,9 +154,9 @@
                                 <div class="modal-content">
                                     <span class="close">×</span>
                                     <form action="/course/" method="post"> {% csrf_token %}
-                                        <label for=sDelete">Are you sure you wish to delete {{ i.name }} {{ i.number }}?</label>
+                                        <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</h1>
                                         <select class="form-field hidden" name="course_selection">
-                                            <option value={{ i.id }}>{{ i.number }}</option>
+                                            <option value={{ j.id }}>{{ i.number }}</option>
                                         </select>
                                         <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
                                     </form>
