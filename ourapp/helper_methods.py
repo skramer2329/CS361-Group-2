@@ -129,7 +129,7 @@ def ValidTeacherForSection(person_selection, section_selection):
         raise TypeError
     elif type(section_selection) is not MySection:
         raise TypeError
-    person = MyUser(person_selection).role
+    person = person_selection.role
     sectionnumber = str(section_selection.number)
     message = ""
     if (sectionnumber.startswith('8') or sectionnumber.startswith('9')) and not person == "ta":
@@ -143,6 +143,7 @@ def ValidTeacherForSection(person_selection, section_selection):
             message = "Added Teacher to section."
         else:
             CurrentInstructor = section_selection.teacher.__str__()
-            message = "Teacher: " + CurrentInstructor + " was removed.\nTeacher: " + person.selection.__str__() + " was added."
+            message = "Teacher: " + CurrentInstructor + " was removed.\nTeacher: " + person_selection.__str__() + " was added."
         section_selection.teacher = person_selection
+        section_selection.save()
         return [False, message]
