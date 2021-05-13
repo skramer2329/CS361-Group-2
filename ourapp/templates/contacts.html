@@ -29,7 +29,7 @@
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">×</span>
-                    <form action="/account/" method="post"> {% csrf_token %}
+                    <form action="/contacts/" method="post"> {% csrf_token %}
                         <input class="form-field" type="text" placeholder="First Name" name="first_name" required>
                         <input class="form-field" type="text" placeholder="Last Name" name="last_name" required>
                         <input class="form-field" type="text" placeholder="Email" name="email" required>
@@ -49,7 +49,17 @@
 
             {% for i in accounts %}
                 <div>
-                    name = {{ i.first_name }}
+                    <h1>name = {{ i.first_name }} {{ i.last_name }}</h1>
+                    <h1>email = {{ i.email }}</h1>
+                    {% if request.session.supervisor %}
+                        <div>
+                            <h1>phone number = {{ i.phone_number }}</h1>
+                            <h1>address = {{ i.address }}</h1>
+                            <h1>password = {{ i.password }}</h1>
+                            <h1>role = {{ i.role }}</h1>
+                        </div>
+                    {% endif %}
+
                     {% if request.session.supervisor %}
                         <button class="modButt editButt" id="myBtn">Edit account</button>
                     {% endif %}
@@ -62,7 +72,7 @@
                     <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close">×</span>
-                        <form action="/account/" method="post"> {% csrf_token %}
+                        <form action="/contacts/" method="post"> {% csrf_token %}
                             <input class="form-field" type="text" value="{{ i.first_name }}" placeholder="First Name" name="first_name" required>
                             <input class="form-field" type="text" value="{{ i.last_name }}" placeholder="Last Name" name="last_name" required>
                             <input class="form-field" type="text" value="{{ i.email }}" placeholder="Email" name="email" required>
@@ -70,9 +80,22 @@
                             <input class="form-field" type="text" value="{{ i.address }}" placeholder="Address" name="address" required>
                             <input class="form-field" type="text" value="{{ i.phone_number }}" placeholder="Phone Number" name="phone_number" required>
                             <select class="form-field" name="role">
-                                <option value="supervisor">Supervisor</option>
-                                <option value="instructor">Instructor</option>
-                                <option value="ta">Teaching Assistant</option>
+                                {% if i.role == "supervisor" %}
+                                    <option value="supervisor" selected>Supervisor</option>
+                                    <option value="instructor">Instructor</option>
+                                    <option value="ta">Teaching Assistant</option>
+                                {% elif i.role == "instructor" %}
+                                    <option value="supervisor">Supervisor</option>
+                                    <option value="instructor" selected>Instructor</option>
+                                    <option value="ta">Teaching Assistant</option>
+                                {% else %}
+                                    <option value="supervisor">Supervisor</option>
+                                    <option value="instructor">Instructor</option>
+                                    <option value="ta" selected>Teaching Assistant</option>
+                                {% endif %}
+                            </select>
+                            <select class="form-field hidden" name="course_selection">
+                                <option value="{{ i.id }}" name="user"></option>
                             </select>
                             <button type="submit" name="create_butt" class="subButt">Save</button>
                         </form>

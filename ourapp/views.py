@@ -76,6 +76,7 @@ class Course(View):
         return render(request, "course.html", {"courses": courses, "accounts": accounts, "sections": sections})
 
     def post(self, request):
+        print(request.POST)
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
         request.session['submitted'] = True
         if request.method == 'POST' and 'course_button' in request.POST:
@@ -121,17 +122,21 @@ class Course(View):
                           {"message": "Course assignments updated", "courses": courses, "accounts": accounts})
 
         if request.method == 'POST' and 'ass_section_butt' in request.POST:
+            print(request.POST)
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
             courses = MyCourse.objects.all()
             sections = MySection.objects.all()
             person_selection = request.POST['person_selection']
-            person_selection = MyUser(person_selection)
+            person_selection = MyUser.objects.get(id=person_selection)
+            #person_selection = MyUser(person_selection)
             section_selection = request.POST['section_selection']
-            section_selection = MySection(section_selection)
+            section_selection = MySection.objects.get(id=section_selection)
+            #section_selection = MySection(section_selection)
 
             message = ValidTeacherForSection(person_selection, section_selection)
             request.session['error'] = message[0]
             return render(request, "course.html", {"message": message[1], "courses": courses, "accounts": accounts})
+
 
 
 class Login(View):
@@ -183,9 +188,7 @@ class Contacts(View):
         return render(request, "contacts.html", {"accounts": accounts})
 
     def post(self, request):
-        if request.method == 'POST' and 'edit_butt' in request.POST:
-            accounts = MyUser.objects.all()
-            user = MyUser() #???
+        if request.method == 'POST' and 'create_butt' in request.POST:
 
             email = request.POST['email']
             password = request.POST['password']
@@ -195,14 +198,30 @@ class Contacts(View):
             phone_number = request.POST['phone_number']
             role = request.POST['role']
 
-            user.email = email
-            user.password = password
-            user.first_name = first_name
-            user.last_name = last_name
-            user.address = address
-            user.phone_number = phone_number
-            user.role = role
+            accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
 
-            user.save()
+            valid = CreateAccountsFunction(email, phone_number)
+            if valid != "Valid":
+                request.session['error'] = True
+                return render(request, "contacts.html", {"accounts": accounts, "message": valid})
+            user_exists = True
+            try:
+                MyUser.objects.get(email=email)
 
-            return render(request, "contacts.html", {"accounts": accounts})
+            except:
+                user_exists = False
+
+            if user_exists:
+                request.session['error'] = True
+                return render(request, "contacts.html", {"accounts": accounts, "message": "A user with this email has "
+                                                                                         "already been created.  Try again."})
+
+            else:
+                a = MyUser.objects.create(email=email, password=password, first_name=first_name, last_name=last_name,
+                                          address=address, phone_number=phone_number, role=role)
+
+                a.save()
+                accounts.append(a)
+                request.session['error'] = False
+                return render(request, "contacts.html",
+                              {"accounts": accounts, "message": "Account created successfully"})
