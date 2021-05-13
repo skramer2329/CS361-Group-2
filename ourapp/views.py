@@ -78,6 +78,8 @@ class Course(View):
     def post(self, request):
         print(request.POST)
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+        courses = MyCourse.objects.all()
+        sections = MySection.objects.all()
         request.session['submitted'] = True
         if request.method == 'POST' and 'course_button' in request.POST:
             print(request.POST)
@@ -88,29 +90,30 @@ class Course(View):
                 courses.append(message)
                 request.session['error'] = False
                 return render(request, "course.html", {"courses": courses, "message": "Course successfully added",
-                                                       "accounts": accounts})
+                                                       "accounts": accounts, "sections": sections})
             else:
                 request.session['error'] = True
                 return render(request, "course.html", {"courses": courses, "message": message,
-                                                       "accounts": accounts})
+                                                       "accounts": accounts, "sections": sections})
 
         if request.method == 'POST' and 'section_button' in request.POST:
-            courses = MyCourse.objects.all()
             print(request.POST)
             message = create_section(request.POST['course_selection'], request.POST['section_number'])
             if type(message) is MySection:  # There was good input
                 # sections.append(message)
                 request.session['error'] = False
                 return render(request, "course.html", {"courses": courses, "message": "Section successfully added",
-                                                       "accounts": accounts})
+                                                       "accounts": accounts, "sections": sections})
             else:
                 request.session['error'] = True
-                return render(request, "course.html", {"courses": courses, "message": message, "accounts": accounts})
+                return render(request, "course.html", {"courses": courses, "message": message, "accounts": accounts,
+                                                    "sections": sections})
 
         if request.method == 'POST' and 'ass_butt' in request.POST:
             print(request.POST)
             courses = MyCourse.objects.all()
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+            sections = MySection.objects.all()
             course_selection = request.POST['course_selection']
             course_selection = MyCourse(course_selection)
             person_selection = request.POST['person_selection']
@@ -119,7 +122,7 @@ class Course(View):
             course_selection.people.add(person_selection)
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
             return render(request, "course.html",
-                          {"message": "Course assignments updated", "courses": courses, "accounts": accounts})
+                          {"message": "Course assignments updated", "courses": courses, "accounts": accounts, "sections": sections})
 
         if request.method == 'POST' and 'ass_section_butt' in request.POST:
             print(request.POST)
@@ -135,7 +138,34 @@ class Course(View):
 
             message = ValidTeacherForSection(person_selection, section_selection)
             request.session['error'] = message[0]
-            return render(request, "course.html", {"message": message[1], "courses": courses, "accounts": accounts})
+            return render(request, "course.html", {"message": message[1], "courses": courses, "accounts": accounts, "sections": sections})
+
+        if request.method == 'POST' and 'delSButt' in request.POST:
+            accounts = MyUser.objects.all()
+            courses = MyCourse.objects.all()
+            sections = MySection.objects.all()
+            section_to_remove = request.POST['section_to_remove']
+            section_to_remove = MySection(section_to_remove)
+            section_to_remove.delete()
+
+            return render(request, "course.html", {"message": "section successfully deleted", "courses": courses, "accounts": accounts,
+                                                   "sections": sections})
+
+        if request.method == 'POST' and 'delCButt' in request.POST:
+            accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+            courses = MyCourse.objects.all()
+            sections = MySection.objects.all()
+            course_to_remove = request.POST['course_to_remove']
+            course_to_remove = MyCourse(course_to_remove)
+            for i in sections:
+                if i.course == course_to_remove:
+                    i.delete()
+            sections = MySection.objects.all()
+            course_to_remove.delete()
+            courses = MyCourse.objects.all()
+
+            return render(request, "course.html", {"message": "Course successfully deleted", "courses": courses, "accounts": accounts,
+                                                   "sections": sections})
 
 
 
