@@ -185,6 +185,7 @@ class Contacts(View):
     def post(self, request):
         if request.method == 'POST' and 'edit_butt' in request.POST:
             accounts = MyUser.objects.all()
+            user = MyUser() #???
 
             email = request.POST['email']
             password = request.POST['password']
@@ -193,5 +194,15 @@ class Contacts(View):
             address = request.POST['address']
             phone_number = request.POST['phone_number']
             role = request.POST['role']
+
+            user.email = email
+            user.password = password
+            user.first_name = first_name
+            user.last_name = last_name
+            user.address = address
+            user.phone_number = phone_number
+            user.role = role
+
+            user.save()
 
             return render(request, "contacts.html", {"accounts": accounts})
