@@ -1,6 +1,5 @@
 from django.db import models
 import abc
-
 # Create your models here.
 
 
@@ -8,6 +7,10 @@ class Role(models.TextChoices):
     INSTRUCTOR = 'instructor'
     TA = 'ta'
     SUPERVISOR = 'supervisor'
+
+
+class Skill(models.Model):
+    skill = models.CharField(max_length=200, default=None)
 
 
 class MyUser(models.Model):
@@ -20,9 +23,10 @@ class MyUser(models.Model):
 
     role = models.CharField(max_length=100, default=None, choices=Role.choices)
 
+    skills = models.ManyToManyField(Skill, default=None, blank=True)
+
     def __str__(self):
         return self.first_name + " " + self.last_name
-
 
     def is_ta(self):
         return self.role == 'ta'
