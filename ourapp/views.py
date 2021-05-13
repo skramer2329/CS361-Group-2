@@ -203,11 +203,12 @@ class SectionCreation(View):
 class Contacts(View):
 
     def get(self, request):
+        request.session['submitted'] = False
         accounts = MyUser.objects.all()
         return render(request, "contacts.html", {"accounts": accounts})
 
     def post(self, request):
-
+        request.session['submitted'] = True
         if request.method == 'POST' and 'edit_butt' in request.POST:
 
             accounts = MyUser.objects.all()
@@ -230,9 +231,14 @@ class Contacts(View):
             user.phone_number = phone_number
             user.role = role
 
+            valid = CreateAccountsFunction(email, phone_number)
+            if valid != "Valid":
+                request.session['error'] = True
+                return render(request, "contacts.html", {"accounts": accounts, "message": valid})
+
             user.save()
 
-            return render(request,  "contacts.html", {"accounts": accounts})
+            return render(request,  "contacts.html", {"accounts": accounts, "message": "Account edited successfully"})
 
         if request.method == 'POST' and 'create_butt' in request.POST:
 
