@@ -345,4 +345,5 @@ input:focus, textarea:focus, select:focus {
 
 .accLabel {
     text-align: left;
+    margin: 0;
 }
