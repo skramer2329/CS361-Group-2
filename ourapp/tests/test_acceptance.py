@@ -291,6 +291,13 @@ class TestAssignToSection(TestCase):
         self.client = Client()
         self.mathCourse = MyCourse(name="Math", number=100)
         self.mathCourse.save()
+        self.labSection = MySection(course=self.mathCourse, number=800, teacher=None)
+        self.lectureSection = MySection(course=self.mathCourse, number=301, teacher=None)
+        self.labSection.save()
+        self.lectureSection.save()
+
+
+
 
         self.supervisor = MyUser(first_name="supervisor", last_name="super", email="test1@uwm.edu", password="pass1",
                             address="123 straight st", phone_number="1234567890", role="supervisor")
@@ -315,23 +322,56 @@ class TestAssignToSection(TestCase):
         self.ta2.save()
         self.supervisor.save()
 
+        self.labSection2 = MySection(course=self.mathCourse, number=801, teacher=self.ta2)
+        self.lectureSection2 = MySection(course=self.mathCourse, number=302, teacher=self.instructor2)
+        self.labSection2.save()
+        self.lectureSection2.save()
+
     def test_assign_ta_to_lecture_fails(self):
-        pass
+        resp = self.client.post("/course/", {
+            "section_selection": MySection.objects.get(number=self.lectureSection.number, course=self.mathCourse).id,
+            "person_selection": MyUser.objects.get(email=self.ta.email).id, "ass_section_butt": ''}, follow=True)
+        self.assertEqual("Only Instructors can be assigned to lecture sections.", resp.context["message"])
 
     def test_assign_ta_to_empty_lab(self):
-        pass
+        resp = self.client.post("/course/", {
+            "section_selection": MySection.objects.get(number=self.labSection.number, course=self.mathCourse).id,
+            "person_selection": MyUser.objects.get(email=self.ta.email).id, "ass_section_butt": ''}, follow=True)
+        self.assertEqual("Added Teacher to section.", resp.context["message"])
 
     def test_assign_ta_to_ta_lab(self):
-        pass
+
+        resp = self.client.post("/course/", {
+            "section_selection": MySection.objects.get(number=self.labSection2.number, course=self.mathCourse).id,
+            "person_selection": MyUser.objects.get(email=self.ta.email).id, "ass_section_butt": ''}, follow=True)
+        self.assertEqual("Teacher: ta2 assist was removed.\nTeacher: ta assist was added.", resp.context["message"])
 
     def test_assign_instructor_to_empty_lecture(self):
-        pass
+        resp = self.client.post("/course/", {
+            "section_selection": MySection.objects.get(number=self.lectureSection.number, course=self.mathCourse).id,
+            "person_selection": MyUser.objects.get(email=self.instructor.email).id, "ass_section_butt": ''}, follow=True)
+        self.assertEqual("Added Teacher to section.", resp.context["message"])
 
     def test_assign_instructor_to_instructor_lecture(self):
-        pass
+        resp = self.client.post("/course/", {
+            "section_selection": MySection.objects.get(number=self.lectureSection2.number, course=self.mathCourse).id,
+            "person_selection": MyUser.objects.get(email=self.instructor.email).id, "ass_section_butt": ''}, follow=True)
+        self.assertEqual("Teacher: instructor2 super2 was removed.\nTeacher: instructor super was added.", resp.context["message"])
 
     def test_assign_instructor_to_lab_fails(self):
-        pass
+        resp = self.client.post("/course/", {
+            "section_selection": MySection.objects.get(number=self.labSection.number, course=self.mathCourse).id,
+            "person_selection": MyUser.objects.get(email=self.instructor.email).id, "ass_section_butt": ''}, follow=True)
+        self.assertEqual("Only TAs can be assigned to lab sections.", resp.context["message"])
 
     def test_assign_supervisor_to_section_fails(self):
-        pass
+        resp = self.client.post("/course/", {
+            "section_selection": MySection.objects.get(number=self.labSection.number, course=self.mathCourse).id,
+            "person_selection": MyUser.objects.get(email=self.supervisor.email).id, "ass_section_butt": ''},
+                                follow=True)
+        self.assertEqual("Only TAs can be assigned to lab sections.", resp.context["message"])
+
+        resp = self.client.post("/course/", {
+            "section_selection": MySection.objects.get(number=self.lectureSection.number, course=self.mathCourse).id,
+            "person_selection": MyUser.objects.get(email=self.supervisor.email).id, "ass_section_butt": ''}, follow=True)
+        self.assertEqual("Only Instructors can be assigned to lecture sections.", resp.context["message"])
