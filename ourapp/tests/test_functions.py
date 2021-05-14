@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from ourapp.models import MyCourse, MySection, MyUser
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
-from ourapp.helper_methods import login
+from ourapp.helper_methods import login, ValidTeacherForSection
 from django.contrib.auth.models import User
 from django.conf import settings
 from importlib import import_module
@@ -221,3 +221,71 @@ class TestValidInputForAccountCreation(TestCase):
     def test_CreateAccountsFunction_at_missing_in_email_no_space_valid_phone_number(self):
         self.assertEqual(CreateAccountsFunction(self.email4, self.phonenumber2), "Valid", msg="should have been valid data.")
 
+
+class TestValidTeacherForSection(TestCase):
+
+    def setUp(self):
+        self.user1 = MyUser.objects.create(email='user1@uwm.edu', password='password1', first_name='joe',
+                                          last_name='johnson', address='123 main st.', phone_number='123', role='supervisor')
+        self.user1.save()
+
+        self.user2 = MyUser.objects.create(email='user2@uwm.edu', password='password2', first_name='joe',
+                                           last_name='johnson', address='123 main st.', phone_number='123',
+                                           role='instructor')
+        self.user2.save()
+
+        self.user3 = MyUser.objects.create(email='user3@uwm.edu', password='password3', first_name='joe',
+                                           last_name='johnson', address='123 main st.', phone_number='123',
+                                           role='ta')
+        self.user3.save()
+
+        self.user4 = MyUser.objects.create(email='user1@uwm.edu', password='password1', first_name='joe',
+                                           last_name='johnson', address='123 main st.', phone_number='123',
+                                           role='')
+        self.user4.save()
+
+        self.course1 = MyCourse(name="System Programming", number=337)
+        self.course1.save()
+
+        self.section1 = MySection(course=self.course1, number=837)
+        self.section1.save()
+
+        self.section2 = MySection(course=self.course1, number=200)
+        self.section2.save()
+
+        self.section3 = MySection(course=self.course1, number=900)
+        self.section3.save()
+
+        self.section4 = MySection(course=self.course1, number=300)
+        self.section4.save()
+
+    #user2 = instructor
+    #user3 = ta
+    def test_valid_ta_and_valid_lab_section(self):
+        self.assertTrue(ValidTeacherForSection(self.user3, self.section1))
+        self.assertTrue(ValidTeacherForSection(self.user3, self.section3))
+
+    def test_valid_instructor_to_lecture_section(self):
+        self.assertTrue(ValidTeacherForSection(self.user2, self.section2))
+        self.assertTrue(ValidTeacherForSection(self.user2, self.section4))
+
+    def test_valid_ta_and_invalid_section(self):
+        self.assertTrue(ValidTeacherForSection(self.user3, self.section2))
+        self.assertTrue(ValidTeacherForSection(self.user3, self.section4))
+
+    def test_valid_instructor_and_invalid_section(self):
+        self.assertTrue(ValidTeacherForSection(self.user2, self.section1))
+        self.assertTrue(ValidTeacherForSection(self.user2, self.section3))
+
+    def test_invalid_role_and_valid_section(self):
+        self.assertTrue(ValidTeacherForSection(self.user1, self.section3))
+
+    def test_no_role_and_valid_section(self):
+        self.assertTrue(ValidTeacherForSection(self.user4, self.section3))
+
+    def test_not_MyUser(self):
+        with self.assertRaises(TypeError):
+            ValidTeacherForSection(self.section1, self.section1)
+    def test_not_MySection(self):
+        with self.assertRaises(TypeError):
+            ValidTeacherForSection(self.user3, self.user3)
