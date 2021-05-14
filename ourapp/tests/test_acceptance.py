@@ -375,3 +375,54 @@ class TestAssignToSection(TestCase):
             "section_selection": MySection.objects.get(number=self.lectureSection.number, course=self.mathCourse).id,
             "person_selection": MyUser.objects.get(email=self.supervisor.email).id, "ass_section_butt": ''}, follow=True)
         self.assertEqual("Only Instructors can be assigned to lecture sections.", resp.context["message"])
+
+
+class TestDeleteCourse(TestCase):
+
+    def setUp(self):
+        self.courses = MyCourse.objects.all()
+        self.client = Client()
+        self.mathCourse = MyCourse(name="Math", number=100)
+        self.mathCourse.save()
+        self.labSection = MySection(course=self.mathCourse, number=800, teacher=None)
+        self.lectureSection = MySection(course=self.mathCourse, number=301, teacher=None)
+        self.labSection.save()
+        self.lectureSection.save()
+
+        self.newCourse = MyCourse(name="CS", number=150)
+        self.newCourse.save()
+
+    def test_delete_course_no_sections(self):
+        resp = self.client.post("/course/", {"course_to_remove": self.newCourse.id, "delCButt": ''}, follow=True)
+        self.assertNotIn(self.newCourse, resp.context['courses'])
+        self.assertEqual("Course successfully deleted", resp.context['message'])
+
+    def test_delete_course_with_section(self):
+        resp = self.client.post("/course/", {"course_to_remove": self.mathCourse.id, "delCButt": ''}, follow=True)
+
+        self.assertNotIn(self.mathCourse, resp.context['courses'])
+        self.assertEqual("Course successfully deleted", resp.context['message'])
+
+class TestDeleteSection(TestCase):
+    def setUp(self):
+        self.courses = MyCourse.objects.all()
+        self.client = Client()
+        self.mathCourse = MyCourse(name="Math", number=100)
+        self.mathCourse.save()
+        self.labSection = MySection(course=self.mathCourse, number=800, teacher=None)
+        self.lectureSection = MySection(course=self.mathCourse, number=201, teacher=None)
+        self.labSection.save()
+        self.lectureSection.save()
+
+        self.newCourse = MyCourse(name="CS", number=150)
+        self.newCourse.save()
+
+    def test_delete_section_lab(self):
+        resp = self.client.post("/course/", {"section_to_remove": self.labSection.id, "delSButt": ''}, follow=True)
+        self.assertNotIn(self.labSection, resp.context['sections'])
+        self.assertEqual("Section successfully deleted", resp.context['message'])
+
+    def test_delete_section_lecture(self):
+        resp = self.client.post("/course/", {"section_to_remove": self.lectureSection.id, "delSButt": ''}, follow=True)
+        self.assertNotIn(self.lectureSection, resp.context['sections'])
+        self.assertEqual("Section successfully deleted", resp.context['message'])
