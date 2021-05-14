@@ -65,29 +65,54 @@ Ethan:
 
 Wednesday 5/12 - Notes by Michael DeCleene
 
-Sabrina
-Today:  nothing
-Tomorrow:  Do things tomorrow.
-Impedes:  nothing
+  Sabrina
+  Today:  nothing
+  Tomorrow:  Do things tomorrow.
+  Impedes:  nothing
 
-James
-Today:  Fixed the section buttons so they appear where they should.  Added information to contacts page.  Just need to make it look nice now.
-Tomorrow:  Prettifying
-Impedes: nothing
+  James
+  Today:  Fixed the section buttons so they appear where they should.  Added information to contacts page.  Just need to make it look nice now.
+  Tomorrow:  Prettifying
+  Impedes: nothing
 
-Ethan
-Today:  nothing
-Tomorrow:  doing things in lab
-Impedes:  nothing
-
-
-Bennett
-Today:  nothing today
-Tomorrow:  spend time testing delete buttons.
-Impedes:  nothing
+  Ethan
+  Today:  nothing
+  Tomorrow:  doing things in lab
+  Impedes:  nothing
 
 
-Michael
-Today:  fixed course.html, assigning to sections,
-Tomorrow:  doing things for logout in lab
-Impedes:  nothing
+  Bennett
+  Today:  nothing today
+  Tomorrow:  spend time testing delete buttons.
+  Impedes:  nothing
+
+
+  Michael
+  Today:  fixed course.html, assigning to sections,
+  Tomorrow:  doing things for logout in lab
+  Impedes:  nothing
+
+Wednesday 5/13 - Notes by James Yeazel
+
+  James:
+    Today: Added delete account buttons, worked on css for the contact page, added log out button
+    Tomorrow: work more on css for contact page
+    Impedes: nothing
+    
+   Bennett:
+    Today: Got delete section and delete course buttons working, worked on edit account views, acceptance tests for deleting courses and sections
+    Tomorrow: Work on acceptance tests for deleting accounts, get delete account button working
+    Impedes: nothing
+    
+   Michael:
+    Today: Worked on edit account tests, helped with edit account button
+    Tomorrow: Finish edit account tests
+    Impedes: nothing
+    
+   Sabrina:
+    Today: Worked on edit account button, worked on edit own account button, added tests to helper methods
+    Tomorrow: work on unit test validating session, look for more tests to write
+    Impedes: needs more to do
+    
+   Ethan:
+    not present
