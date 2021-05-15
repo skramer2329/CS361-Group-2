@@ -137,7 +137,6 @@ class Course(View):
 
         if request.method == 'POST' and 'delCButt' in request.POST:
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
-            courses = MyCourse.objects.all()
             sections = MySection.objects.all()
             course_to_remove = request.POST['course_to_remove']
             course_to_remove = MyCourse(course_to_remove)
