@@ -148,3 +148,9 @@ def ValidTeacherForSection(person_selection, section_selection):
         section_selection.teacher = person_selection
         section_selection.save()
         return [False, message]
+
+def ValidateDeleteAccount(sessionemail, useremail):
+    if(sessionemail != useremail):
+        return "Valid"
+    else:
+        return "Cannot delete the account that is logged into this session."
