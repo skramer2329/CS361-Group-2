@@ -110,12 +110,12 @@
                         <!-- Modal content -->
                         <div class="modal-content">
                             <span class="close">×</span>
-                            <form action="/course/" method="post"> {% csrf_token %}
+                            <form action="/contacts/" method="post"> {% csrf_token %}
                                 <h1>Are you sure you wish to delete {{ i.first_name }} {{ i.last_name }}?</h1>
-                                <select class="form-field hidden" name="section_to_remove">
+                                <select class="form-field hidden" name="Contact_to_remove">
                                     <option value={{ i.id }}></option>
                                 </select>
-                                <button type="submit" name="delSButt" class="subButt delButt">Yes</button>
+                                <button type="submit" name="delContactButt" class="subButt delButt">Yes</button>
                             </form>
                         </div>
                     </div>
