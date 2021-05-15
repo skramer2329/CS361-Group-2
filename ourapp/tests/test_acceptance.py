@@ -533,3 +533,109 @@ class TestDeleteAccounts(TestCase):
 
         resp = self.client.post("/contacts/", {"Contact_to_remove": '1', "delContactButt": ''}, follow=True)
         self.assertEqual("Cannot delete the account that is logged into this session.", resp.context["message"])
+
+class TestEditAccounts(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.super = MyUser(first_name="supervisor", last_name="super", email="test1@uwm.edu", password="pass1",
+                            address="123 straight st", phone_number="1234567890", role="supervisor")
+        self.super.save()
+        self.instructor = MyUser(first_name="instructor", last_name="super", email="test2@uwm.edu",
+                                 password='pass2', address="123 straight st", phone_number="1234567890",
+                                 role='instructor')
+        self.instructor.save()
+
+        self.ta = MyUser(first_name="ta", last_name="super", email="test3@uwm.edu",
+                         password='pass3', address="123 straight st", phone_number="1234567890",
+                         role='ta')
+        self.ta.save()
+
+    def test_edit_account_first_name(self):
+        print(self.ta.id)
+        resp = self.client.post("/contacts/", {"first_name": "ta2", "last_name": "super", "email": "test3@uwm.edu",
+                                           "password": "pass3", "address": "123 straight st",
+                                           "phone_number": "1234567890",
+                                           "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_account_last_name(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super2", "email": "test3@uwm.edu",
+                                           "password": "pass3", "address": "123 straight st",
+                                           "phone_number": "1234567890",
+                                           "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_account_valid_email(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test32@uwm.edu",
+                                               "password": "pass3", "address": "123 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_account_invalid_email(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3uwm.edu",
+                                               "password": "pass3", "address": "123 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Email format must contain '@' symbol.", resp.context["message"])
+
+    def test_edit_account_password(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3@uwm.edu",
+                                               "password": "pass4", "address": "123 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_address(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3@uwm.edu",
+                                               "password": "pass3", "address": "1234 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_phone_number(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3@uwm.edu",
+                                               "password": "pass3", "address": "123 straight st",
+                                               "phone_number": "1234567899",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_role(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3@uwm.edu",
+                                               "password": "pass3", "address": "123 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "supervisor", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+class TestDeleteAccounts(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+        self.super = MyUser(first_name="supervisor", last_name="super", email="test1@uwm.edu", password="pass1",
+                            address="123 straight st", phone_number="1234567890", role="supervisor")
+        self.super.save()
+        self.instructor = MyUser(first_name="instructor", last_name="super", email="test2@uwm.edu",
+                                 password='pass2', address="123 straight st", phone_number="1234567890",
+                                 role='instructor')
+        self.instructor.save()
+
+        self.ta = MyUser(first_name="ta", last_name="super", email="test3@uwm.edu",
+                         password='pass3', address="123 straight st", phone_number="1234567890",
+                         role='ta')
+        self.ta.save()
+
+    def test_delete_account(self):
+        print(self.ta.id)
+        response = self.client.post("/", {"uname": "test1@uwm.edu", "psw": "pass1"}, follow=True)
+
+        resp = self.client.post("/contacts/", {"Contact_to_remove": '3', "delContactButt": ''}, follow=True)
+        self.assertEqual("Contact was successfully deleted.", resp.context["message"])
+
+    def test_cannot_delete_own_account(self):
+        print(self.ta.id)
+        response = self.client.post("/", {"uname": "test1@uwm.edu", "psw": "pass1"}, follow=True)
+
+        resp = self.client.post("/contacts/", {"Contact_to_remove": '1', "delContactButt": ''}, follow=True)
+        self.assertEqual("Cannot delete the account that is logged into this session.", resp.context["message"])
