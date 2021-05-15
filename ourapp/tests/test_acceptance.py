@@ -62,7 +62,6 @@ class TestAccountCreation(TestCase):
                                      "role": "supervisor", "user": '3', "create_butt": ''}, follow=True)
         self.assertIn(MyUser.objects.get(email='newsupervisor@uwm.edu'), response.context['accounts'],
                       "new account not showing up in rendered response")
-        #self.assertEqual("Account created successfully", response.context["message"])
 
         # testing a password that was already used
         r = self.client.post("/account/", {"email": "test4@uwm.edu", "password": "pass2", "first_name": "bill","last_name": "johnson", "phone_number": "1234567890",
@@ -70,7 +69,6 @@ class TestAccountCreation(TestCase):
                                            "role": "supervisor", "user": '3', "create_butt": ''}, follow=True)
         self.assertIn(MyUser.objects.get(email="test4@uwm.edu"), r.context['accounts'],
                       "new account not showing up in rendered response")
-        #self.assertEqual("Account created successfully", r.context["message"])
 
     def test_create_new_instructor(self):
 
@@ -83,8 +81,6 @@ class TestAccountCreation(TestCase):
         self.assertIn(MyUser.objects.get(email='newinstructor@uwm.edu'), r.context['accounts'],
                       "new account not showing up in rendered response")
 
-        #self.assertEqual("Account created successfully", r.context["message"])
-
         # testing a password that was already used
         r = self.client.post("/account/", {"email": "test6@uwm.edu", "password": "pass2", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
@@ -92,8 +88,6 @@ class TestAccountCreation(TestCase):
                                            "role": "instructor", "user": '3', "create_butt": ''}, follow=True)
         self.assertIn(MyUser.objects.get(email="test6@uwm.edu"), r.context['accounts'],
                       "new account not showing up in rendered response")
-
-        #self.assertEqual("Account created successfully", r.context["message"])
 
     def test_create_new_ta(self):
         r = self.client.post("/account/", {"email": "newta@uwm.edu", "password": "pass7", "first_name": "bill",
@@ -104,8 +98,6 @@ class TestAccountCreation(TestCase):
         self.assertIn(MyUser.objects.get(email='newta@uwm.edu'), r.context['accounts'],
                       "new account not showing up in rendered response")
 
-        #self.assertEqual("Account created successfully", r.context["message"])
-
         # testing a password that was already used
         r = self.client.post("/account/", {"email": "test8@uwm.edu", "password": "pass2", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
@@ -114,15 +106,11 @@ class TestAccountCreation(TestCase):
         self.assertIn(MyUser.objects.get(email="test8@uwm.edu"), r.context['accounts'],
                       "new account not showing up in rendered response")
 
-        #self.assertEqual("Account created successfully", r.context["message"])
-
     def test_try_creating_existing_supervisor(self):
         r = self.client.post("/account/", {"email": self.super.email, "password": "pass1", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "supervisor", "user": '3', "create_butt": ''}, follow=True)
-
-        #self.assertEqual("A user with this email has already been created.  Try again.", r.context['message'])
         self.assertTemplateUsed(r, "account.html")
 
     def test_try_creating_existing_instructor(self):
@@ -131,13 +119,11 @@ class TestAccountCreation(TestCase):
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "instructor", "user": '3', "create_butt": ''}, follow=True)
         self.assertTemplateUsed(r, "account.html")
-        #self.assertEqual("A user with this email has already been created.  Try again.", r.context['message'])
 
     def test_try_creating_existing_ta(self):
         r = self.client.post("/account/", {"email": self.ta.email, "password": "pass3", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211", "role": "ta", "user": '3', "create_butt": ''}, follow=True)
-        #self.assertEqual("A user with this email has already been created.  Try again.", r.context['message'])
         self.assertTemplateUsed(r, "account.html")
 
 class TestCourseCreation(TestCase):
