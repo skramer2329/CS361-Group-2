@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpRequest
 from django.http import request
 
-
+# TODO write tests
 def validate_session(request):
     try:
         key = request.session['name']
@@ -11,7 +11,7 @@ def validate_session(request):
         return False
 
     return True
-
+# has tests already
 def get_user(email):
     try:
         u = MyUser.objects.get(email__iexact=email)
@@ -19,7 +19,7 @@ def get_user(email):
     except:
         return None
 
-
+# has tests already
 def login(email, password):
     noSuchUser = False
     badPassword = False
@@ -36,7 +36,7 @@ def login(email, password):
     else:
         return "Valid"
 
-
+# has tests already
 def validate_course_number(number):
     x = str(number)
     if len(str(number)) == 3 and str(number).isdigit():
@@ -44,7 +44,7 @@ def validate_course_number(number):
     else:
         return False
 
-
+# has tests already
 def create_course(name, number):
     valid = validate_course_number(number)
 
@@ -66,7 +66,7 @@ def create_course(name, number):
         a.save()
         return a
 
-
+# has tests already
 def validate_section_number(number):
     x = str(number)
     if len(str(number)) == 3 and str(number).isdigit():
@@ -74,7 +74,7 @@ def validate_section_number(number):
     else:
         return False
 
-
+# has tests already
 def create_section(course, number):
     course = MyCourse(course)
     valid = validate_course_number(number)
@@ -97,7 +97,7 @@ def create_section(course, number):
 
         return a
 
-
+# has tests
 def CreateAccountsFunction(email, phone_number):
     message = "Valid"
     if valid_email_format(email) == "Email does not contain @.":
@@ -111,7 +111,7 @@ def CreateAccountsFunction(email, phone_number):
 
     return message
 
-
+# has tests
 def valid_email_format(email):
     if "@" not in email:
         return "Email does not contain @."
@@ -120,10 +120,11 @@ def valid_email_format(email):
     else:
         return "Valid"
 
-
+# has tests
 def valid_phone_number(phone_number):
     return phone_number.isdigit()
 
+# has tests
 def ValidTeacherForSection(person_selection, section_selection):
     if type(person_selection) is not MyUser:
         raise TypeError
