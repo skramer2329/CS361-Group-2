@@ -8,7 +8,7 @@ from django.conf import settings
 from importlib import import_module
 
 from ourapp.helper_methods import login, get_user, validate_course_number, create_course, \
-    validate_section_number, create_section
+    validate_section_number, create_section, ValidateDeleteAccount
 
 from ourapp.helper_methods import CreateAccountsFunction, valid_email_format, valid_phone_number
 
@@ -289,3 +289,12 @@ class TestValidTeacherForSection(TestCase):
     def test_not_MySection(self):
         with self.assertRaises(TypeError):
             ValidTeacherForSection(self.user3, self.user3)
+
+
+class TestValidateDeleteAccount(TestCase):
+    def test_session_email_deleted_email_same(self):
+        self.assertEqual(ValidateDeleteAccount("test@uwm.edu", "test@uwm.edu"),
+                         "Cannot delete the account that is logged into this session.")
+
+    def test_session_email_deleted_email_different(self):
+        self.assertEqual(ValidateDeleteAccount("test@uwm.edu", "test1@uwm.edu"), "Valid")
