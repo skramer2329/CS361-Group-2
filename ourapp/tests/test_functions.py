@@ -150,7 +150,7 @@ class TestCourseInput(TestCase):
         with self.assertRaises(TypeError, msg = "There must be an integer input to the validate_course_number() function"):
             validate_course_number()
 
-    def test_course_validation_no_arguments(self):
+    def test_course_validation_too_many_arguments(self):
         with self.assertRaises(TypeError,
                                msg="There must be only one integer input to the validate_course_number() function"):
             validate_course_number(123, 123)
@@ -161,18 +161,34 @@ class TestCourseCreation(TestCase):
         self.course1 = MyCourse(name="System Programming", number=337)
         self.course1.save()
 
-    def create_course_number_used(self):
+    def test_create_course_number_used(self):
         self.assertEqual(create_course("New Course", 337),"A course with this number has already been created.  Try again.")
 
-    def create_course_number_unused(self):
+    def test_create_course_number_unused(self):
         a = MyCourse(name='Course1', number=123)
         self.assertEqual(create_course('Course1', 123), a)
 
-    def create_course_number_big(self):
+    def test_create_course_number_big(self):
         self.assertEqual(create_course("Course2", 37), "The course number is not 3 digits long.  Try again.")
 
-    def create_course_number_small(self):
+    def test_create_course_number_small(self):
         self.assertEqual(create_course("Course2", 5678), "The course number is not 3 digits long.  Try again.")
+
+    def test_create_course_name_not_string(self):
+        with self.assertRaises(TypeError, msg= "The first parameter in the create_course() function must be a string"):
+            create_course(123, 123)
+
+    def test_create_course_number_not_int(self):
+        with self.assertRaises(TypeError, msg= "The second parameter in the create_course() function must be an int"):
+            create_course("name of course", "second parameter")
+
+    def test_create_course_not_enough_args(self):
+        with self.assertRaises(TypeError, msg= "The create_course() function must take 2 parameters"):
+            create_course("name of course")
+
+    def test_create_course_too_many_args(self):
+        with self.assertRaises(TypeError, msg= "The create_course() function must take 2 parameters"):
+            create_course("name of course", 123, "arg3")
 
 class TestSectionInput(TestCase):
 
@@ -185,6 +201,18 @@ class TestSectionInput(TestCase):
     def test_course_validation_too_short(self):
         self.assertFalse(validate_section_number(8012))
 
+    def test_course_validation_not_int(self):
+        with self.assertRaises(TypeError, msg= "The validate_section_number() function must take an integer parameter"):
+            validate_section_number("course_num")
+
+    def test_course_validation_too_many_args(self):
+        with self.assertRaises(TypeError, msg= "The validate_section_number() function must take only one integer parameter"):
+            validate_section_number(123, "course_num")
+
+    def test_course_validation_not_enough_args(self):
+        with self.assertRaises(TypeError, msg= "The validate_section_number() function must take an integer parameter"):
+            validate_section_number()
+
 class TestSectionCreation(TestCase):
     def setUp(self):
         self.course1 = MyCourse(name="System Programming", number=337)
@@ -193,19 +221,34 @@ class TestSectionCreation(TestCase):
         self.section1 = MySection(course=self.course1, number=901)
         self.section1.save()
 
-    def create_section_number_used(self):
+    def test_create_section_number_used(self):
         self.assertEqual(create_section(self.course1, 901), "A section with this number within this course has already been created.  Try again.")
 
-    def create_section_number_unused(self):
+    def test_create_section_number_unused(self):
         a = MySection(course=self.course1, number=801)
         self.assertEqual(create_section(self.course1, 801), a)
 
-    def create_section_number_big(self):
+    def test_create_section_number_big(self):
         self.assertEqual(create_section(self.course1, 8098), "The section number is not 3 digits long.  Try again.")
 
-    def create_section_number_small(self):
+    def test_create_section_number_small(self):
         self.assertEqual(create_section(self.course1, 83), "The section number is not 3 digits long.  Try again.")
 
+    def test_create_section_first_param_not_course(self):
+        with self.assertRaises(TypeError, msg= "The create_section() function must take a course object as its first argument"):
+            create_section("hello", 83)
+
+    def test_create_section_second_param_not_int(self):
+        with self.assertRaises(TypeError, msg= "The create_section() function must take an integer as its second argument"):
+            create_section(self.course1, "string")
+
+    def test_create_section_too_many_args(self):
+        with self.assertRaises(TypeError, msg="The create_section() function must take two arguments"):
+            create_section(self.course1, 456, "third")
+
+    def test_create_section_not_enough_args(self):
+        with self.assertRaises(TypeError, msg="The create_section() function must take two arguments"):
+            create_section(self.course1)
 
 class TestValidInputForAccountCreation(TestCase):
     email1 = None
@@ -235,6 +278,18 @@ class TestValidInputForAccountCreation(TestCase):
 
     def test_valid_email_format_valid_email(self):
         self.assertEqual(valid_email_format(self.email4), "Valid", msg="Valid email format returns valid message.")
+
+    def test_valid_email_format_not_string(self):
+        with self.assertRaises(TypeError, msg= "The valid_email_format() function must take the email as a string for input"):
+            valid_email_format(123)
+
+    def test_valid_email_format_no_args(self):
+        with self.assertRaises(TypeError, msg= "The valid_email_format() function must take an email as a string for input"):
+            valid_email_format()
+
+    def test_valid_email_too_many_args(self):
+        with self.assertRaises(TypeError, msg= "The valid_email_format() function must take an email as a string for input"):
+            valid_email_format(self.email1, "another")
 
     def test_valid_phone_number_invalid_phone_number(self):
         self.assertFalse(valid_phone_number(self.phonenumber1), msg="phone number containing letters should not be valid phone number")
@@ -335,6 +390,14 @@ class TestValidTeacherForSection(TestCase):
         with self.assertRaises(TypeError):
             ValidTeacherForSection(self.user3, self.user3)
 
+    def test_not_enough_args(self):
+        with self.assertRaises(TypeError):
+            ValidTeacherForSection(self.user3)
+
+    def test_too_many_args(self):
+        with self.assertRaises(TypeError):
+            ValidTeacherForSection(self.user3, self.user3, self.user3)
+
 
 class TestValidateDeleteAccount(TestCase):
     def test_session_email_deleted_email_same(self):
@@ -343,3 +406,19 @@ class TestValidateDeleteAccount(TestCase):
 
     def test_session_email_deleted_email_different(self):
         self.assertEqual(ValidateDeleteAccount("test@uwm.edu", "test1@uwm.edu"), "Valid")
+
+    def test_validate_delete_account_first_arg_bad(self):
+        with self.assertRaises(TypeError, msg= "ValidateDeleteAccount() function must take the emails as strings"):
+            ValidateDeleteAccount(123, "test@uwm.edu")
+
+    def test_validate_delete_account_second_arg_bad(self):
+        with self.assertRaises(TypeError, msg= "ValidateDeleteAccount() function must take the emails as strings"):
+            ValidateDeleteAccount("test@uwm.edu", 123)
+
+    def test_validate_delete_account_too_many_args(self):
+        with self.assertRaises(TypeError, msg= "ValidateDeleteAccount() function must take only two emails"):
+            ValidateDeleteAccount("test@uwm.edu", "test1@uwm.edu", "test2@uwm.edu")
+
+    def test_validate_delete_account_not_enough_args(self):
+        with self.assertRaises(TypeError, msg= "ValidateDeleteAccount() function requires two arguments"):
+            ValidateDeleteAccount("test@uwm.edu")
