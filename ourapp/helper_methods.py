@@ -13,6 +13,9 @@ def validate_session(request):
     return True
 # has tests already
 def get_user(email):
+    if valid_email_format(email) != "Valid":
+        raise TypeError("The get_user() function requires a valid email to be used as input")
+
     try:
         u = MyUser.objects.get(email__iexact=email)
         return u
@@ -21,6 +24,9 @@ def get_user(email):
 
 # has tests already
 def login(email, password):
+    if valid_email_format(email) != "Valid":
+        raise TypeError("The get_user() function requires a valid email to be used as input")
+
     noSuchUser = False
     badPassword = False
     try:
@@ -38,6 +44,9 @@ def login(email, password):
 
 # has tests already
 def validate_course_number(number):
+    """if type(number) != int:
+        raise TypeError("validate_course_number() function must take an integer as input")"""
+
     x = str(number)
     if len(str(number)) == 3 and str(number).isdigit():
         return True
@@ -46,6 +55,11 @@ def validate_course_number(number):
 
 # has tests already
 def create_course(name, number):
+    """if type(name) != str:
+        raise TypeError("create_course() function must take an integer as input for the number")
+    if type(number) != int:
+        raise TypeError("create_course() function must take a string as input for the name")"""
+
     valid = validate_course_number(number)
 
     if not valid:
@@ -68,6 +82,9 @@ def create_course(name, number):
 
 # has tests already
 def validate_section_number(number):
+    """if type(number) != int:
+        raise TypeError("validate_section_number() function must take an integer as input")"""
+
     x = str(number)
     if len(str(number)) == 3 and str(number).isdigit():
         return True
@@ -76,6 +93,11 @@ def validate_section_number(number):
 
 # has tests already
 def create_section(course, number):
+    """if type(course) is not MyCourse:
+        raise TypeError("create_section() function must take a course as its first argument")
+    if type(number) is not int:
+        raise TypeError("create_section() function must take an int as its second argument")"""
+
     course = MyCourse(course)
     valid = validate_course_number(number)
     if not valid:
@@ -150,6 +172,8 @@ def ValidTeacherForSection(person_selection, section_selection):
         return [False, message]
 
 def ValidateDeleteAccount(sessionemail, useremail):
+    if valid_email_format(sessionemail) != "Valid" or valid_email_format(useremail) != "Valid":
+        raise TypeError("The get_user() function requires a valid email to be used as input for both arguments")
     if(sessionemail != useremail):
         return "Valid"
     else:

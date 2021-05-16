@@ -12,6 +12,9 @@ class Role(models.TextChoices):
 class Skill(models.Model):
     name = models.CharField(max_length=200, default=None)
 
+    def __str__(self):
+        return self.name
+
 
 class MyUser(models.Model):
     first_name = models.CharField(max_length=100, default=None)
@@ -59,10 +62,8 @@ class MyCourse(models.Model):
     number = models.IntegerField(default=None)
     people = models.ManyToManyField(MyUser, default=None, blank=True)
 
-
     def __str__(self):
         return self.name
-
 
 
 # Section refers to lab or course section
