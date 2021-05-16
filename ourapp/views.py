@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 
 from django.views import View
-from .models import MyUser, MyCourse, MySection
+from .models import MyUser, MyCourse, MySection, Skill
 from django.http import HttpResponse
 
 from ourapp.helper_methods import login, get_user, create_course, create_section, validate_session, ValidTeacherForSection, ValidateDeleteAccount
@@ -23,12 +23,19 @@ class CreateAccounts(View):
 
         request.session['submitted'] = False
         accounts = MyUser.objects.all()
+        email = request.session['name']
+        user = get_user(email)
+        skills = user.skills.all()
 
-        return render(request, "account.html", {"accounts": accounts})
+        return render(request, "account.html", {"accounts": accounts, "skills": skills})
 
     def post(self, request):
 
         if request.method == 'POST' and 'create_butt' in request.POST:
+            email = request.session['name']
+            user = get_user(email)
+            skills = user.skills.all()
+
             accounts = MyUser.objects.all()
             user = request.POST['user']
             user = MyUser(user)
@@ -49,7 +56,49 @@ class CreateAccounts(View):
             user.role = role
 
             user.save()
-            return render(request, "account.html", {"accounts": accounts})
+            return render(request, "account.html", {"accounts": accounts, "skills": skills})
+
+        if request.method == 'POST' and 'add_skill' in request.POST:
+            email = request.session['name']
+            user = get_user(email)
+            skills = user.skills.all()
+            accounts = MyUser.objects.all()
+
+            skill_exists = True
+            input = request.POST['skill']
+            already_have = True
+
+            try:
+                Skill.objects.get(name=input)
+
+            except:
+                skill_exists = False
+
+            try:
+                skills.get(name=input)
+
+            except:
+                already_have = False
+
+            if not skill_exists:
+                new_skill = Skill(name=input)
+                new_skill.save()
+                user.skills.add(new_skill)
+
+                skills = user.skills.all()
+                return render(request, "account.html", {"message": "New skill was added.", "accounts": accounts, "skills": skills})
+
+            if not already_have:
+                skill_to_add = Skill.objects.filter(name=input)
+                user.skills.add(skill_to_add)
+                skills = user.skills.all()
+                return render(request, "account.html", {"accounts": accounts, "skills": skills,
+                                                        "message": "New skill was added."})
+
+            else:
+                return render(request, "account.html", {"accounts": accounts, "skills": skills,
+                                                        "message": "You already have this skill!"})
+
 
 class Course(View):
     def get(self, request):
@@ -163,6 +212,7 @@ class Login(View):
         if message == "Valid":
             u = get_user(x)
             request.session['name'] = u.email
+            request.session['role'] = u.role
             request.session.set_expiry(0)
             if u.is_supervisor():
                 request.session['supervisor'] = True

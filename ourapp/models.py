@@ -10,7 +10,7 @@ class Role(models.TextChoices):
 
 
 class Skill(models.Model):
-    skill = models.CharField(max_length=200, default=None)
+    name = models.CharField(max_length=200, default=None)
 
 
 class MyUser(models.Model):
