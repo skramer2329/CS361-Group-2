@@ -13,18 +13,6 @@ from ourapp.helper_methods import login, get_user, validate_course_number, creat
 from ourapp.helper_methods import CreateAccountsFunction, valid_email_format, valid_phone_number
 
 
-
-class TestCanLogin(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.user1 = MyUser.objects.create(email='user1@uwm.edu', password='password1', first_name='joe',
-                            last_name='johnson', address='123 main st.', phone_number='123', role='ta')
-        self.user1.save()
-
-        self.user2 = MyUser.objects.create(email='user2@uwm.edu', password='password2', first_name='joe',
-                        last_name='johnson', address='123 main st.', phone_number='123',role='ta')
-
-
 class TestLoginFunction(TestCase):
     def setUp(self):
         self.client = Client()
@@ -63,10 +51,35 @@ class TestLoginFunction(TestCase):
         self.assertEqual(login('user1@uwm.edu', 'NobodyPassword'),
                          "The password that you entered is not correct.  Please retry.")
 
+
     def test_login_nobody(self):
         self.assertEqual(login('user4@uwm.edu', 'password1'), "The username that you used does not exist. Please retry.")
         self.assertEqual(login('user4@uwm.edu', 'NobodyPassword'),
                          "The username that you used does not exist. Please retry.")
+
+    def test_login_email_with_space(self):
+        with self.assertRaises(TypeError, msg = "The login() function must take an email as its first parameter"):
+            login("instructor@uwm. edu", "password")
+
+    def test_login_email_without_at_symbol(self):
+        with self.assertRaises(TypeError, msg = "The login() function must take an email as its first parameter"):
+            login("instructoruwm.edu", "password")
+
+    def test_login_email_integer_as_email(self):
+        with self.assertRaises(TypeError, msg = "The login() function must take an email as its first parameter"):
+            login(123, "password")
+
+    def test_login_email_too_many_arguments(self):
+        with self.assertRaises(TypeError, msg = "The login() function must take 2 parameters"):
+            login(123, "password", "string")
+
+    def test_login_email_one_argument(self):
+        with self.assertRaises(TypeError, msg = "The login() function must take 2 parameters"):
+            login("email@uwm.edu")
+
+    def test_login_email_no_arguments(self):
+        with self.assertRaises(TypeError, msg = "The login() function must take 2 parameters"):
+            login()
 
 
 class TestGetUser(TestCase):
@@ -95,8 +108,27 @@ class TestGetUser(TestCase):
         self.assertEqual(get_user('user1@uwm.edu'), self.user1, msg="Incorrect user object was obtained from the email")
 
     def test_get_user_doesnt_exist(self):
-
         self.assertIsNone(get_user('user4@uwm.edu'), msg="Nonexistent user should yield a None return type")
+
+    def test_get_user_email_with_space(self):
+        with self.assertRaises(TypeError, msg = "The get_user() function must take an email as its only parameter"):
+            get_user("instructor@uwm. edu")
+
+    def test_get_user_without_at_symbol(self):
+        with self.assertRaises(TypeError, msg = "The ger_user() function must take an email as its only parameter"):
+            get_user("instructoruwm.edu")
+
+    def test_get_user_integer_as_email(self):
+        with self.assertRaises(TypeError, msg = "The get_user() function must take an email as its only parameter"):
+            get_user(123)
+
+    def test_get_user_no_arguments(self):
+        with self.assertRaises(TypeError, msg = "The get_user() function must take an email parameter"):
+            get_user()
+
+    def test_get_user_too_many_arguments(self):
+        with self.assertRaises(TypeError, msg="The get_user() function must only take one email parameter"):
+            get_user("email@uwm.edu", "string2")
 
 
 class TestCourseInput(TestCase):
@@ -109,6 +141,19 @@ class TestCourseInput(TestCase):
 
     def test_course_validation_too_short(self):
         self.assertFalse(validate_course_number(12))
+
+    def test_course_validation_not_integer(self):
+        with self.assertRaises(TypeError, msg = "There must be an integer input to the validate_course_number() function"):
+            validate_course_number("string")
+
+    def test_course_validation_no_arguments(self):
+        with self.assertRaises(TypeError, msg = "There must be an integer input to the validate_course_number() function"):
+            validate_course_number()
+
+    def test_course_validation_no_arguments(self):
+        with self.assertRaises(TypeError,
+                               msg="There must be only one integer input to the validate_course_number() function"):
+            validate_course_number(123, 123)
 
 
 class TestCourseCreation(TestCase):
