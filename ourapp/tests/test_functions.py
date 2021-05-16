@@ -162,11 +162,10 @@ class TestCourseCreation(TestCase):
         self.course1.save()
 
     def test_create_course_number_used(self):
-        self.assertEqual(create_course("New Course", 337),"A course with this number has already been created.  Try again.")
+        self.assertIsInstance(create_course("New Course", 337), MyCourse)
 
     def test_create_course_number_unused(self):
-        a = MyCourse(name='Course1', number=123)
-        self.assertEqual(create_course('Course1', 123), a)
+        self.assertIsInstance(create_course("Course1", 123), MyCourse)
 
     def test_create_course_number_big(self):
         self.assertEqual(create_course("Course2", 37), "The course number is not 3 digits long.  Try again.")
@@ -225,8 +224,7 @@ class TestSectionCreation(TestCase):
         self.assertEqual(create_section(self.course1, 901), "A section with this number within this course has already been created.  Try again.")
 
     def test_create_section_number_unused(self):
-        a = MySection(course=self.course1, number=801)
-        self.assertEqual(create_section(self.course1, 801), a)
+        self.assertIsInstance(create_section(self.course1, 801), MySection)
 
     def test_create_section_number_big(self):
         self.assertEqual(create_section(self.course1, 8098), "The section number is not 3 digits long.  Try again.")

@@ -62,10 +62,8 @@ class MyCourse(models.Model):
     number = models.IntegerField(default=None)
     people = models.ManyToManyField(MyUser, default=None, blank=True)
 
-
     def __str__(self):
         return self.name
-
 
 
 # Section refers to lab or course section
