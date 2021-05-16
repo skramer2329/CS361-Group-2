@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from ourapp.models import MyCourse, MySection, MyUser
+from ourapp.models import MyCourse, MySection, MyUser, Skill
 #models to test are: MyUser, MyCourse, and Section
 
 
@@ -132,3 +132,26 @@ class TestSectionModel(TestCase):
 
     def test_section_str_without_teacher(self):
         self.assertEqual(self.section902.__str__(), "361-902")
+
+class TestSkillModel(TestCase):
+    def setUp(self):
+        self.s1 = Skill(name="")
+        self.s1.save()
+        self.s2 = Skill(name="test")
+        self.s2.save()
+        self.s3 = Skill(name="this_is_a_long_skill_to_test")
+        self.s3.save()
+        self.s4 = Skill(name="this is another longer skill with spaces to test the str function on")
+        self.s4.save()
+
+    def test_skill_str_blank(self):
+        self.assertEqual("", self.s1.__str__())
+
+    def test_skill_str_short(self):
+        self.assertEqual("test", self.s2.__str__())
+
+    def test_skill_str_long(self):
+        self.assertEqual("this_is_a_long_skill_to_test", self.s3.__str__())
+
+    def test_skill_str_spaces(self):
+        self.assertEqual("this is another longer skill with spaces to test the str function on", self.s4.__str__())
