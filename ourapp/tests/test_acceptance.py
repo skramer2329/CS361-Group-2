@@ -14,9 +14,6 @@ class TestLoginSuccess(TestCase):
                                  address="123 straight st", phone_number="1234567890", role="supervisor")
         self.supervisor.save()
 
-        # self.emptyUserEmail = MyUser(first_name="supervisor", last_name="super", email="", password="supervisor",
-        #                                        address="123 straight st", phone_number="1234567890", role="supervisor")
-        # self.emptyUserEmail.save()
         self.instructor = MyUser(first_name="instructor", last_name="instruct", email="instructor@uwm.edu",
                                  password="instructor",
                                  address="123 corner st", phone_number="7777777", role="instructor")
@@ -27,12 +24,6 @@ class TestLoginSuccess(TestCase):
 
         response = self.client.post("/", {"uname": "testsupervisor@uwm.edu", "psw": "supervisor"}, follow=True)
         self.assertTemplateUsed(response, "course.html")
-        #expected, actual
-        #should contain course in context
-        #successful redirect to correct template
-        #could check session - is there a username in the session
-        #reading from session - can just check the session
-
 
     def test_no_such_user_exists(self):
         response = self.client.post("/", {"uname": "", "psw": ""}, follow=True)
@@ -68,85 +59,72 @@ class TestAccountCreation(TestCase):
                                     {"first_name": "bill", "last_name": "johnson", "email": "newsupervisor@uwm.edu",
                                      "password": "pass3",
                                      "phone_number": "1234567890", "address": "123 Main St, Milwaukee, WI, 53211",
-                                     "role": "supervisor"}, follow=True)
+                                     "role": "supervisor", "user": '3', "create_butt": ''}, follow=True)
         self.assertIn(MyUser.objects.get(email='newsupervisor@uwm.edu'), response.context['accounts'],
                       "new account not showing up in rendered response")
-        self.assertEqual("Account created successfully", response.context["message"])
 
         # testing a password that was already used
         r = self.client.post("/account/", {"email": "test4@uwm.edu", "password": "pass2", "first_name": "bill","last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
-                                           "role": "supervisor"}, follow=True)
+                                           "role": "supervisor", "user": '3', "create_butt": ''}, follow=True)
         self.assertIn(MyUser.objects.get(email="test4@uwm.edu"), r.context['accounts'],
                       "new account not showing up in rendered response")
-        self.assertEqual("Account created successfully", r.context["message"])
 
     def test_create_new_instructor(self):
 
         r = self.client.post("/account/", {"email": "newinstructor@uwm.edu", "password": "pass5", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
-                                           "role": "instructor"}, follow=True)
+                                           "role": "instructor", "user": '3', "create_butt": ''}, follow=True)
 
 
         self.assertIn(MyUser.objects.get(email='newinstructor@uwm.edu'), r.context['accounts'],
                       "new account not showing up in rendered response")
 
-        self.assertEqual("Account created successfully", r.context["message"])
-
         # testing a password that was already used
         r = self.client.post("/account/", {"email": "test6@uwm.edu", "password": "pass2", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
-                                           "role": "instructor"}, follow=True)
+                                           "role": "instructor", "user": '3', "create_butt": ''}, follow=True)
         self.assertIn(MyUser.objects.get(email="test6@uwm.edu"), r.context['accounts'],
                       "new account not showing up in rendered response")
-
-        self.assertEqual("Account created successfully", r.context["message"])
 
     def test_create_new_ta(self):
         r = self.client.post("/account/", {"email": "newta@uwm.edu", "password": "pass7", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
-                                           "role": "ta"}, follow=True)
+                                           "role": "ta", "user": '3', "create_butt": ''}, follow=True)
 
         self.assertIn(MyUser.objects.get(email='newta@uwm.edu'), r.context['accounts'],
                       "new account not showing up in rendered response")
-
-        self.assertEqual("Account created successfully", r.context["message"])
 
         # testing a password that was already used
         r = self.client.post("/account/", {"email": "test8@uwm.edu", "password": "pass2", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
-                                           "role": "ta"}, follow=True)
+                                           "role": "ta","user": '3', "create_butt": ''}, follow=True)
         self.assertIn(MyUser.objects.get(email="test8@uwm.edu"), r.context['accounts'],
                       "new account not showing up in rendered response")
-
-        self.assertEqual("Account created successfully", r.context["message"])
 
     def test_try_creating_existing_supervisor(self):
         r = self.client.post("/account/", {"email": self.super.email, "password": "pass1", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
-                                           "role": "supervisor"}, follow=True)
-
-        self.assertEqual("A user with this email has already been created.  Try again.", r.context['message'])
+                                           "role": "supervisor", "user": '3', "create_butt": ''}, follow=True)
+        self.assertTemplateUsed(r, "account.html")
 
     def test_try_creating_existing_instructor(self):
         r = self.client.post("/account/", {"email": self.instructor.email, "password": "pass3", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
-                                           "role": "instructor"}, follow=True)
-
-        self.assertEqual("A user with this email has already been created.  Try again.", r.context['message'])
+                                           "role": "instructor", "user": '3', "create_butt": ''}, follow=True)
+        self.assertTemplateUsed(r, "account.html")
 
     def test_try_creating_existing_ta(self):
         r = self.client.post("/account/", {"email": self.ta.email, "password": "pass3", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
-                                           "address": "123 Main St, Milwaukee, WI, 53211", "role": "ta"}, follow=True)
-        self.assertEqual("A user with this email has already been created.  Try again.", r.context['message'])
-
+                                           "address": "123 Main St, Milwaukee, WI, 53211", "role": "ta", "user": '3', "create_butt": ''}, follow=True)
+        self.assertTemplateUsed(r, "account.html")
 
 class TestCourseCreation(TestCase):
     def setUp(self):
@@ -158,10 +136,6 @@ class TestCourseCreation(TestCase):
 
         self.course = MyCourse(name="Intro to Chemistry", number=102)
         self.course.save()
-
-        # self.session1 = self.client.session
-        # self.session1['email'] = self.supervisor.email
-        # self.session1.save()
 
     def test_createNewCourse(self):
 
@@ -199,13 +173,6 @@ class TestSectionCreation(TestCase):
 
 
         self.mathSection.save()
-
-        """self.courseList = {"Math": 1, "Chemistry": 2, "Art": 3}
-        for i in self.courseList.keys():
-            temp = MyCourse(name=i, number=self.courseList[i])
-            temp.save()
-            for j in self.courseList[i]:
-                MySection(course=temp, number=j)"""
 
     # number is not three digits
     def test_add_section_already_exists(self):
@@ -420,9 +387,115 @@ class TestDeleteSection(TestCase):
     def test_delete_section_lab(self):
         resp = self.client.post("/course/", {"section_to_remove": self.labSection.id, "delSButt": ''}, follow=True)
         self.assertNotIn(self.labSection, resp.context['sections'])
-        self.assertEqual("Section successfully deleted", resp.context['message'])
+        self.assertEqual("section successfully deleted", resp.context['message'])
 
     def test_delete_section_lecture(self):
         resp = self.client.post("/course/", {"section_to_remove": self.lectureSection.id, "delSButt": ''}, follow=True)
         self.assertNotIn(self.lectureSection, resp.context['sections'])
-        self.assertEqual("Section successfully deleted", resp.context['message'])
+        self.assertEqual("section successfully deleted", resp.context['message'])
+
+class TestEditAccounts(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.super = MyUser(first_name="supervisor", last_name="super", email="test1@uwm.edu", password="pass1",
+                            address="123 straight st", phone_number="1234567890", role="supervisor")
+        self.super.save()
+        self.instructor = MyUser(first_name="instructor", last_name="super", email="test2@uwm.edu",
+                                 password='pass2', address="123 straight st", phone_number="1234567890",
+                                 role='instructor')
+        self.instructor.save()
+
+        self.ta = MyUser(first_name="ta", last_name="super", email="test3@uwm.edu",
+                         password='pass3', address="123 straight st", phone_number="1234567890",
+                         role='ta')
+        self.ta.save()
+
+    def test_edit_account_first_name(self):
+        print(self.ta.id)
+        resp = self.client.post("/contacts/", {"first_name": "ta2", "last_name": "super", "email": "test3@uwm.edu",
+                                           "password": "pass3", "address": "123 straight st",
+                                           "phone_number": "1234567890",
+                                           "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_account_last_name(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super2", "email": "test3@uwm.edu",
+                                           "password": "pass3", "address": "123 straight st",
+                                           "phone_number": "1234567890",
+                                           "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_account_valid_email(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test32@uwm.edu",
+                                               "password": "pass3", "address": "123 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_account_invalid_email(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3uwm.edu",
+                                               "password": "pass3", "address": "123 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Email format must contain '@' symbol.", resp.context["message"])
+
+    def test_edit_account_password(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3@uwm.edu",
+                                               "password": "pass4", "address": "123 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_address(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3@uwm.edu",
+                                               "password": "pass3", "address": "1234 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_phone_number(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3@uwm.edu",
+                                               "password": "pass3", "address": "123 straight st",
+                                               "phone_number": "1234567899",
+                                               "role": "ta", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+    def test_edit_role(self):
+        resp = self.client.post("/contacts/", {"first_name": "ta", "last_name": "super", "email": "test3@uwm.edu",
+                                               "password": "pass3", "address": "123 straight st",
+                                               "phone_number": "1234567890",
+                                               "role": "supervisor", "user": '3', "edit_butt": ''}, follow=True)
+        self.assertEqual("Account edited successfully", resp.context["message"])
+
+class TestDeleteAccounts(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+
+        self.super = MyUser(first_name="supervisor", last_name="super", email="test1@uwm.edu", password="pass1",
+                            address="123 straight st", phone_number="1234567890", role="supervisor")
+        self.super.save()
+        self.instructor = MyUser(first_name="instructor", last_name="super", email="test2@uwm.edu",
+                                 password='pass2', address="123 straight st", phone_number="1234567890",
+                                 role='instructor')
+        self.instructor.save()
+
+        self.ta = MyUser(first_name="ta", last_name="super", email="test3@uwm.edu",
+                         password='pass3', address="123 straight st", phone_number="1234567890",
+                         role='ta')
+        self.ta.save()
+
+    def test_delete_account(self):
+        print(self.ta.id)
+        response = self.client.post("/", {"uname": "test1@uwm.edu", "psw": "pass1"}, follow=True)
+
+        resp = self.client.post("/contacts/", {"Contact_to_remove": '3', "delContactButt": ''}, follow=True)
+        self.assertEqual("Contact was successfully deleted.", resp.context["message"])
+
+    def test_cannot_delete_own_account(self):
+        print(self.ta.id)
+        response = self.client.post("/", {"uname": "test1@uwm.edu", "psw": "pass1"}, follow=True)
+
+        resp = self.client.post("/contacts/", {"Contact_to_remove": '1', "delContactButt": ''}, follow=True)
+        self.assertEqual("Cannot delete the account that is logged into this session.", resp.context["message"])

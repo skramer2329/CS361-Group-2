@@ -92,7 +92,7 @@ Wednesday 5/12 - Notes by Michael DeCleene
   Tomorrow:  doing things for logout in lab
   Impedes:  nothing
 
-Wednesday 5/13 - Notes by James Yeazel
+Thursday 5/13 - Notes by James Yeazel
 
   James:
     Today: Added delete account buttons, worked on css for the contact page, added log out button
@@ -116,3 +116,32 @@ Wednesday 5/13 - Notes by James Yeazel
     
    Ethan:
     not present
+    
+Friday 5/14/21 - Notes by The One and Only, Sabrina Kramer. 
+
+  Bike-al: 
+  Today: Made delete acc butt work, add validation helper function so you cant delete your own account. Preventing black holes. Did rest of acceptance test for 
+    edit acc and delete acc.
+  Tomorrow: Slack off tomorrow. 100%
+  Inhibits: Laziness.
+  
+  Semaj: 
+  Today: Got Qdoba today. Did not get any for rest of group.
+  Tomorrow: Not sure what he will eat. Might finish up css for contacts.
+  Inhibits: Possible Food poisoning. 
+  
+  Ethan:
+  Today: Got food. No food for anyone else.
+  Tomorrow: Finds tests to write.
+  Inhibits: Laziness.
+  
+  Benny: 
+  Today: Wrote some unit tests for validate acc funct. Saved Mike_Butt. 
+  Tomorrow: Do stuff.
+  Inhibits: Laziness.
+  
+  Bina:
+  Today: I just pushed my code. Chilaquieles. 
+  Tomorrow: Make pancakes. Work on tests. Acceptance test for account creation.  
+  Inhibits: Spinning wheels. 
+
