@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpRequest
 from django.http import request
 
-
+# TODO write tests
 def validate_session(request):
     try:
         key = request.session['name']
@@ -11,16 +11,22 @@ def validate_session(request):
         return False
 
     return True
-
+# has tests already
 def get_user(email):
+    if valid_email_format(email) != "Valid":
+        raise TypeError("The get_user() function requires a valid email to be used as input")
+
     try:
         u = MyUser.objects.get(email__iexact=email)
         return u
     except:
         return None
 
-
+# has tests already
 def login(email, password):
+    if valid_email_format(email) != "Valid":
+        raise TypeError("The get_user() function requires a valid email to be used as input")
+
     noSuchUser = False
     badPassword = False
     try:
@@ -36,16 +42,24 @@ def login(email, password):
     else:
         return "Valid"
 
-
+# has tests already
 def validate_course_number(number):
+    """if type(number) != int:
+        raise TypeError("validate_course_number() function must take an integer as input")"""
+
     x = str(number)
     if len(str(number)) == 3 and str(number).isdigit():
         return True
     else:
         return False
 
-
+# has tests already
 def create_course(name, number):
+    """if type(name) != str:
+        raise TypeError("create_course() function must take an integer as input for the number")
+    if type(number) != int:
+        raise TypeError("create_course() function must take a string as input for the name")"""
+
     valid = validate_course_number(number)
 
     if not valid:
@@ -66,16 +80,24 @@ def create_course(name, number):
         a.save()
         return a
 
-
+# has tests already
 def validate_section_number(number):
+    """if type(number) != int:
+        raise TypeError("validate_section_number() function must take an integer as input")"""
+
     x = str(number)
     if len(str(number)) == 3 and str(number).isdigit():
         return True
     else:
         return False
 
-
+# has tests already
 def create_section(course, number):
+    """if type(course) is not MyCourse:
+        raise TypeError("create_section() function must take a course as its first argument")
+    if type(number) is not int:
+        raise TypeError("create_section() function must take an int as its second argument")"""
+
     course = MyCourse(course)
     valid = validate_course_number(number)
     if not valid:
@@ -97,7 +119,7 @@ def create_section(course, number):
 
         return a
 
-
+# has tests
 def CreateAccountsFunction(email, phone_number):
     message = "Valid"
     if valid_email_format(email) == "Email does not contain @.":
@@ -111,7 +133,7 @@ def CreateAccountsFunction(email, phone_number):
 
     return message
 
-
+# has tests
 def valid_email_format(email):
     if "@" not in email:
         return "Email does not contain @."
@@ -120,10 +142,11 @@ def valid_email_format(email):
     else:
         return "Valid"
 
-
+# has tests
 def valid_phone_number(phone_number):
     return phone_number.isdigit()
 
+# has tests
 def ValidTeacherForSection(person_selection, section_selection):
     if type(person_selection) is not MyUser:
         raise TypeError
@@ -147,3 +170,11 @@ def ValidTeacherForSection(person_selection, section_selection):
         section_selection.teacher = person_selection
         section_selection.save()
         return [False, message]
+
+def ValidateDeleteAccount(sessionemail, useremail):
+    if valid_email_format(sessionemail) != "Valid" or valid_email_format(useremail) != "Valid":
+        raise TypeError("The get_user() function requires a valid email to be used as input for both arguments")
+    if(sessionemail != useremail):
+        return "Valid"
+    else:
+        return "Cannot delete the account that is logged into this session."

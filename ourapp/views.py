@@ -3,10 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 
 from django.views import View
-from .models import MyUser, MyCourse, MySection
+from .models import MyUser, MyCourse, MySection, Skill
 from django.http import HttpResponse
 
-from ourapp.helper_methods import login, get_user, create_course, create_section, validate_session, ValidTeacherForSection
+from ourapp.helper_methods import login, get_user, create_course, create_section, validate_session, ValidTeacherForSection, ValidateDeleteAccount
 
 from ourapp.helper_methods import CreateAccountsFunction
 
@@ -23,12 +23,19 @@ class CreateAccounts(View):
 
         request.session['submitted'] = False
         accounts = MyUser.objects.all()
+        email = request.session['name']
+        user = get_user(email)
+        skills = user.skills.all()
 
-        return render(request, "account.html", {"accounts": accounts})
+        return render(request, "account.html", {"accounts": accounts, "skills": skills})
 
     def post(self, request):
 
         if request.method == 'POST' and 'create_butt' in request.POST:
+            email = request.session['name']
+            user = get_user(email)
+            skills = user.skills.all()
+
             accounts = MyUser.objects.all()
             user = request.POST['user']
             user = MyUser(user)
@@ -49,7 +56,49 @@ class CreateAccounts(View):
             user.role = role
 
             user.save()
-            return render(request, "account.html", {"accounts": accounts})
+            return render(request, "account.html", {"accounts": accounts, "skills": skills})
+
+        if request.method == 'POST' and 'add_skill' in request.POST:
+            email = request.session['name']
+            user = get_user(email)
+            skills = user.skills.all()
+            accounts = MyUser.objects.all()
+
+            skill_exists = True
+            input = request.POST['skill']
+            already_have = True
+
+            try:
+                Skill.objects.get(name=input)
+
+            except:
+                skill_exists = False
+
+            try:
+                skills.get(name=input)
+
+            except:
+                already_have = False
+
+            if not skill_exists:
+                new_skill = Skill(name=input)
+                new_skill.save()
+                user.skills.add(new_skill)
+
+                skills = user.skills.all()
+                return render(request, "account.html", {"message": "New skill was added.", "accounts": accounts, "skills": skills})
+
+            if not already_have:
+                skill_to_add = Skill.objects.filter(name=input)
+                user.skills.add(skill_to_add)
+                skills = user.skills.all()
+                return render(request, "account.html", {"accounts": accounts, "skills": skills,
+                                                        "message": "New skill was added."})
+
+            else:
+                return render(request, "account.html", {"accounts": accounts, "skills": skills,
+                                                        "message": "You already have this skill!"})
+
 
 class Course(View):
     def get(self, request):
@@ -65,13 +114,11 @@ class Course(View):
         return render(request, "course.html", {"courses": courses, "accounts": accounts, "sections": sections})
 
     def post(self, request):
-        print(request.POST)
         accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
         courses = MyCourse.objects.all()
         sections = MySection.objects.all()
         request.session['submitted'] = True
         if request.method == 'POST' and 'course_button' in request.POST:
-            print(request.POST)
             number = request.POST['number']
             courses = list(MyCourse.objects.all())
             message = create_course(request.POST['name'], number)
@@ -86,7 +133,6 @@ class Course(View):
                                                        "accounts": accounts, "sections": sections})
 
         if request.method == 'POST' and 'section_button' in request.POST:
-            print(request.POST)
             message = create_section(request.POST['course_selection'], request.POST['section_number'])
             if type(message) is MySection:  # There was good input
                 # sections.append(message)
@@ -99,7 +145,6 @@ class Course(View):
                                                     "sections": sections})
 
         if request.method == 'POST' and 'ass_butt' in request.POST:
-            print(request.POST)
             courses = MyCourse.objects.all()
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
             sections = MySection.objects.all()
@@ -114,7 +159,6 @@ class Course(View):
                           {"message": "Course assignments updated", "courses": courses, "accounts": accounts, "sections": sections})
 
         if request.method == 'POST' and 'ass_section_butt' in request.POST:
-            print(request.POST)
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
             courses = MyCourse.objects.all()
             sections = MySection.objects.all()
@@ -142,7 +186,6 @@ class Course(View):
 
         if request.method == 'POST' and 'delCButt' in request.POST:
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
-            courses = MyCourse.objects.all()
             sections = MySection.objects.all()
             course_to_remove = request.POST['course_to_remove']
             course_to_remove = MyCourse(course_to_remove)
@@ -169,6 +212,7 @@ class Login(View):
         if message == "Valid":
             u = get_user(x)
             request.session['name'] = u.email
+            request.session['role'] = u.role
             request.session.set_expiry(0)
             if u.is_supervisor():
                 request.session['supervisor'] = True
@@ -203,11 +247,12 @@ class SectionCreation(View):
 class Contacts(View):
 
     def get(self, request):
+        request.session['submitted'] = False
         accounts = MyUser.objects.all()
         return render(request, "contacts.html", {"accounts": accounts})
 
     def post(self, request):
-
+        request.session['submitted'] = True
         if request.method == 'POST' and 'edit_butt' in request.POST:
 
             accounts = MyUser.objects.all()
@@ -230,9 +275,14 @@ class Contacts(View):
             user.phone_number = phone_number
             user.role = role
 
+            valid = CreateAccountsFunction(email, phone_number)
+            if valid != "Valid":
+                request.session['error'] = True
+                return render(request, "contacts.html", {"accounts": accounts, "message": valid})
+
             user.save()
 
-            return render(request,  "contacts.html", {"accounts": accounts})
+            return render(request,  "contacts.html", {"accounts": accounts, "message": "Account edited successfully"})
 
         if request.method == 'POST' and 'create_butt' in request.POST:
 
@@ -271,3 +321,16 @@ class Contacts(View):
                 request.session['error'] = False
                 return render(request, "contacts.html",
                               {"accounts": accounts, "message": "Account created successfully"})
+
+        if request.method == 'POST' and 'delContactButt' in request.POST:
+            user = request.POST['Contact_to_remove']
+            user = MyUser.objects.get(id= user)
+            valid = ValidateDeleteAccount(request.session['name'], user.email)
+            if valid == "Valid":
+                user.delete()
+                valid = "Contact was successfully deleted."
+            else:
+                request.session['error'] = True
+            accounts = MyUser.objects.all()
+            return render(request, "contacts.html", {"accounts": accounts, "message": valid})
+
