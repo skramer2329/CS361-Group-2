@@ -281,7 +281,7 @@ class Contacts(View):
 
             valid = CreateAccountsFunction(email, phone_number)
             if valid != "Valid":
-                request.session['error'] = True
+                request.session['error'] = False
                 return render(request, "contacts.html", {"accounts": accounts, "message": valid})
 
             user.save()
@@ -333,7 +333,7 @@ class Contacts(View):
                 user.delete()
                 valid = "Contact was successfully deleted."
             else:
-                request.session['error'] = True
+                request.session['error'] = False
             accounts = MyUser.objects.all()
             return render(request, "contacts.html", {"accounts": accounts, "message": valid})
 
