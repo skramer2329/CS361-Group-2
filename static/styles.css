@@ -258,7 +258,7 @@ input:focus, textarea:focus, select:focus {
 .assButt {
     position: relative;
     bottom: 95px;
-    right: -4vw;
+    right: -4%;
 }
 
 .courseButt {
@@ -330,7 +330,7 @@ input:focus, textarea:focus, select:focus {
     position: relative;
     bottom: 95px;
     z-index: 0;
-    right: -6vw;
+    right: -7.5%;
 }
 
 .sectButt {
@@ -369,9 +369,11 @@ input:focus, textarea:focus, select:focus {
 
 }
 
-.skiList {
-    position: skiList;
-    float: left;
+#skiList {
+    width: 400px;
+    position: absolute;
+    top: 30%;
+    left: -25vw;
 }
 
 .conText {
