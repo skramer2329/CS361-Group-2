@@ -71,8 +71,8 @@
                             <button type="submit" name="create_butt" class="subButt">Save</button>
                         </form>
                         {% if request.session.role == 'ta' %}
-                            <div class="skiList">
-                                <form style = "float:right" action="/account/" method="post"> {% csrf_token %}
+                            <div id="skiList">
+                                <form  action="/account/" method="post"> {% csrf_token %}
                                     <h1 class="accLabel">Add a skill </h1>
                                     <input class="form-field" type="text" placeholder="Name of skill" name="skill" required>
                                     <button type="submit" name="add_skill" class="subButt">Add skill</button>
@@ -80,7 +80,7 @@
                                     <br><br>
                                     <h1 class="accLabel"><u>My Skills</u></h1>
                                     {% for s in skills %}
-                                        {{ s.name }}
+                                        <p>{{ s.name }}</p>
                                     {% endfor %}
                                 {% endif %}
                             </div>
