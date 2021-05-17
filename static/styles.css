@@ -207,7 +207,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 .alert {
-    position: fixed;
+    position: absolute;
     padding: 20px;
     background-color: #EB5A46;
     color: white;
@@ -277,6 +277,10 @@ input:focus, textarea:focus, select:focus {
 
 .editButt {
     position: relative;
+    margin: 5px;
+    top: 0px;
+    left: 3vw;
+    display: inline;
 }
 
 .hidden {
@@ -363,4 +367,15 @@ input:focus, textarea:focus, select:focus {
 .hidContactInfo {
     text-align: left;
 
+}
+
+.skiList {
+    position: skiList;
+    float: left;
+}
+
+.conText {
+    float: left;
+    margin-top: 0;
+    margin-right: 15px;
 }
