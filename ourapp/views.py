@@ -295,7 +295,6 @@ class Contacts(View):
             role = request.POST['role']
 
             accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
-            accounts = list(accounts)
             valid = CreateAccountsFunction(email, phone_number)
             if valid != "Valid":
                 request.session['error'] = True
@@ -317,7 +316,7 @@ class Contacts(View):
                                           address=address, phone_number=phone_number, role=role)
 
                 a.save()
-                accounts.append(a)
+                accounts = MyUser.objects.all()
                 request.session['error'] = False
                 return render(request, "contacts.html",
                               {"accounts": accounts, "message": "Account created successfully"})
