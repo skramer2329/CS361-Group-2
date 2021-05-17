@@ -121,7 +121,7 @@ class Course(View):
         if request.method == 'POST' and 'course_button' in request.POST:
             number = request.POST['number']
             courses = list(MyCourse.objects.all())
-            message = create_course(request.POST['name'], number)
+            message = create_course(request.POST['name'], int(number))
             if type(message) is MyCourse:  # There was good input
                 courses.append(message)
                 request.session['error'] = False
@@ -133,7 +133,7 @@ class Course(View):
                                                        "accounts": accounts, "sections": sections})
 
         if request.method == 'POST' and 'section_button' in request.POST:
-            message = create_section(request.POST['course_selection'], request.POST['section_number'])
+            message = create_section(MyCourse.objects.get(id=request.POST['course_selection']), int(request.POST['section_number']))
             if type(message) is MySection:  # There was good input
                 # sections.append(message)
                 request.session['error'] = False
