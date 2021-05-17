@@ -54,9 +54,11 @@ class CreateAccounts(View):
             user.address = address
             user.phone_number = phone_number
             user.role = role
-
-            user.save()
-            return render(request, "account.html", {"accounts": accounts, "skills": skills})
+            message = CreateAccountsFunction(user.email, user.phone_number)
+            if message == "Valid":
+                user.save()
+                message = "Updated account successfully."
+            return render(request, "account.html", {"accounts": accounts, "skills": skills, "message": message})
 
         if request.method == 'POST' and 'add_skill' in request.POST:
             email = request.session['name']
