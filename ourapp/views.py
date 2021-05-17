@@ -30,7 +30,7 @@ class CreateAccounts(View):
         return render(request, "account.html", {"accounts": accounts, "skills": skills})
 
     def post(self, request):
-
+        request.session['submitted'] = True
         if request.method == 'POST' and 'create_butt' in request.POST:
             email = request.session['name']
             user = get_user(email)
@@ -54,9 +54,13 @@ class CreateAccounts(View):
             user.address = address
             user.phone_number = phone_number
             user.role = role
-
-            user.save()
-            return render(request, "account.html", {"accounts": accounts, "skills": skills})
+            message = CreateAccountsFunction(user.email, user.phone_number)
+            request.session['error'] = True
+            if message == "Valid":
+                user.save()
+                message = "Updated account successfully."
+                request.session['error'] = False
+            return render(request, "account.html", {"accounts": accounts, "skills": skills, "message": message})
 
         if request.method == 'POST' and 'add_skill' in request.POST:
             email = request.session['name']
