@@ -279,9 +279,10 @@ class Contacts(View):
             user.phone_number = phone_number
             user.role = role
 
+            request.session['error'] = False
             valid = CreateAccountsFunction(email, phone_number)
             if valid != "Valid":
-                request.session['error'] = False
+                request.session['error'] = True
                 return render(request, "contacts.html", {"accounts": accounts, "message": valid})
 
             user.save()
