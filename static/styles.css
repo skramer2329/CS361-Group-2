@@ -369,9 +369,11 @@ input:focus, textarea:focus, select:focus {
 
 }
 
-.skiList {
-    position: skiList;
-    float: left;
+#skiList {
+    width: 400px;
+    position: absolute;
+    top: 30%;
+    left: -25vw;
 }
 
 .conText {
