@@ -44,8 +44,8 @@ def login(email, password):
 
 # has tests already
 def validate_course_number(number):
-    """if type(number) != int:
-        raise TypeError("validate_course_number() function must take an integer as input")"""
+    if type(number) != int:
+        raise TypeError("validate_course_number() function must take an integer as input")
 
     x = str(number)
     if len(str(number)) == 3 and str(number).isdigit():
@@ -55,10 +55,10 @@ def validate_course_number(number):
 
 # has tests already
 def create_course(name, number):
-    """if type(name) != str:
+    if type(name) != str:
         raise TypeError("create_course() function must take an integer as input for the number")
     if type(number) != int:
-        raise TypeError("create_course() function must take a string as input for the name")"""
+        raise TypeError("create_course() function must take a string as input for the name")
 
     valid = validate_course_number(number)
 
@@ -82,8 +82,8 @@ def create_course(name, number):
 
 # has tests already
 def validate_section_number(number):
-    """if type(number) != int:
-        raise TypeError("validate_section_number() function must take an integer as input")"""
+    if type(number) != int:
+        raise TypeError("validate_section_number() function must take an integer as input")
 
     x = str(number)
     if len(str(number)) == 3 and str(number).isdigit():
@@ -93,12 +93,12 @@ def validate_section_number(number):
 
 # has tests already
 def create_section(course, number):
-    """if type(course) is not MyCourse:
+    if type(course) is not MyCourse:
         raise TypeError("create_section() function must take a course as its first argument")
     if type(number) is not int:
-        raise TypeError("create_section() function must take an int as its second argument")"""
+        raise TypeError("create_section() function must take an int as its second argument")
 
-    course = MyCourse(course)
+    #course = MyCourse(course)
     valid = validate_course_number(number)
     if not valid:
         return "The section number is not 3 digits long.  Try again."
