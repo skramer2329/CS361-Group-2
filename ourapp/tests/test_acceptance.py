@@ -26,8 +26,9 @@ class TestLoginSuccess(TestCase):
         self.assertTemplateUsed(response, "course.html")
 
     def test_no_such_user_exists(self):
-        response = self.client.post("/", {"uname": "", "psw": ""}, follow=True)
-        self.assertEqual("The username that you used does not exist. Please retry.", response.context["message"])
+
+        with self.assertRaises(TypeError, msg= "The get_user() function requires a valid email to be used as input"):
+            response = self.client.post("/", {"uname": "", "psw": ""}, follow=True)
 
     def test_user_exists_but_invalid_password(self):
         response = self.client.post("/", {"uname": self.supervisor.email, "psw": "WrongPassword"}, follow=True)
@@ -55,7 +56,7 @@ class TestAccountCreation(TestCase):
         self.ta.save()
 
     def test_create_new_supervisor(self):
-        response = self.client.post("/account/",
+        response = self.client.post("/contacts/",
                                     {"first_name": "bill", "last_name": "johnson", "email": "newsupervisor@uwm.edu",
                                      "password": "pass3",
                                      "phone_number": "1234567890", "address": "123 Main St, Milwaukee, WI, 53211",
@@ -64,7 +65,7 @@ class TestAccountCreation(TestCase):
                       "new account not showing up in rendered response")
 
         # testing a password that was already used
-        r = self.client.post("/account/", {"email": "test4@uwm.edu", "password": "pass2", "first_name": "bill","last_name": "johnson", "phone_number": "1234567890",
+        r = self.client.post("/contacts/", {"email": "test4@uwm.edu", "password": "pass2", "first_name": "bill","last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "supervisor", "user": '3', "create_butt": ''}, follow=True)
         self.assertIn(MyUser.objects.get(email="test4@uwm.edu"), r.context['accounts'],
@@ -72,7 +73,7 @@ class TestAccountCreation(TestCase):
 
     def test_create_new_instructor(self):
 
-        r = self.client.post("/account/", {"email": "newinstructor@uwm.edu", "password": "pass5", "first_name": "bill",
+        r = self.client.post("/contacts/", {"email": "newinstructor@uwm.edu", "password": "pass5", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "instructor", "user": '3', "create_butt": ''}, follow=True)
@@ -82,7 +83,7 @@ class TestAccountCreation(TestCase):
                       "new account not showing up in rendered response")
 
         # testing a password that was already used
-        r = self.client.post("/account/", {"email": "test6@uwm.edu", "password": "pass2", "first_name": "bill",
+        r = self.client.post("/contacts/", {"email": "test6@uwm.edu", "password": "pass2", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "instructor", "user": '3', "create_butt": ''}, follow=True)
@@ -90,7 +91,7 @@ class TestAccountCreation(TestCase):
                       "new account not showing up in rendered response")
 
     def test_create_new_ta(self):
-        r = self.client.post("/account/", {"email": "newta@uwm.edu", "password": "pass7", "first_name": "bill",
+        r = self.client.post("/contacts/", {"email": "newta@uwm.edu", "password": "pass7", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "ta", "user": '3', "create_butt": ''}, follow=True)
@@ -99,7 +100,7 @@ class TestAccountCreation(TestCase):
                       "new account not showing up in rendered response")
 
         # testing a password that was already used
-        r = self.client.post("/account/", {"email": "test8@uwm.edu", "password": "pass2", "first_name": "bill",
+        r = self.client.post("/contacts/", {"email": "test8@uwm.edu", "password": "pass2", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "ta","user": '3', "create_butt": ''}, follow=True)
@@ -107,24 +108,24 @@ class TestAccountCreation(TestCase):
                       "new account not showing up in rendered response")
 
     def test_try_creating_existing_supervisor(self):
-        r = self.client.post("/account/", {"email": self.super.email, "password": "pass1", "first_name": "bill",
+        r = self.client.post("/contacts/", {"email": self.super.email, "password": "pass1", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "supervisor", "user": '3', "create_butt": ''}, follow=True)
-        self.assertTemplateUsed(r, "account.html")
+        self.assertTemplateUsed(r, "contacts.html")
 
     def test_try_creating_existing_instructor(self):
-        r = self.client.post("/account/", {"email": self.instructor.email, "password": "pass3", "first_name": "bill",
+        r = self.client.post("/contacts/", {"email": self.instructor.email, "password": "pass3", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211",
                                            "role": "instructor", "user": '3', "create_butt": ''}, follow=True)
-        self.assertTemplateUsed(r, "account.html")
+        self.assertTemplateUsed(r, "contacts.html")
 
     def test_try_creating_existing_ta(self):
-        r = self.client.post("/account/", {"email": self.ta.email, "password": "pass3", "first_name": "bill",
+        r = self.client.post("/contacts/", {"email": self.ta.email, "password": "pass3", "first_name": "bill",
                                            "last_name": "johnson", "phone_number": "1234567890",
                                            "address": "123 Main St, Milwaukee, WI, 53211", "role": "ta", "user": '3', "create_butt": ''}, follow=True)
-        self.assertTemplateUsed(r, "account.html")
+        self.assertTemplateUsed(r, "contacts.html")
 
 class TestCourseCreation(TestCase):
     def setUp(self):
