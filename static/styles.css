@@ -258,7 +258,7 @@ input:focus, textarea:focus, select:focus {
 .assButt {
     position: relative;
     bottom: 95px;
-    right: -4vw;
+    right: -4%;
 }
 
 .courseButt {
@@ -330,7 +330,7 @@ input:focus, textarea:focus, select:focus {
     position: relative;
     bottom: 95px;
     z-index: 0;
-    right: -6vw;
+    right: -7.5%;
 }
 
 .sectButt {
