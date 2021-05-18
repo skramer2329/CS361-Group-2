@@ -90,7 +90,7 @@
                                 </select>
                                 <select class="form-field" name="person_selection">
                                     {% for i in accounts %}
-                                        <option value={{ i.id }}>{{ i.email }}</option>
+                                        <option value={{ i.id }}>{{ i.email }}{% if i.role == 'ta' %}; <b>Skills: {% for s in i.skills.all %}{{ s.name }}, </b>{% endfor %}{% endif %}</option>
                                     {% endfor %}
                                 </select>
                                 <button type="submit" name="ass_butt" class="subButt">Save</button>
