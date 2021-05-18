@@ -45,8 +45,11 @@
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <form action="/course/" method="post"> {% csrf_token %}
+                        <!-- Course Name Field -->
                         <input class="form-field" type="text" placeholder="Course Name" name="name" required>
+                        <!-- Course Number Field -->
                         <input class="form-field" type="text" placeholder="Course Number" name="number" required>
+                        <!-- Submit button -->
                         <button type="submit" name="course_button" class="subButt">Save</button>
                     </form>
                 </div>
@@ -58,6 +61,9 @@
             {% for i in courses %}
                 <div class="courseBlock">
                     <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
+
+
+                    <!-- Course Buttons -->
                     {% if request.session.supervisor %}
                         <div class="assButt">
                             <button class="modButt courseButt secButt">Create new section</button>
@@ -77,11 +83,14 @@
                         <div class="modal-content">
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
+                                <!-- Preselect current course id -->
                                 <select class="form-field hidden" name="course_selection">
                                         <option value="{{ i.id }}">{{ i.number }}</option>
                                 </select>
+                                <!-- Section Number Field -->
                                 <input class="form-field" type="text" placeholder="Section Number" name="section_number"
                                        required>
+                                <!-- Submit button -->
                                 <button type="submit" name="section_button" class="subButt">Save</button>
                             </form>
                         </div>
@@ -94,14 +103,17 @@
                         <div class="modal-content">
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
+                                <!-- Preselect current course id -->
                                 <select class="form-field hidden" name="course_selection">
                                     <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
+                                <!-- Select user to assign -->
                                 <select class="form-field" name="person_selection">
                                     {% for i in accounts %}
                                         <option value={{ i.id }}>{{ i.email }}{% if i.role == 'ta' %}; <b>Skills: {% for s in i.skills.all %}{{ s.name }}, </b>{% endfor %}{% endif %}</option>
                                     {% endfor %}
                                 </select>
+                                <!-- Submit button -->
                                 <button type="submit" name="ass_butt" class="subButt">Save</button>
                             </form>
                         </div>
@@ -115,9 +127,11 @@
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
                                 <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</h1>
+                                <!-- Preselect course id -->
                                 <select class="form-field hidden" name="course_to_remove">
                                     <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
+                                <!-- Submit button -->
                                 <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
                             </form>
                         </div>
@@ -152,9 +166,11 @@
                                 <div class="modal-content">
                                     <span class="close">×</span>
                                     <form action="/course/" method="post"> {% csrf_token %}
+                                        <!-- Preselect current section id -->
                                         <select class="form-field hidden" name="section_selection">
                                             <option value={{ j.id }}>{{ j.number }}</option>
                                         </select>
+                                        <!-- Select user to assign -->
                                         <select class="form-field" name="person_selection">
                                             {% for k in i.people.all %}
                                                 <option value={{ k.id }}>{{ k.email }}{% if k.role == 'ta' %};
@@ -162,6 +178,7 @@
                                                     {% endfor %}{% endif %}</option>
                                             {% endfor %}
                                         </select>
+                                        <!-- Submit button -->
                                         <button type="submit" name="ass_section_butt" class="subButt">Save</button>
                                     </form>
                                 </div>
@@ -177,9 +194,11 @@
                                     <form action="/course/" method="post"> {% csrf_token %}
                                         <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}
                                             Section {{ j.number }}?</h1>
+                                        <!-- Preselect current section -->
                                         <select class="form-field hidden" name="section_to_remove">
                                             <option value={{ j.id }}></option>
                                         </select>
+                                        <!-- Submit button -->
                                         <button type="submit" name="delSButt" class="subButt delButt">Yes</button>
                                     </form>
                                 </div>
@@ -192,11 +211,13 @@
 
             <!-- Alert message popups -->
             {% if request.session.error and request.session.submitted %}
+            <!-- Success message popup -->
                 <div class="alert">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     <strong>Error!</strong> {{ message }}
                 </div>
             {% elif not request.session.error and request.session.submitted %}
+            <!-- Failure message popup -->
                 <div class="alert success">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     <strong>Success!</strong> {{ message }}
