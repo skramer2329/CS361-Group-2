@@ -299,7 +299,7 @@ class Contacts(View):
             phone_number = request.POST['phone_number']
             role = request.POST['role']
 
-            accounts = MyUser.objects.filter(role__in=['instructor', 'ta'])
+            accounts = MyUser.objects.all()
             valid = CreateAccountsFunction(email, phone_number)
             if valid != "Valid":
                 request.session['error'] = True
@@ -331,10 +331,11 @@ class Contacts(View):
             user = MyUser.objects.get(id= user)
             valid = ValidateDeleteAccount(request.session['name'], user.email)
             if valid == "Valid":
+                request.session['error'] = False
                 user.delete()
                 valid = "Contact was successfully deleted."
             else:
-                request.session['error'] = False
+                request.session['error'] = True
             accounts = MyUser.objects.all()
             return render(request, "contacts.html", {"accounts": accounts, "message": valid})
 
