@@ -16,6 +16,9 @@
     </style>
 </head>
 <body>
+
+
+    <!-- Side Bar -->
     <div class="sidenav">
         <a href="/account/">Account</a>
         <a href="/course/" class="current">Courses</a>
@@ -23,34 +26,44 @@
         <a href="/">Log out</a>
     </div>
 
+
+    <!-- Main Page -->
     <div class="main">
         <section>
-            <!-- Elements used for triggering modals to open -->
+            <!-- Top bar info/buttons -->
             {% if request.session.supervisor %}
                 <button class="modButt" id="myBtn">Create new course</button>
             {% endif %}
             <h2>Courses</h2>
 
-
+            <!-- Create Course Modal -->
             {% if request.session.supervisor %}
-            <!-- The First Modal -->
+            <!-- The Create Course Modal -->
             <div id="myModal" class="modal">
 
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <form action="/course/" method="post"> {% csrf_token %}
+                        <!-- Course Name Field -->
                         <input class="form-field" type="text" placeholder="Course Name" name="name" required>
+                        <!-- Course Number Field -->
                         <input class="form-field" type="text" placeholder="Course Number" name="number" required>
+                        <!-- Submit button -->
                         <button type="submit" name="course_button" class="subButt">Save</button>
                     </form>
                 </div>
             </div>
             {% endif %}
 
+
+            <!-- Course Blocks -->
             {% for i in courses %}
                 <div class="courseBlock">
                     <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
+
+
+                    <!-- Course Buttons -->
                     {% if request.session.supervisor %}
                         <div class="assButt">
                             <button class="modButt courseButt secButt">Create new section</button>
@@ -60,6 +73,8 @@
                     {% endif %}
                 </div>
 
+
+                <!-- Course Modals -->
                 {% if request.session.supervisor %}
                     <!-- The Create Section Modal -->
                     <div id="myModal2" class="modal">
@@ -68,11 +83,14 @@
                         <div class="modal-content">
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
+                                <!-- Preselect current course id -->
                                 <select class="form-field hidden" name="course_selection">
                                         <option value="{{ i.id }}">{{ i.number }}</option>
                                 </select>
+                                <!-- Section Number Field -->
                                 <input class="form-field" type="text" placeholder="Section Number" name="section_number"
                                        required>
+                                <!-- Submit button -->
                                 <button type="submit" name="section_button" class="subButt">Save</button>
                             </form>
                         </div>
@@ -85,14 +103,17 @@
                         <div class="modal-content">
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
+                                <!-- Preselect current course id -->
                                 <select class="form-field hidden" name="course_selection">
                                     <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
+                                <!-- Select user to assign -->
                                 <select class="form-field" name="person_selection">
                                     {% for i in accounts %}
                                         <option value={{ i.id }}>{{ i.email }}{% if i.role == 'ta' %}; <b>Skills: {% for s in i.skills.all %}{{ s.name }}, </b>{% endfor %}{% endif %}</option>
                                     {% endfor %}
                                 </select>
+                                <!-- Submit button -->
                                 <button type="submit" name="ass_butt" class="subButt">Save</button>
                             </form>
                         </div>
@@ -106,28 +127,38 @@
                             <span class="close">×</span>
                             <form action="/course/" method="post"> {% csrf_token %}
                                 <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}?</h1>
+                                <!-- Preselect course id -->
                                 <select class="form-field hidden" name="course_to_remove">
                                     <option value={{ i.id }}>{{ i.number }}</option>
                                 </select>
+                                <!-- Submit button -->
                                 <button type="submit" name="delCButt" class="subButt delButt">Yes</button>
                             </form>
                         </div>
                     </div>
                 {% endif %}
+
+
+                <!-- Section Blocks -->
                 {% for j in sections %}
                     {% if j.course == i %}
                         <div class="sectionBlock">
                             <h1 class="sectionName">Section: {{ j.number }}</h1>
                             <h1 class="sectionLead">Instructor: {{ j.teacher.first_name }} {{ j.teacher.last_name }}</h1>
 
-                            {% if request.session.supervisor %}
 
+                            <!-- Section buttons -->
+                            {% if request.session.supervisor %}
                                 <div class="secButt">
                                     <button class="modButt sectButt">Assign to section</button>
                                     <button class="modButt sectButt delButt">Delete section</button>
                                 </div>
                             {% endif %}
+                        </div>
 
+
+                        <!-- Section Modals -->
+                        {% if request.session.supervisor %}
                             <!-- The Section Assign Modal -->
                             <div id="myModal3" class="modal">
 
@@ -135,18 +166,24 @@
                                 <div class="modal-content">
                                     <span class="close">×</span>
                                     <form action="/course/" method="post"> {% csrf_token %}
+                                        <!-- Preselect current section id -->
                                         <select class="form-field hidden" name="section_selection">
                                             <option value={{ j.id }}>{{ j.number }}</option>
                                         </select>
+                                        <!-- Select user to assign -->
                                         <select class="form-field" name="person_selection">
                                             {% for k in i.people.all %}
-                                                <option value={{ k.id }}>{{ k.email }}{% if k.role == 'ta' %}; <b>Skills: {% for s in k.skills.all %}{{ s.name }}, </b>{% endfor %}{% endif %}</option>
+                                                <option value={{ k.id }}>{{ k.email }}{% if k.role == 'ta' %};
+                                                    <b>Skills: {% for s in k.skills.all %}{{ s.name }}, </b>
+                                                    {% endfor %}{% endif %}</option>
                                             {% endfor %}
                                         </select>
+                                        <!-- Submit button -->
                                         <button type="submit" name="ass_section_butt" class="subButt">Save</button>
                                     </form>
                                 </div>
                             </div>
+
 
                             <!-- The Delete Section Modal -->
                             <div id="myModal4" class="modal">
@@ -155,25 +192,32 @@
                                 <div class="modal-content">
                                     <span class="close">×</span>
                                     <form action="/course/" method="post"> {% csrf_token %}
-                                        <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }} Section {{ j.number }}?</h1>
+                                        <h1>Are you sure you wish to delete {{ i.name }} {{ i.number }}
+                                            Section {{ j.number }}?</h1>
+                                        <!-- Preselect current section -->
                                         <select class="form-field hidden" name="section_to_remove">
                                             <option value={{ j.id }}></option>
                                         </select>
+                                        <!-- Submit button -->
                                         <button type="submit" name="delSButt" class="subButt delButt">Yes</button>
                                     </form>
                                 </div>
                             </div>
-                        </div>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endfor %}
 
+
+            <!-- Alert message popups -->
             {% if request.session.error and request.session.submitted %}
+            <!-- Success message popup -->
                 <div class="alert">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     <strong>Error!</strong> {{ message }}
                 </div>
             {% elif not request.session.error and request.session.submitted %}
+            <!-- Failure message popup -->
                 <div class="alert success">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     <strong>Success!</strong> {{ message }}
