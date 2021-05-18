@@ -84,6 +84,7 @@ class CreateAccounts(View):
             except:
                 already_have = False
 
+            request.session['error'] = False
             if not skill_exists:
                 new_skill = Skill(name=input)
                 new_skill.save()
@@ -100,6 +101,7 @@ class CreateAccounts(View):
                                                         "message": "New skill was added."})
 
             else:
+                request.session['error'] = True
                 return render(request, "account.html", {"accounts": accounts, "skills": skills,
                                                         "message": "You already have this skill!"})
 
