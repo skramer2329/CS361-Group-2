@@ -16,6 +16,9 @@
     </style>
 </head>
 <body>
+
+
+    <!-- Side Bar -->
     <div class="sidenav">
         <a href="/account/">Account</a>
         <a href="/course/" class="current">Courses</a>
@@ -23,17 +26,19 @@
         <a href="/">Log out</a>
     </div>
 
+
+    <!-- Main Page -->
     <div class="main">
         <section>
-            <!-- Elements used for triggering modals to open -->
+            <!-- Top bar info/buttons -->
             {% if request.session.supervisor %}
                 <button class="modButt" id="myBtn">Create new course</button>
             {% endif %}
             <h2>Courses</h2>
 
-
+            <!-- Create Course Modal -->
             {% if request.session.supervisor %}
-            <!-- The First Modal -->
+            <!-- The Create Course Modal -->
             <div id="myModal" class="modal">
 
                 <!-- Modal content -->
@@ -48,6 +53,8 @@
             </div>
             {% endif %}
 
+
+            <!-- Course Blocks -->
             {% for i in courses %}
                 <div class="courseBlock">
                     <h1 class="courseName">{{ i.name }} {{ i.number }}</h1>
@@ -60,6 +67,8 @@
                     {% endif %}
                 </div>
 
+
+                <!-- Course Modals -->
                 {% if request.session.supervisor %}
                     <!-- The Create Section Modal -->
                     <div id="myModal2" class="modal">
@@ -114,20 +123,27 @@
                         </div>
                     </div>
                 {% endif %}
+
+
+                <!-- Section Blocks -->
                 {% for j in sections %}
                     {% if j.course == i %}
                         <div class="sectionBlock">
                             <h1 class="sectionName">Section: {{ j.number }}</h1>
                             <h1 class="sectionLead">Instructor: {{ j.teacher.first_name }} {{ j.teacher.last_name }}</h1>
 
-                            {% if request.session.supervisor %}
 
+                            <!-- Section buttons -->
+                            {% if request.session.supervisor %}
                                 <div class="secButt">
                                     <button class="modButt sectButt">Assign to section</button>
                                     <button class="modButt sectButt delButt">Delete section</button>
                                 </div>
                             {% endif %}
                         </div>
+
+
+                        <!-- Section Modals -->
                         {% if request.session.supervisor %}
                             <!-- The Section Assign Modal -->
                             <div id="myModal3" class="modal">
@@ -151,6 +167,7 @@
                                 </div>
                             </div>
 
+
                             <!-- The Delete Section Modal -->
                             <div id="myModal4" class="modal">
 
@@ -168,13 +185,12 @@
                                 </div>
                             </div>
                         {% endif %}
-                        {% if request.session.supervisor %}
-
-                        {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endfor %}
 
+
+            <!-- Alert message popups -->
             {% if request.session.error and request.session.submitted %}
                 <div class="alert">
                     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
