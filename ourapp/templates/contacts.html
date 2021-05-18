@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
+
+
+    <!-- Side Bar-->
     <div class="sidenav">
         <a href="/account/">Account</a>
         <a href="/course/">Courses</a>
@@ -16,15 +19,19 @@
         <a href="/">Log out</a>
     </div>
 
+
+    <!-- Main Page -->
     <div class="main">
         <section>
+            <!-- Top bar info/buttons -->
             {% if request.session.supervisor %}
                 <button class="modButt" id="myBtn">Create new account</button>
             {% endif %}
             <h2>Contacts</h2>
 
+
+            <!-- The Create Account Modal -->
             {% if request.session.supervisor %}
-            <!-- The Modal -->
             <div id="myModal" class="modal">
 
                 <!-- Modal content -->
@@ -48,11 +55,15 @@
             </div>
             {% endif %}
 
+
+            <!-- User Account Blocks -->
             {% for i in accounts %}
                 <div class="contactInfo">
+                    <!-- Public account info -->
                     <h1>{{ i.first_name }} {{ i.last_name }}</h1>
                     <h1 class="conText">Email - {{ i.email }}</h1>
                     <h1 class="conText">Phone number - {{ i.phone_number }}</h1>
+                    <!-- Private account info -->
                     {% if request.session.supervisor %}
                         <div class="hidContactInfo">
                             <h1 class="conText">Address - {{ i.address }}</h1>
@@ -61,6 +72,8 @@
                         </div>
                     {% endif %}
 
+
+                    <!-- Existing Account Buttons -->
                     {% if request.session.supervisor %}
                         <div id="contactButts">
                             <button class="modButt editButt" id="myBtn">Edit account</button>
@@ -69,44 +82,65 @@
                     {% endif %}
                 </div>
 
+
+                <!-- Existing Account Modals -->
                 {% if request.session.supervisor %}
-                <!-- The Modal -->
-                <div id="myModal2" class="modal">
+                    <!-- The Edit Account Modal -->
+                    <div id="myModal2" class="modal">
 
-                    <!-- Modal content -->
-                    <div class="modal-content">
-                        <span class="close">×</span>
-                        <form action="/contacts/" method="post"> {% csrf_token %}
-                            <input class="form-field" type="text" value="{{ i.first_name }}" placeholder="First Name" name="first_name" required>
-                            <input class="form-field" type="text" value="{{ i.last_name }}" placeholder="Last Name" name="last_name" required>
-                            <input class="form-field" type="text" value="{{ i.email }}" placeholder="Email" name="email" required>
-                            <input class="form-field" type="text" value="{{ i.password }}" placeholder="Password" name="password" required>
-                            <input class="form-field" type="text" value="{{ i.address }}" placeholder="Address" name="address" required>
-                            <input class="form-field" type="text" value="{{ i.phone_number }}" placeholder="Phone Number" name="phone_number" required>
-                            <select class="form-field" name="role">
-                                {% if i.role == "supervisor" %}
-                                    <option value="supervisor" selected>Supervisor</option>
-                                    <option value="instructor">Instructor</option>
-                                    <option value="ta">Teaching Assistant</option>
-                                {% elif i.role == "instructor" %}
-                                    <option value="supervisor">Supervisor</option>
-                                    <option value="instructor" selected>Instructor</option>
-                                    <option value="ta">Teaching Assistant</option>
-                                {% else %}
-                                    <option value="supervisor">Supervisor</option>
-                                    <option value="instructor">Instructor</option>
-                                    <option value="ta" selected>Teaching Assistant</option>
-                                {% endif %}
-                            </select>
-                            <select class="form-field hidden" name="user">
-                                <option value="{{ i.id }}" name="user"></option>
-                            </select>
-                            <button type="submit" name="edit_butt" class="subButt">Save</button>
-                        </form>
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">×</span>
+                            <form action="/contacts/" method="post"> {% csrf_token %}
+                                <!-- First Name Field -->
+                                <input class="form-field" type="text" value="{{ i.first_name }}" placeholder="First Name"
+                                       name="first_name" required>
+                                <!-- Last Name Field -->
+                                <input class="form-field" type="text" value="{{ i.last_name }}" placeholder="Last Name"
+                                       name="last_name" required>
+                                <!-- Email Field -->
+                                <input class="form-field" type="text" value="{{ i.email }}" placeholder="Email"
+                                       name="email" required>
+                                <!-- Password Field -->
+                                <input class="form-field" type="text" value="{{ i.password }}" placeholder="Password"
+                                       name="password" required>
+                                <!-- Address Field -->
+                                <input class="form-field" type="text" value="{{ i.address }}" placeholder="Address"
+                                       name="address" required>
+                                <!-- Phone Number Field -->
+                                <input class="form-field" type="text" value="{{ i.phone_number }}" placeholder="Phone Number"
+                                       name="phone_number" required>
+                                <!-- Role Selector -->
+                                <select class="form-field" name="role">
+                                    <!-- Preselected supervisor -->
+                                    {% if i.role == "supervisor" %}
+                                        <option value="supervisor" selected>Supervisor</option>
+                                        <option value="instructor">Instructor</option>
+                                        <option value="ta">Teaching Assistant</option>
+                                    <!-- Preselected instructor -->
+                                    {% elif i.role == "instructor" %}
+                                        <option value="supervisor">Supervisor</option>
+                                        <option value="instructor" selected>Instructor</option>
+                                        <option value="ta">Teaching Assistant</option>
+                                    <!-- Preselected TA -->
+                                    {% else %}
+                                        <option value="supervisor">Supervisor</option>
+                                        <option value="instructor">Instructor</option>
+                                        <option value="ta" selected>Teaching Assistant</option>
+                                    {% endif %}
+                                </select>
+                                <!-- Submit button -->
+                                <select class="form-field hidden" name="user">
+                                    <option value="{{ i.id }}" name="user"></option>
+                                </select>
+                                <button type="submit" name="edit_butt" class="subButt">Save</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
 
-                    <!-- The Course Assign Modal -->
+
+
+                    <!-- The Delete Account Modal -->
                     <div id="myModal4" class="modal">
 
                         <!-- Modal content -->
@@ -114,9 +148,11 @@
                             <span class="close">×</span>
                             <form action="/contacts/" method="post"> {% csrf_token %}
                                 <h1>Are you sure you wish to delete {{ i.first_name }} {{ i.last_name }}?</h1>
+                                <!-- Pass in current block user id -->
                                 <select class="form-field hidden" name="Contact_to_remove">
                                     <option value={{ i.id }}></option>
                                 </select>
+                                <!-- Submit button -->
                                 <button type="submit" name="delContactButt" class="subButt delButt">Yes</button>
                             </form>
                         </div>
@@ -125,12 +161,16 @@
 
             {% endfor %}
 
+
+            <!-- Alert message popups -->
             {% if request.session.error and request.session.submitted %}
+            <!-- Success message popup -->
                 <div class="alert">
                     <span class="closebtn" style="block" onclick="this.parentElement.style.display='none';">&times;</span>
                     <strong>Error!</strong> {{ message }}
                 </div>
             {% elif not request.session.error and request.session.submitted %}
+            <!-- Failure message popup -->
                 <div class="alert success">
                     <span class="closebtn" style="block" onclick="this.parentElement.style.display='none';">&times;</span>
                     <strong>Success!</strong> {{ message }}
